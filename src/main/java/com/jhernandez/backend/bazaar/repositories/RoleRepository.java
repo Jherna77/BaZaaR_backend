@@ -7,6 +7,5 @@ import com.jhernandez.backend.bazaar.entities.RoleEntity;
 
 @RepositoryRestResource(path = "roles")
 public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
-    RoleEntity findByName(String name);
 
 }

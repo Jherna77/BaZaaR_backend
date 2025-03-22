@@ -7,6 +7,4 @@ import com.jhernandez.backend.bazaar.entities.UserEntity;
 
 @RepositoryRestResource(path = "users")
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    UserEntity findByEmail(String email);
-
 }
