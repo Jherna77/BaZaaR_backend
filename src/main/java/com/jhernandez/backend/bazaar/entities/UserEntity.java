@@ -26,7 +26,8 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    // @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     // @OnDelete(action = OnDeleteAction.CASCADE)
     private RoleEntity role;

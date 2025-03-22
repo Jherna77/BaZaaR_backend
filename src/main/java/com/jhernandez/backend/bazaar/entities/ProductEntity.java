@@ -34,7 +34,8 @@ public class ProductEntity {
     private String name;
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    // @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     // @OnDelete(action = OnDeleteAction.CASCADE)
     private CategoryEntity category;
@@ -45,7 +46,7 @@ public class ProductEntity {
     private Double discountPrice;
 
     @Column(name = "discount_rate")
-    private Double DiscountRate;
+    private Double discountRate;
     // private List<String> imagesUrl;
 
 }
