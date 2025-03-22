@@ -12,7 +12,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-// import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -35,7 +35,7 @@ public class ProductEntity {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id")
     // @OnDelete(action = OnDeleteAction.CASCADE)
     private CategoryEntity category;
 
