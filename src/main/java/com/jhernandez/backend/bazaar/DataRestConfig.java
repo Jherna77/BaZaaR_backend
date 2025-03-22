@@ -11,10 +11,10 @@ import com.jhernandez.backend.bazaar.entities.UserEntity;
 public class DataRestConfig implements RepositoryRestConfigurer{
 
     // Este método muestra el id de los usuarios en la respuesta JSON
-    @Override
-    public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
-        config.exposeIdsFor(UserEntity.class);
-    }
+    // @Override
+    // public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
+    //     config.exposeIdsFor(UserEntity.class);
+    // }
     
 
 }

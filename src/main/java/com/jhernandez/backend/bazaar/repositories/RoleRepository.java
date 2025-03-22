@@ -5,7 +5,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.jhernandez.backend.bazaar.entities.RoleEntity;
 
-@RepositoryRestResource(path = "roles")
+// @RepositoryRestResource(path = "roles")
 public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
 
 }

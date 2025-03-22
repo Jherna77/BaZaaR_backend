@@ -5,6 +5,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.jhernandez.backend.bazaar.entities.UserEntity;
 
-@RepositoryRestResource(path = "users")
+// @RepositoryRestResource(path = "users")
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 }
