@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PrePersist;
 // import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -66,5 +67,18 @@ public class UserEntity {
     @Column(name = "zip_code", length = 5)
     private String zipCode;
 
-    private boolean enabled = true;
+    private boolean enabled;
+
+    @PrePersist
+    public void prePersist() {
+        this.enabled = true;
+
+        // if (this.isAdmin) {
+        //     this.roles.add(new RoleEntity(1L, "ROLE_ADMIN"));
+        // } else if (this.isShop) {
+        //     this.roles.add(new RoleEntity(2L, "ROLE_SHOP"));
+        // } else {
+        //     this.roles.add(new RoleEntity(3L, "ROLE_USER"));
+        // }
+    }
 }
