@@ -65,4 +65,6 @@ public class UserEntity {
 
     @Column(name = "zip_code", length = 5)
     private String zipCode;
+
+    private Boolean enabled = true;
 }
