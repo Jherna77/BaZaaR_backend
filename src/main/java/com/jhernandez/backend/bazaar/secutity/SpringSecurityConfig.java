@@ -18,9 +18,9 @@ public class SpringSecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
+        return http.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
             .requestMatchers("/api/users").permitAll() // Se dejan públicos los endpoints relacionados con users
-            .anyRequest().authenticated()) // Los demás requieren autenticación
+            .anyRequest().authenticated()) // Las demás peticiones requieren autenticación
             .csrf(config -> config.disable()) // Deshabilita CSRF para evitar vulnerabilidades (p.e. en formularios)
             .sessionManagement(management ->
                 management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sesión sin estado para manejar en el token todo lo relacionado con autenticación
