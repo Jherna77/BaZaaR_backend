@@ -1,14 +1,20 @@
 package com.jhernandez.backend.bazaar.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+// import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+// import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,11 +32,26 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    // @ManyToOne
     // @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id")
+    // @JoinColumn(name = "role_id")
     // @OnDelete(action = OnDeleteAction.CASCADE)
-    private RoleEntity role;
+    // private RoleEntity role;
+
+    @ManyToMany
+    @JoinTable(
+        name="users_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id"),
+        uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"})}
+        )  
+    private List<RoleEntity> roles;
+
+    @Transient // El atributo no se persistirá en la BD
+    private Boolean isAdmin;
+
+    @Transient
+    private Boolean isShop;
 
     @Column(unique = true)
     private String email;
