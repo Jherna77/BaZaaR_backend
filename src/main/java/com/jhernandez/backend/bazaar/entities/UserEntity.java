@@ -48,10 +48,10 @@ public class UserEntity {
     private List<RoleEntity> roles;
 
     @Transient // El atributo no se persistirá en la BD
-    private Boolean isAdmin;
+    private boolean isAdmin;
 
     @Transient
-    private Boolean isShop;
+    private boolean isShop;
 
     @Column(unique = true)
     private String email;
@@ -66,5 +66,5 @@ public class UserEntity {
     @Column(name = "zip_code", length = 5)
     private String zipCode;
 
-    private Boolean enabled = true;
+    private boolean enabled = true;
 }

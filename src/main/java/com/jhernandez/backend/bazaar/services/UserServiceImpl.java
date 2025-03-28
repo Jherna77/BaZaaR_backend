@@ -40,12 +40,12 @@ public class UserServiceImpl implements UserService{
         Optional<RoleEntity> roleCustomer = roleRepository.findByName("ROLE_CUSTOMER");
         roleCustomer.ifPresent(roles::add);
 
-        if (user.getIsShop()) {
+        if (user.isShop()) {
             Optional<RoleEntity> roleShop = roleRepository.findByName("ROLE_SHOP");
             roleShop.ifPresent(roles::add);
         }
 
-        if (user.getIsAdmin()) {
+        if (user.isAdmin()) {
             Optional<RoleEntity> roleAdmin = roleRepository.findByName("ROLE_ADMIN");
             roleAdmin.ifPresent(roles::add);
         }
