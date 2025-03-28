@@ -13,6 +13,8 @@ public interface ProductService {
 
     ProductEntity save(ProductEntity product);
 
+    // ProductEntity update(Long id, ProductEntity product);
+
     void deleteById(Long id);
     
 }

@@ -34,6 +34,12 @@ public class ProductServiceImpl implements ProductService {
         return repository.save(product);
     }
 
+    // @Transactional
+    // @Override
+    // public ProductEntity update(Long id, ProductEntity product) {
+    //     return repository.save(product);
+    // }
+
     @Transactional
     @Override
     public void deleteById(Long id) {
