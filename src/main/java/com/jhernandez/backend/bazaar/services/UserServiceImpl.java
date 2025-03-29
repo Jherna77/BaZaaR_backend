@@ -2,7 +2,6 @@ package com.jhernandez.backend.bazaar.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +35,34 @@ public class UserServiceImpl implements UserService{
             .collect(Collectors.toList());
     }
 
+    @Transactional
+    private UserEntity saveEntity(UserEntity user) {
+        handleRoles(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return repository.save(user);
+    }
+
+    @Override
+    public UserDto save(UserEntity user){
+        return convertToDto(saveEntity(user));
+    }
+
+    private void handleRoles(UserEntity user) {
+        List<RoleEntity> roles = new ArrayList<>();
+
+        roleRepository.findByName("ROLE_CUSTOMER").ifPresent(roles::add);
+
+        if (user.isShop()) {
+            roleRepository.findByName("ROLE_SHOP").ifPresent(roles::add);
+        }
+
+        if (user.isAdmin()) {
+            roleRepository.findByName("ROLE_ADMIN").ifPresent(roles::add);
+        }
+        
+        user.setRoles(roles);
+    }
+
     public UserDto convertToDto(UserEntity user) {
         return new UserDto(
             user.isEnabled(),
@@ -52,30 +79,4 @@ public class UserServiceImpl implements UserService{
                 .collect(Collectors.toList()));
     }
 
-    @Transactional
-    @Override
-    public UserDto save(UserEntity user) {
-        List<RoleEntity> roles = new ArrayList<>();
-
-        Optional<RoleEntity> roleCustomer = roleRepository.findByName("ROLE_CUSTOMER");
-        roleCustomer.ifPresent(roles::add);
-
-        if (user.isShop()) {
-            Optional<RoleEntity> roleShop = roleRepository.findByName("ROLE_SHOP");
-            roleShop.ifPresent(roles::add);
-        }
-
-        if (user.isAdmin()) {
-            Optional<RoleEntity> roleAdmin = roleRepository.findByName("ROLE_ADMIN");
-            roleAdmin.ifPresent(roles::add);
-        }
-
-        user.setRoles(roles);
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        
-        repository.save(user);
-        return convertToDto(user);
-    }
-    
 }

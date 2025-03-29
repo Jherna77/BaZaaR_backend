@@ -9,6 +9,8 @@ public interface UserService {
 
     List<UserDto> findAll();
 
+    // UserEntity saveEntity(UserEntity user);
+
     UserDto save(UserEntity user);
 
 }
