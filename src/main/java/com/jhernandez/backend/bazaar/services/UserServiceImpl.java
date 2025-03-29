@@ -36,14 +36,6 @@ public class UserServiceImpl implements UserService{
             .collect(Collectors.toList());
     }
 
-    // @Transactional(readOnly = true)
-    // @Override
-    // public List<UserEntity> findAll() {
-    //     return repository.findAll();
-    // }
-
-    // @Transactional
-    // @Override
     public UserDto convertToDto(UserEntity user) {
         return new UserDto(
             user.isEnabled(),
@@ -85,29 +77,5 @@ public class UserServiceImpl implements UserService{
         repository.save(user);
         return convertToDto(user);
     }
-    // @Transactional
-    // @Override
-    // public UserEntity save(UserEntity user) {
-    //     List<RoleEntity> roles = new ArrayList<>();
-
-    //     Optional<RoleEntity> roleCustomer = roleRepository.findByName("ROLE_CUSTOMER");
-    //     roleCustomer.ifPresent(roles::add);
-
-    //     if (user.isShop()) {
-    //         Optional<RoleEntity> roleShop = roleRepository.findByName("ROLE_SHOP");
-    //         roleShop.ifPresent(roles::add);
-    //     }
-
-    //     if (user.isAdmin()) {
-    //         Optional<RoleEntity> roleAdmin = roleRepository.findByName("ROLE_ADMIN");
-    //         roleAdmin.ifPresent(roles::add);
-    //     }
-
-    //     user.setRoles(roles);
-
-    //     user.setPassword(passwordEncoder.encode(user.getPassword()));
-        
-    //     return repository.save(user);
-    // }
-
+    
 }

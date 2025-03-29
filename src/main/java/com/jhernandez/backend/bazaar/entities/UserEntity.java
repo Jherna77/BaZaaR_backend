@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,7 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
-// import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
@@ -35,15 +33,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @ManyToOne
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "role_id")
-    // @OnDelete(action = OnDeleteAction.CASCADE)
-    // private RoleEntity role;
-
     @ManyToMany
-    // @ManyToMany(fetch = FetchType.LAZY) // LAZY: Carga diferida de los roles al cargar el usuario
-    // @ManyToMany(fetch = FetchType.EAGER) // EAGER: Carga inmediata de los roles al cargar el usuario
     @JsonIgnoreProperties({"users", "handler", "hibernateLazyInitializer"})
     @JoinTable(
         name="users_roles",
@@ -77,14 +67,6 @@ public class UserEntity {
     @PrePersist
     public void prePersist() {
         this.enabled = true;
-
-        // if (this.isAdmin) {
-        //     this.roles.add(new RoleEntity(1L, "ROLE_ADMIN"));
-        // } else if (this.isShop) {
-        //     this.roles.add(new RoleEntity(2L, "ROLE_SHOP"));
-        // } else {
-        //     this.roles.add(new RoleEntity(3L, "ROLE_USER"));
-        // }
     }
 
     @Override

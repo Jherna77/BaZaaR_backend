@@ -1,7 +1,6 @@
 package com.jhernandez.backend.bazaar.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,31 +22,14 @@ public class UserController {
     @Autowired
     private UserService service;
 
-
     @GetMapping
     public List<UserDto> list() {
         return service.findAll();
     }
-
-    // @GetMapping
-    // public List<UserEntity> list() {
-    //    return service.findAll();
-    // }
-
-    // @PostMapping
-    // public ResponseEntity<UserEntity> create(@RequestBody UserEntity user) {
-    //     return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
-    //     // return ResponseEntity.ok(service.save(user));
-    // }
 
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@RequestBody UserEntity user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
     }
 
-    // @PostMapping("/register")
-    // public ResponseEntity<UserEntity> register(@RequestBody UserEntity user) {
-    //     return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
-    //     // return ResponseEntity.ok(service.save(user));
-    // }
 }
