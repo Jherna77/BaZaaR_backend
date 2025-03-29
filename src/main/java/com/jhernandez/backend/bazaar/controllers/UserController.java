@@ -23,11 +23,10 @@ public class UserController {
     @Autowired
     private UserService service;
 
+
     @GetMapping
     public List<UserDto> list() {
-        return service.findAll().stream()
-            .map(service::convertToDto)
-            .collect(Collectors.toList());
+        return service.findAll();
     }
 
     // @GetMapping
@@ -35,9 +34,20 @@ public class UserController {
     //    return service.findAll();
     // }
 
-    @PostMapping
-    public ResponseEntity<UserEntity> create(@RequestBody UserEntity user) {
+    // @PostMapping
+    // public ResponseEntity<UserEntity> create(@RequestBody UserEntity user) {
+    //     return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
+    //     // return ResponseEntity.ok(service.save(user));
+    // }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> register(@RequestBody UserEntity user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
-        // return ResponseEntity.ok(service.save(user));
     }
+
+    // @PostMapping("/register")
+    // public ResponseEntity<UserEntity> register(@RequestBody UserEntity user) {
+    //     return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
+    //     // return ResponseEntity.ok(service.save(user));
+    // }
 }

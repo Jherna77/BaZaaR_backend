@@ -2,6 +2,8 @@ package com.jhernandez.backend.bazaar.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -39,13 +41,16 @@ public class UserEntity {
     // @OnDelete(action = OnDeleteAction.CASCADE)
     // private RoleEntity role;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
+    // @ManyToMany(fetch = FetchType.LAZY) // LAZY: Carga diferida de los roles al cargar el usuario
+    // @ManyToMany(fetch = FetchType.EAGER) // EAGER: Carga inmediata de los roles al cargar el usuario
+    @JsonIgnoreProperties({"users", "handler", "hibernateLazyInitializer"})
     @JoinTable(
         name="users_roles",
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id"),
         uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"})}
-        )  
+        )
     private List<RoleEntity> roles;
 
     @Transient // El atributo no se persistirá en la BD
@@ -81,4 +86,37 @@ public class UserEntity {
         //     this.roles.add(new RoleEntity(3L, "ROLE_USER"));
         // }
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        UserEntity other = (UserEntity) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!email.equals(other.email))
+            return false;
+        return true;
+    }
+
+    
 }

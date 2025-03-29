@@ -7,10 +7,12 @@ import com.jhernandez.backend.bazaar.entities.UserEntity;
 
 public interface UserService {
 
-    List<UserEntity> findAll();
+    List<UserDto> findAll();
+    // List<UserEntity> findAll();
 
-    UserEntity save(UserEntity user);
+    UserDto save(UserEntity user);
+    // UserEntity save(UserEntity user);
 
-    UserDto convertToDto(UserEntity user);
+    // UserDto convertToDto(UserEntity user);
 
 }
