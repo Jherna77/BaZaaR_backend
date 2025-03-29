@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class UserDto {
+    private boolean enabled;
     private String email;
     private String name;
     private String surnames;

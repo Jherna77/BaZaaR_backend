@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto convertToDto(UserEntity user) {
         return new UserDto(
+            user.isEnabled(),
             user.getEmail(),
             user.getName(),
             user.getSurnames(),
