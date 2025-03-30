@@ -29,8 +29,8 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private MessageSource messageSource;
+    // @Autowired
+    // private MessageSource messageSource;
 
     @Transactional(readOnly = true)
     @Override
@@ -38,6 +38,12 @@ public class UserServiceImpl implements UserService{
         return userRepository.findAll().stream()
             .map(this::convertToDto)
             .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     @Transactional
@@ -49,9 +55,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserDto save(UserEntity user){
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException(messageSource.getMessage("exists.UserEntity.email", null, Locale.getDefault()));
-        }
+        // if (userRepository.existsByEmail(user.getEmail())) {
+        //     throw new IllegalArgumentException(messageSource.getMessage("exists.UserEntity.email", null, Locale.getDefault()));
+        // }
         return convertToDto(saveEntity(user));
     }
 

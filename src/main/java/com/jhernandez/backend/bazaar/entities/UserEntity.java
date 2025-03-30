@@ -3,6 +3,7 @@ package com.jhernandez.backend.bazaar.entities;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jhernandez.backend.bazaar.validation.ExistsByEmail;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,6 +47,7 @@ public class UserEntity {
         uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"})})
     private List<RoleEntity> roles;
 
+    @ExistsByEmail
     @NotEmpty
     @Email
     @Column(unique = true)
@@ -70,7 +72,7 @@ public class UserEntity {
     @NotBlank
     private String province;
 
-    @Pattern(regexp = "^[0-9]{5}$", message = "{Pattern.UserEntity.zipCode}")
+    @Pattern(regexp = "^[0-9]{5}$", message = "{validation.zipCode.pattern.message}")
     @NotBlank
     @Column(name = "zip_code")
     private String zipCode;

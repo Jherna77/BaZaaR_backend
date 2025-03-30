@@ -27,11 +27,11 @@ import jakarta.validation.Valid;
 public class UserController {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
 
     @GetMapping
     public List<UserDto> list() {
-        return service.findAll();
+        return userService.findAll();
     }
 
     @PostMapping("/register")
@@ -39,11 +39,13 @@ public class UserController {
         if (result.hasFieldErrors()) {
             return validation(result);
         } else {
-            try {
-                return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user));
+
+            // try {
+            //     return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user));
+            // } catch (IllegalArgumentException e) {
+            //     return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            // }
         }
     }
 
