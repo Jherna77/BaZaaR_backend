@@ -8,10 +8,10 @@ import java.lang.annotation.Target;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
-@Constraint(validatedBy = ExistsByEmailValidator.class)
+@Constraint(validatedBy = EmailNotExistsValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface ExistsByEmail {
+public @interface EmailNotExists {
 
     String message() default "{validation.email.exists.message}";
 

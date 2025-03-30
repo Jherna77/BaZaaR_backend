@@ -11,7 +11,7 @@ import jakarta.validation.ConstraintValidatorContext;
 // Se comprueba si el email ya existe en la base de datos
 // Se utiliza en el registro de usuarios para validar el email
 @Component
-public class ExistsByEmailValidator implements ConstraintValidator<ExistsByEmail, String> {
+public class EmailNotExistsValidator implements ConstraintValidator<EmailNotExists, String> {
 
     @Autowired
     private UserService userService;
