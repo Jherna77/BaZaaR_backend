@@ -16,6 +16,11 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,28 +44,44 @@ public class UserEntity {
         name="users_roles",
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id"),
-        uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"})}
-        )
+        uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"})})
     private List<RoleEntity> roles;
+
+    @NotEmpty
+    @Email
+    @Column(unique = true)
+    private String email;
+
+    @NotEmpty
+    // @Size(min = 8, max = 20)
+    private String password;
+
+    @NotBlank
+    private String name;
+
+    @NotBlank
+    private String surnames;
+
+    @NotBlank
+    private String address;
+    
+    @NotBlank
+    private String city;
+
+    @NotBlank
+    private String province;
+
+    // @Size(min = 5, max = 5, message = "{Size.UserEntity.zipCode}")
+    @Pattern(regexp = "^[0-9]{5}$", message = "{Pattern.UserEntity.zipCode}")
+    @NotBlank
+    @Column(name = "zip_code")
+    private String zipCode;
 
     @Transient // El atributo no se persistirá en la BD
     private boolean isAdmin;
 
     @Transient
     private boolean isShop;
-
-    @Column(unique = true)
-    private String email;
-
-    private String password;
-    private String name;
-    private String surnames;
-    private String address;
-    private String city;
-    private String province;
-
-    @Column(name = "zip_code", length = 5)
-    private String zipCode;
 
     private boolean enabled;
 
@@ -99,6 +120,4 @@ public class UserEntity {
             return false;
         return true;
     }
-
-    
 }
