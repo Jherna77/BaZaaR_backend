@@ -20,7 +20,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -71,7 +70,6 @@ public class UserEntity {
     @NotBlank
     private String province;
 
-    // @Size(min = 5, max = 5, message = "{Size.UserEntity.zipCode}")
     @Pattern(regexp = "^[0-9]{5}$", message = "{Pattern.UserEntity.zipCode}")
     @NotBlank
     @Column(name = "zip_code")
