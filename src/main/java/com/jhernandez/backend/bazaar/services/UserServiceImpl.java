@@ -2,10 +2,12 @@ package com.jhernandez.backend.bazaar.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +21,7 @@ import com.jhernandez.backend.bazaar.repositories.UserRepository;
 public class UserServiceImpl implements UserService{
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -27,10 +29,13 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @Transactional(readOnly = true)
     @Override
     public List<UserDto> findAll() {
-        return repository.findAll().stream()
+        return userRepository.findAll().stream()
             .map(this::convertToDto)
             .collect(Collectors.toList());
     }
@@ -39,11 +44,14 @@ public class UserServiceImpl implements UserService{
     private UserEntity saveEntity(UserEntity user) {
         handleRoles(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return repository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
     public UserDto save(UserEntity user){
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException(messageSource.getMessage("exists.UserEntity.email", null, Locale.getDefault()));
+        }
         return convertToDto(saveEntity(user));
     }
 
