@@ -44,12 +44,6 @@ public class UserController {
             return validation(result);
         } else {
             return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user));
-
-            // try {
-            //     return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user));
-            // } catch (IllegalArgumentException e) {
-            //     return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-            // }
         }
     }
 

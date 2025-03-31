@@ -25,13 +25,7 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
     public boolean isValid(String email, ConstraintValidatorContext context) {
         log.info("Validando email: {}", email);
 
-                UserService userService = SpringContextHolder.getBean(UserService.class);
-
-                // Verificamos si el servicio está disponible antes de hacer la consulta
-        // if (userService == null) {
-        //     log.error("UserService no está disponible para validar el email: {}", email);
-        //     return true; // No podemos validar si el servicio no está disponible
-        // }
+        UserService userService = SpringContextHolder.getBean(UserService.class);
 
         return !userService.existsByEmail(email); 
     }

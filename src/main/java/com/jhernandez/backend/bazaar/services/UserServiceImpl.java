@@ -2,12 +2,10 @@ package com.jhernandez.backend.bazaar.services;
 
 import java.util.ArrayList;
 import java.util.List;
-// import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-// import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,9 +31,6 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // @Autowired
-    // private MessageSource messageSource;
-
     @Transactional(readOnly = true)
     @Override
     public List<UserDto> findAll() {
@@ -47,27 +42,19 @@ public class UserServiceImpl implements UserService{
     @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
     @Override
     public boolean existsByEmail(String email) {
-
         return userRepository.existsByEmail(email);
     }
 
     @Transactional
     private UserEntity saveEntity(UserEntity user) {
-        log.info("Saving user entity: {}", user.getEmail());
         handleRoles(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         log.info("Persisting: {}", user.getEmail());
-        UserEntity userPersist = userRepository.save(user);
-        log.info("User persisted: {}", userPersist.getEmail());
-        return userPersist;
-        // return userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
     public UserDto save(UserEntity user){
-        // if (userRepository.existsByEmail(user.getEmail())) {
-        //     throw new IllegalArgumentException(messageSource.getMessage("exists.UserEntity.email", null, Locale.getDefault()));
-        // }
         log.info("Saving user: {}", user.getEmail());
         return convertToDto(saveEntity(user));
     }
