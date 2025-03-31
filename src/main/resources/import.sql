@@ -7,10 +7,10 @@ INSERT INTO roles (id, name) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO roles (id, name) VALUES (2, 'ROLE_SHOP');
 INSERT INTO roles (id, name) VALUES (3, 'ROLE_CUSTOMER');
 
--- Usuarios de prueba
-INSERT INTO users (id, email, password, name, surnames, address, city, province, zip_code, enabled) VALUES (1, 'masteradmin@bazaar.es', '123456','Administrador','Master','BaZaaR Street, SN','BaZaaR City','BaZaaR Province', 77777, 1);
-INSERT INTO users (id, email, password, name, surnames, address, city, province, zip_code, enabled) VALUES (2, 'shop@bazaar.es', '123456','Tienda', 'ShopSurname', 'BaZaaR Street, SN','BaZaaR City','BaZaaR Province', 77777, 1);
-INSERT INTO users (id, email, password, name, surnames, address, city, province, zip_code, enabled) VALUES (3, 'customer@bazaar.es', '123456','Cliente','CustomerSurname','BaZaaR Street, SN','BaZaaR City','BaZaaR Province', 77777, 1);
+-- Usuarios de prueba con password = Pa$$W0rd
+INSERT INTO users (id, email, password, name, surnames, address, city, province, zip_code, enabled) VALUES (1, 'masteradmin@bazaar.es', '$2a$10$PybyrPSemLzx0TvKdNc06uULBocWPsIRhya2uXzMyugFhpI99SeQS','Administrador','Master','BaZaaR Street, SN','BaZaaR City','BaZaaR Province', 77777, 1);
+INSERT INTO users (id, email, password, name, surnames, address, city, province, zip_code, enabled) VALUES (2, 'shop@bazaar.es', '$2a$10$qiEytms5DnNnkDHx/xWtXO8G7X4QBCb/TIO/a1k66oloFEdHiUGoW','Tienda', 'ShopSurname', 'BaZaaR Street, SN','BaZaaR City','BaZaaR Province', 77777, 1);
+INSERT INTO users (id, email, password, name, surnames, address, city, province, zip_code, enabled) VALUES (3, 'customer@bazaar.es', '$2a$10$Fu/hQVx.yKmqRHhNN21S7Ozw8OF3lWTzCtf/ifoXWcdQRiJ.XqEyS','Cliente','CustomerSurname','BaZaaR Street, SN','BaZaaR City','BaZaaR Province', 77777, 1);
 
 -- Asignación de roles
 INSERT INTO users_roles (user_id, role_id) VALUES (1, 1);
