@@ -2,22 +2,19 @@ package com.jhernandez.backend.bazaar.entities;
 
 import java.util.List;
 
-// import org.hibernate.annotations.OnDelete;
-// import org.hibernate.annotations.OnDeleteAction;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 
-// import java.util.List;
-
 import jakarta.persistence.Entity;
-// import jakarta.persistence.FetchType;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-// import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -39,19 +36,12 @@ public class ProductEntity {
     private String name;
     private String description;
 
-    // @ManyToOne
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "category_id")
-    // @OnDelete(action = OnDeleteAction.CASCADE)
-    // private CategoryEntity category;
-
-    @ManyToMany
-    @JoinTable(
-        name="products_categories",
+    @ManyToMany //(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"products", "handler", "hibernateLazyInitializer"})
+    @JoinTable(name="products_categories",
         joinColumns = @JoinColumn(name = "product_id"),
         inverseJoinColumns = @JoinColumn(name = "category_id"),
-        uniqueConstraints = { @UniqueConstraint(columnNames = {"product_id", "category_id"})}
-        )  
+        uniqueConstraints = { @UniqueConstraint(columnNames = {"product_id", "category_id"})})  
     private List<CategoryEntity> categories;
 
     private Double price;
@@ -61,6 +51,45 @@ public class ProductEntity {
 
     @Column(name = "discount_rate")
     private Double discountRate;
+
     // private List<String> imagesUrl;
+
+    private boolean enabled;
+
+    @PrePersist
+    public void prePersist() {
+        this.enabled = true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ProductEntity other = (ProductEntity) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        return true;
+    }
 
 }

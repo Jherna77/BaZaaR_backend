@@ -21,31 +21,31 @@ INSERT INTO users_roles (user_id, role_id) VALUES (2, 3);
 INSERT INTO users_roles (user_id, role_id) VALUES (3, 3);
 
 -- Categorías de productos
-INSERT INTO categories (id, name) VALUES (1, 'Deportes');
-INSERT INTO categories (id, name) VALUES (2, 'Electrónica');
-INSERT INTO categories (id, name) VALUES (3, 'Hogar');
-INSERT INTO categories (id, name) VALUES (4, 'Moda');
-INSERT INTO categories (id, name) VALUES (5, 'Juguetes');
-INSERT INTO categories (id, name) VALUES (6, 'Libros');
-INSERT INTO categories (id, name) VALUES (7, 'Otros');
+INSERT INTO categories (id, name, enabled) VALUES (1, 'Deportes', 1);
+INSERT INTO categories (id, name, enabled) VALUES (2, 'Electrónica', 1);
+INSERT INTO categories (id, name, enabled) VALUES (3, 'Hogar', 1);
+INSERT INTO categories (id, name, enabled) VALUES (4, 'Moda', 1);
+INSERT INTO categories (id, name, enabled) VALUES (5, 'Juguetes', 1);
+INSERT INTO categories (id, name, enabled) VALUES (6, 'Libros', 1);
+INSERT INTO categories (id, name, enabled) VALUES (7, 'Otros', 1);
 
 -- Productos de prueba
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (1, 'Balón de fútbol', 'Balón de fútbol de la marca Adidas', 20.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (2, 'Balón de baloncesto', 'Balón de baloncesto de la marca Spalding', 25.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (3, 'Balón de voleibol', 'Balón de voleibol de la marca Mikasa', 30.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (4, 'Smartphone', 'Smartphone de la marca Samsung', 300.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (5, 'Tablet', 'Tablet de la marca Apple', 400.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (6, 'Portátil', 'Portátil de la marca HP', 500.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (7, 'Sofá', 'Sofá de 3 plazas', 600.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (8, 'Mesa', 'Mesa de comedor', 200.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (9, 'Silla', 'Silla de oficina', 100.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (10, 'Camiseta', 'Camiseta de manga corta', 10.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (11, 'Pantalón', 'Pantalón vaquero', 20.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (12, 'Zapatos', 'Zapatos de vestir', 30.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (13, 'Muñeca', 'Muñeca de la marca Barbie', 15.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (14, 'Coche teledirigido', 'Coche teledirigido de la marca Nikko', 20.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (15, 'Pelota', 'Pelota de goma', 5.0, 0.0, 0.0);
-INSERT INTO products (id, name, description, price, discount_price, discount_rate) VALUES (16, 'El Quijote', 'Libro de Miguel de Cervantes', 10.0, 0.0, 0.0);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (1, 'Balón de fútbol', 'Balón de fútbol de la marca Adidas', 20.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (2, 'Balón de baloncesto', 'Balón de baloncesto de la marca Spalding', 25.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (3, 'Balón de voleibol', 'Balón de voleibol de la marca Mikasa', 30.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (4, 'Smartphone', 'Smartphone de la marca Samsung', 300.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (5, 'Tablet', 'Tablet de la marca Apple', 400.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (6, 'Portátil', 'Portátil de la marca HP', 500.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (7, 'Sofá', 'Sofá de 3 plazas', 600.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (8, 'Mesa', 'Mesa de comedor', 200.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (9, 'Silla', 'Silla de oficina', 100.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (10, 'Camiseta', 'Camiseta de manga corta', 10.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (11, 'Pantalón', 'Pantalón vaquero', 20.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (12, 'Zapatos', 'Zapatos de vestir', 30.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (13, 'Muñeca', 'Muñeca de la marca Barbie', 15.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (14, 'Coche teledirigido', 'Coche teledirigido de la marca Nikko', 20.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (15, 'Pelota', 'Pelota de goma', 5.0, 0.0, 0.0, 1);
+INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (16, 'El Quijote', 'Libro de Miguel de Cervantes', 10.0, 0.0, 0.0, 1);
 
 -- Asignación de productos a categorías
 INSERT INTO products_categories (product_id, category_id) VALUES (1, 1);

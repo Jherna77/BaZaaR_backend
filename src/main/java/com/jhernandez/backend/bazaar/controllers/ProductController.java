@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jhernandez.backend.bazaar.dto.ProductDto;
 import com.jhernandez.backend.bazaar.entities.ProductEntity;
 import com.jhernandez.backend.bazaar.services.ProductService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,32 +24,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class ProductController {
 
     @Autowired
-    private ProductService service;
+    private ProductService productService;
 
     @GetMapping
-    public List<ProductEntity> findAll() {
-        return service.findAll();
+    public List<ProductDto> findAll() {
+        return productService.findAll();
     }
 
     @GetMapping("/{id}")
     public ProductEntity view(@PathVariable Long id) {
-        return service.findById(id).orElse(null);
+        return productService.findById(id).orElse(null);
     }
 
     @PostMapping
     public ResponseEntity<ProductEntity> create(@RequestBody ProductEntity product) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(product));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
         // return ResponseEntity.ok(service.save(product));
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<ProductEntity> update(@PathVariable Long id, @RequestBody ProductEntity product) {
-        return ResponseEntity.ok(service.save(product));
+        return ResponseEntity.ok(productService.save(product));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        service.deleteById(id);
+        productService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
