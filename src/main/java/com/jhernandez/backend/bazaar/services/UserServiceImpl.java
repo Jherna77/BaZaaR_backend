@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.dto.UserDto;
@@ -39,7 +38,7 @@ public class UserServiceImpl implements UserService{
             .collect(Collectors.toList());
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
+    @Transactional(readOnly = true)
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
