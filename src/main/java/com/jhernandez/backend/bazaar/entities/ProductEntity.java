@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,7 +35,7 @@ public class ProductEntity {
     private String name;
     private String description;
 
-    @ManyToMany //(fetch = FetchType.EAGER)
+    @ManyToMany
     @JsonIgnoreProperties({"products", "handler", "hibernateLazyInitializer"})
     @JoinTable(name="products_categories",
         joinColumns = @JoinColumn(name = "product_id"),
