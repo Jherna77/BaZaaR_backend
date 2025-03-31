@@ -71,8 +71,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // Obtener los roles del usuario autenticado
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
 
-        Claims claims = Jwts.claims().add("authorities", authorities).build();
-        // claims.put("authorities", authorities);
+        Claims claims = Jwts.claims()
+            .add("authorities", new ObjectMapper().writeValueAsString(authorities))
+            .build();
         
         // Generar el token JWT
         String token = Jwts.builder()
@@ -107,9 +108,5 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setStatus(401);
 
     }
-
-    
-
-    
 
 }

@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.jhernandez.backend.bazaar.security.JwtAuthenticationFilter;
+import com.jhernandez.backend.bazaar.security.JwtValidationFilter;
 
 @Configuration
 public class SpringSecurityConfig {
@@ -37,6 +38,7 @@ public class SpringSecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll() // Se permiten las peticiones POST a /api/users/register
             .anyRequest().authenticated()) // Las demás peticiones requieren autenticación
             .addFilter(new JwtAuthenticationFilter(authenticationManager())) // Se añade el filtro de autenticación JWT
+            .addFilter(new JwtValidationFilter(authenticationManager())) // Se añade el filtro de validación JWT
             .csrf(config -> config.disable()) // Deshabilita CSRF para evitar vulnerabilidades (p.e. en formularios)
             .sessionManagement(management ->
                 management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sesión sin estado para manejar en el token todo lo relacionado con autenticación
