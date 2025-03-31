@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.security;
+package com.jhernandez.backend.bazaar.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,0 +1,38 @@
+package com.jhernandez.backend.bazaar.validation;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.jhernandez.backend.bazaar.configuration.SpringContextHolder;
+import com.jhernandez.backend.bazaar.services.UserService;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import lombok.extern.slf4j.Slf4j;
+
+/*
+ * Se comprueba si el email ya existe en la base de datos
+ * Se utiliza en el registro de usuarios para validar el email
+ */
+// @Component
+@Slf4j
+public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String>{
+
+    // @Autowired
+    // private UserService userService;
+
+    @Override
+    public boolean isValid(String email, ConstraintValidatorContext context) {
+        log.info("Validando email: {}", email);
+
+                UserService userService = SpringContextHolder.getBean(UserService.class);
+
+                // Verificamos si el servicio está disponible antes de hacer la consulta
+        // if (userService == null) {
+        //     log.error("UserService no está disponible para validar el email: {}", email);
+        //     return true; // No podemos validar si el servicio no está disponible
+        // }
+
+        return !userService.existsByEmail(email); 
+    }
+}

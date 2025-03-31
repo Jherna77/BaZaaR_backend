@@ -3,7 +3,10 @@ package com.jhernandez.backend.bazaar.entities;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.jhernandez.backend.bazaar.validation.EmailNotExists;
+import com.jhernandez.backend.bazaar.validation.UniqueEmail;
+import com.jhernandez.backend.bazaar.validation.Password;
+import com.jhernandez.backend.bazaar.validation.RequiredField;
+import com.jhernandez.backend.bazaar.validation.ZipCode;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,9 +21,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,33 +47,32 @@ public class UserEntity {
         uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"})})
     private List<RoleEntity> roles;
 
-    @EmailNotExists
-    @NotEmpty
-    @Email
+    @UniqueEmail
+    @RequiredField
+    @Email(message = "{validation.email.invalid.message}")
     @Column(unique = true)
     private String email;
 
-    @NotEmpty
-    // @Size(min = 8, max = 20)
+    // @RequiredField
+    @Password
     private String password;
 
-    @NotBlank
+    @RequiredField
     private String name;
 
-    @NotBlank
+    @RequiredField
     private String surnames;
 
-    @NotBlank
+    @RequiredField
     private String address;
     
-    @NotBlank
+    @RequiredField
     private String city;
 
-    @NotBlank
+    @RequiredField
     private String province;
 
-    @Pattern(regexp = "^[0-9]{5}$", message = "{validation.zipCode.pattern.message}")
-    @NotBlank
+    @ZipCode
     @Column(name = "zip_code")
     private String zipCode;
 

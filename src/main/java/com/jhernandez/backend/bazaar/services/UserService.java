@@ -5,6 +5,7 @@ import java.util.List;
 import com.jhernandez.backend.bazaar.dto.UserDto;
 import com.jhernandez.backend.bazaar.entities.UserEntity;
 
+
 public interface UserService {
 
     List<UserDto> findAll();
