@@ -40,8 +40,7 @@ public class UserEntity {
 
     @ManyToMany
     @JsonIgnoreProperties({"users", "handler", "hibernateLazyInitializer"})
-    @JoinTable(
-        name="users_roles",
+    @JoinTable(name="users_roles",
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id"),
         uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"})})
