@@ -22,7 +22,7 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
-        log.info("Validando email: {}", email);
+        log.info("Validating unique email: {}", email);
 
         if (userService == null) {
             return true;

@@ -14,7 +14,7 @@ public class ZipCodeValidator implements ConstraintValidator<ZipCode, String> {
 
     @Override
     public boolean isValid(String zipCode, jakarta.validation.ConstraintValidatorContext context) {
-        log.info("Validando zipCode: {}", zipCode);
+        log.info("Validating zipCode: {}", zipCode);
   
         return zipCode.matches(ZIP_CODE_PATTERN);
     }
