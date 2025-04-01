@@ -19,6 +19,4 @@ public interface CategoryService {
 
     Optional<CategoryDto> disable(Long id);
 
-    // void deleteById(Long id);
-
 }

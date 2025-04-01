@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.dto.CategoryDto;
 import com.jhernandez.backend.bazaar.entities.CategoryEntity;
-import com.jhernandez.backend.bazaar.entities.ProductEntity;
 import com.jhernandez.backend.bazaar.mappers.CategoryMapper;
 import com.jhernandez.backend.bazaar.repositories.CategoryRepository;
 
@@ -59,30 +58,6 @@ public class CategoryServiceImpl implements CategoryService {
         });
     }
 
-    // @Override
-    // @Transactional
-    // public Optional<CategoryDto> update(Long id, CategoryEntity category) {
-    // Optional<CategoryEntity> categoryOptional = categoryRepository.findById(id);
-    // if (categoryOptional.isPresent()) {
-    // CategoryEntity categoryDb = categoryOptional.orElseThrow();
-
-    // categoryDb.setName(category.getName());
-    // return Optional.of(save(categoryDb));
-    // }
-    // return Optional.empty();
-    // }
-
-    // @Transactional
-    // @Override
-    // public CategoryDto disableById(Long id) {
-    //     Optional<CategoryEntity> category = categoryRepository.findById(id);
-    //     category.ifPresent(cat -> {
-    //     cat.setEnabled(false); // Deshabilitar la categoría
-    //     categoryRepository.save(cat); // Guardar la categoría deshabilitada
-    //     });
-    //     return null; // Devolver null o lanzar una excepción si no se encuentra la categoría
-    // }
-
     @Override
     @Transactional
     public Optional<CategoryDto> disable(Long id) {
@@ -91,38 +66,4 @@ public class CategoryServiceImpl implements CategoryService {
             return save(cat);
         });
     }
-
-    // @Transactional
-    // public CategoryDto disableCategoryById(Long id) {
-    // Optional<CategoryEntity> category = categoryRepository.findById(id);
-    // if (category.isPresent()) {
-    // CategoryEntity cat = category.get();
-    // cat.setEnabled(false);
-    // categoryRepository.save(cat);
-    // log.info("Category with ID {} disabled successfully.", id);
-    // return convertToDto(cat);
-    // // return new CategoryMapper().toDto(cat); // Usar el mapeador para convertir
-    // a DTO
-    // } else {
-    // log.warn("Category with ID {} not found.", id);
-    // return null;
-    // }
-    // // return category;
-    // }
-
-    // @Transactional
-    // @Override
-    // public void deleteById(Long id) {
-    // categoryRepository.deleteById(id);
-    // }
-
-    // private CategoryDto convertToDto(CategoryEntity category) {
-    //     return new CategoryDto(
-    //             category.isEnabled(),
-    //             category.getName(),
-    //             category.getProducts().stream()
-    //                     .map(ProductEntity::getName)
-    //                     .collect(Collectors.toList()));
-    // }
-
 }
