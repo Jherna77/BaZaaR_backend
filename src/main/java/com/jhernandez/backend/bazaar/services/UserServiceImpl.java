@@ -2,6 +2,7 @@ package com.jhernandez.backend.bazaar.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,20 @@ public class UserServiceImpl implements UserService{
 
     @Transactional(readOnly = true)
     @Override
+    public Optional<UserDto> findById(Long id) {
+        return userRepository.findById(id).map(userMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public UserDto save(UserEntity user){
+        log.info("Saving user: {}", user.getEmail());
+        return userMapper.toDto(saveEntity(user));
     }
 
     @Transactional
@@ -54,12 +67,6 @@ public class UserServiceImpl implements UserService{
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         log.info("Persisting: {}", user.getEmail());
         return userRepository.save(user);
-    }
-
-    @Override
-    public UserDto save(UserEntity user){
-        log.info("Saving user: {}", user.getEmail());
-        return userMapper.toDto(saveEntity(user));
     }
 
     private void handleRoles(UserEntity user) {
@@ -77,5 +84,33 @@ public class UserServiceImpl implements UserService{
         }
         
         user.setRoles(roles);
+    }
+
+    @Override
+    @Transactional
+    public Optional<UserDto> update(Long id, UserEntity user) {
+        return userRepository.findById(id).map(userDb -> {
+            userDb.setEmail(user.getEmail());
+            userDb.setPassword(user.getPassword());
+            userDb.setName(user.getName());
+            userDb.setSurnames(user.getSurnames());
+            userDb.setAddress(user.getAddress());
+            userDb.setCity(user.getCity());
+            userDb.setProvince(user.getProvince());
+            userDb.setZipCode(user.getZipCode());
+            userDb.setAdmin(user.isAdmin());
+            userDb.setShop(user.isShop());
+            userDb.setEnabled(user.isEnabled());
+            return save(userDb);
+        });
+    }
+
+    @Override
+    @Transactional
+    public Optional<UserDto> disable(Long id) {
+        return userRepository.findById(id).map(userDb -> {
+            userDb.setEnabled(false);
+            return save(userDb);
+        });
     }
 }
