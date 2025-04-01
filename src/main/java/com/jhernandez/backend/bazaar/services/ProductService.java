@@ -10,11 +10,13 @@ public interface ProductService {
 
     List<ProductDto> findAll();
 
-    Optional<ProductEntity> findById(Long id);
+    Optional<ProductDto> findById(Long id);
 
-    ProductEntity save(ProductEntity product);
+    ProductDto save(ProductEntity product);
 
-    // ProductEntity update(Long id, ProductEntity product);
+    Optional<ProductDto> update(Long id, ProductEntity product);
+
+    Optional<ProductDto> disable(Long id);
 
     void deleteById(Long id);
     

@@ -3,6 +3,7 @@ package com.jhernandez.backend.bazaar.entities;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jhernandez.backend.bazaar.validation.RequiredField;
 
 import jakarta.persistence.Column;
 
@@ -32,7 +33,11 @@ public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @RequiredField
     private String name;
+
+    @RequiredField
     private String description;
 
     @ManyToMany
@@ -43,6 +48,7 @@ public class ProductEntity {
         uniqueConstraints = { @UniqueConstraint(columnNames = {"product_id", "category_id"})})  
     private List<CategoryEntity> categories;
 
+    @RequiredField
     private Double price;
 
     @Column(name = "discount_price")

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.dto.ProductDto;
-import com.jhernandez.backend.bazaar.entities.CategoryEntity;
 import com.jhernandez.backend.bazaar.entities.ProductEntity;
+import com.jhernandez.backend.bazaar.mappers.ProductMapper;
 import com.jhernandez.backend.bazaar.repositories.ProductRepository;
 
 @Service
@@ -19,48 +19,59 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductMapper productMapper;
+
     @Transactional(readOnly = true)
     @Override
     public List<ProductDto> findAll() {
         return productRepository.findAll().stream()
-            .map(this::convertToDto)
+            .map(productMapper::toDto)
             .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<ProductEntity> findById(Long id) {
-        return productRepository.findById(id);
+    public Optional<ProductDto> findById(Long id) {
+        return productRepository.findById(id).map(productMapper::toDto);
+    }
+
+    @Override
+    public ProductDto save(ProductEntity product) {
+        return productMapper.toDto(saveEntity(product));
     }
 
     @Transactional
-    @Override
-    public ProductEntity save(ProductEntity product) {
+    private ProductEntity saveEntity(ProductEntity product) {
         return productRepository.save(product);
     }
 
-    // @Transactional
-    // @Override
-    // public ProductEntity update(Long id, ProductEntity product) {
-    //     return repository.save(product);
-    // }
+    @Override
+    @Transactional
+    public Optional<ProductDto> update(Long id, ProductEntity product) {
+        return productRepository.findById(id).map(prod -> {
+            prod.setName(product.getName());
+            prod.setDescription(product.getDescription());
+            prod.setPrice(product.getPrice());
+            prod.setDiscountPrice(product.getDiscountPrice());
+            prod.setDiscountRate(product.getDiscountRate());
+            prod.setEnabled(product.isEnabled());
+            return save(prod);
+        });
+    }
+
+    @Override
+    @Transactional
+    public Optional<ProductDto> disable(Long id) {
+        return productRepository.findById(id).map(prod -> {
+            prod.setEnabled(false);
+            return save(prod);
+        });
+    }
 
     @Transactional
     @Override
     public void deleteById(Long id) {
         productRepository.deleteById(id);
-    }
-
-    public ProductDto convertToDto(ProductEntity product) {
-    return new ProductDto(
-        product.isEnabled(),
-        product.getName(),
-        product.getDescription(),
-        product.getPrice().toString(),
-        product.getDiscountPrice().toString(),
-        product.getDiscountRate().toString(),
-        product.getCategories().stream()
-            .map(CategoryEntity::getName)
-            .collect(Collectors.toList()));
     }
 }
