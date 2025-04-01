@@ -30,7 +30,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public List<CategoryDto> findAll() {
+    public List<CategoryDto> list() {
         log.info("Listing all categories");
         return categoryService.findAll();
     }
@@ -48,10 +48,16 @@ public class CategoryController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<CategoryDto> update(@PathVariable Long id, @RequestBody CategoryEntity category) {
+    public ResponseEntity<?> update(@Valid @RequestBody CategoryEntity category, BindingResult result, @PathVariable Long id) {
         log.info("Updating category {}", id);
-        return categoryService.update(id, category).map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+
+        if (result.hasFieldErrors()) {
+            log.error("Field validation errors: {}", result.getFieldErrors());
+            return fieldValidation(result);
+        } else {
+            return categoryService.update(id, category).map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+        }
     }    
 
     @PutMapping("/disable/{id}")

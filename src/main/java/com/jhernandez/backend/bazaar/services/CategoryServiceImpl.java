@@ -54,6 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Optional<CategoryDto> update(Long id, CategoryEntity category) {
         return categoryRepository.findById(id).map(cat -> {
             cat.setName(category.getName());
+            cat.setEnabled(category.isEnabled());
             return save(cat);
         });
     }
