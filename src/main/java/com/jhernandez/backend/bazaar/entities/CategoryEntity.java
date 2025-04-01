@@ -3,6 +3,7 @@ package com.jhernandez.backend.bazaar.entities;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jhernandez.backend.bazaar.validation.RequiredField;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +28,8 @@ public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @RequiredField
     private String name;
 
     // Relación inversa con ProductEntity

@@ -1,0 +1,81 @@
+package com.jhernandez.backend.bazaar.controllers;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.jhernandez.backend.bazaar.dto.CategoryDto;
+import com.jhernandez.backend.bazaar.entities.CategoryEntity;
+import com.jhernandez.backend.bazaar.services.CategoryService;
+import static com.jhernandez.backend.bazaar.configuration.ValidationConfig.fieldValidation;
+
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+
+@RestController
+@RequestMapping("/api/categories")
+@Slf4j
+public class CategoryController {
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @GetMapping
+    public List<CategoryDto> findAll() {
+        log.info("Listing all categories");
+        return categoryService.findAll();
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(@Valid @RequestBody CategoryEntity category, BindingResult result) {
+        log.info("Creating category: {}", category.getName());
+        
+        if (result.hasFieldErrors()) {
+            log.error("Field validation errors: {}", result.getFieldErrors());
+            return fieldValidation(result);
+        } else {
+            return ResponseEntity.ok(categoryService.save(category));
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<CategoryDto> update(@PathVariable Long id, @RequestBody CategoryEntity category) {
+        log.info("Updating category {}", id);
+        return categoryService.update(id, category).map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+        // Optional<CategoryDto> categoryOptional = categoryService.update(id, category);
+        // if (categoryOptional.isPresent()) {
+        //     return ResponseEntity.status(HttpStatus.OK).body(categoryOptional.orElseThrow());
+        // }
+        // return ResponseEntity.notFound().build();
+    
+
+    @PutMapping("/disable/{id}")
+    public ResponseEntity<CategoryDto> disable(@PathVariable Long id) {
+        log.info("Disabling category {}", id);
+        return categoryService.disable(id).map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+        // return ResponseEntity.ok(categoryService.disableById(id));
+    }
+
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<?> delete(@PathVariable Long id) {
+    //     log.info("Deleting category {}", id);
+    //     categoryService.deleteById(id);
+    //     return ResponseEntity.noContent().build();
+    // }
+}
