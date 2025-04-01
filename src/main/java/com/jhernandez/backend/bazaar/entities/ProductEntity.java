@@ -17,6 +17,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,7 +49,7 @@ public class ProductEntity {
         uniqueConstraints = { @UniqueConstraint(columnNames = {"product_id", "category_id"})})  
     private List<CategoryEntity> categories;
 
-    @RequiredField
+    @NotNull
     private Double price;
 
     @Column(name = "discount_price")
