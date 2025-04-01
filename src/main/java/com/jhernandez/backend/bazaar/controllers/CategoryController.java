@@ -38,26 +38,18 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody CategoryEntity category, BindingResult result) {
         log.info("Creating category: {}", category.getName());
-        
-        if (result.hasFieldErrors()) {
-            log.error("Field validation errors: {}", result.getFieldErrors());
-            return fieldValidation(result);
-        } else {
-            return ResponseEntity.ok(categoryService.save(category));
-        }
+        return (result.hasFieldErrors())
+                ? fieldValidation(result)
+                : ResponseEntity.ok(categoryService.save(category));        
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody CategoryEntity category, BindingResult result, @PathVariable Long id) {
         log.info("Updating category {}", id);
-
-        if (result.hasFieldErrors()) {
-            log.error("Field validation errors: {}", result.getFieldErrors());
-            return fieldValidation(result);
-        } else {
-            return categoryService.update(id, category).map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
-        }
+        return (result.hasFieldErrors())
+                ? fieldValidation(result)
+                : categoryService.update(id, category).map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
     }    
 
     @PutMapping("/disable/{id}")
