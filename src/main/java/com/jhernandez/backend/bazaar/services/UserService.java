@@ -18,6 +18,8 @@ public interface UserService {
 
     Optional<UserDto> update(Long id, UserEntity user);
 
+    void updateEmail(Long id, String email);
+
     Optional<UserDto> disable(Long id);
 
     boolean existsByEmail(String email);

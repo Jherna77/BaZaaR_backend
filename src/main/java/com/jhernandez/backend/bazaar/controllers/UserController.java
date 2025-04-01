@@ -49,51 +49,25 @@ public class UserController {
         return (result.hasFieldErrors())
             ? fieldValidation(result)
             : ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user));
-
-        // if (result.hasFieldErrors()) {
-        //     return fieldValidation(result);
-        // } else {
-        //     return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user));
-        // }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody UserEntity user, BindingResult result, @PathVariable Long id) {
-        log.info("Updating user: {}", user.getEmail());
+    public ResponseEntity<?> update(@RequestBody UserEntity user, @PathVariable Long id) {
+        String email = user.getEmail();
+        log.info("Updating user: {}", email);
 
-        return (result.hasFieldErrors())
-            ? fieldValidation(result)
-            : userService.update(id, user).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        if (!email.equals(userService.findById(id).get().getEmail()) && !userService.existsByEmail(email)) {
+            log.info("Email is unique, updating email for user ID: {}", id);
+            userService.updateEmail(id, email);
+        } 
+        return userService.update(id, user).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 
     }
-
-        // if (!user.getEmail().equals(userService.findById(id).get().getEmail()) && result.hasFieldErrors()) {
-        //     log.error("Field validation errors: {}", result.getFieldErrors());
-        //     return fieldValidation(result);
-        // } else {
-        //     return userService.update(id, user).map(ResponseEntity::ok)
-        //     .orElse(ResponseEntity.notFound().build());
-        // }
-
-        
-        // if (result.hasFieldErrors()) {
-        //     log.error("Field validation errors: {}", result.getFieldErrors());
-        //     return fieldValidation(result);
-        // } else {
-        //     return userService.update(id, user).map(ResponseEntity::ok)
-        //     .orElse(ResponseEntity.notFound().build());
-        //     return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, user));
-        // }
-
-        // return userService.update(id, user).map(ResponseEntity::ok)
-        //         .orElse(ResponseEntity.notFound().build());
-        // return ResponseEntity.ok().body(UserService.update(user));
-
 
     @PutMapping("/disable/{id}")
     public ResponseEntity<UserDto> disable(@PathVariable Long id) {
         log.info("Disabling user by ID {}", id);
         return userService.disable(id).map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+            .orElse(ResponseEntity.notFound().build());
     }
 }

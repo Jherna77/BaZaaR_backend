@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public Optional<UserDto> update(Long id, UserEntity user) {
         return userRepository.findById(id).map(userDb -> {
-            userDb.setEmail(user.getEmail());
+            // userDb.setEmail(user.getEmail());
             userDb.setPassword(user.getPassword());
             userDb.setName(user.getName());
             userDb.setSurnames(user.getSurnames());
@@ -102,6 +102,15 @@ public class UserServiceImpl implements UserService{
             userDb.setShop(user.isShop());
             userDb.setEnabled(user.isEnabled());
             return save(userDb);
+        });
+    }
+
+    @Override
+    @Transactional
+    public void updateEmail(Long id, String email) {
+        userRepository.findById(id).map(userDb -> {
+            userDb.setEmail(email);
+            return saveEntity(userDb);
         });
     }
 
