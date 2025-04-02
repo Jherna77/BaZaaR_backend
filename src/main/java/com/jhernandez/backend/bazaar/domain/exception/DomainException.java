@@ -1,0 +1,5 @@
+package com.jhernandez.backend.bazaar.domain.exception;
+
+public abstract class DomainException extends Exception {
+
+}
