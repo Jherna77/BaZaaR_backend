@@ -9,11 +9,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class DeleteCategoryUseCaseImpl implements DeleteCategoryUseCase {
 
-    private final CategoryRepositoryPort categoryRepository;
+    private final CategoryRepositoryPort categoryRepositoryPort;
 
     @Override
     public boolean deleteCategory(Long id) throws CategoryException {
-        return categoryRepository.deleteCategoryById(id);
+        return categoryRepositoryPort.deleteCategoryById(id);
     }
     
 }

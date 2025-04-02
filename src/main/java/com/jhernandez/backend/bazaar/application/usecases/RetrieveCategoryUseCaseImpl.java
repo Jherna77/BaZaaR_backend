@@ -13,16 +13,16 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class RetrieveCategoryUseCaseImpl implements RetrieveCategoryUseCase {
 
-    private final CategoryRepositoryPort categoryRepository;
+    private final CategoryRepositoryPort categoryRepositoryPort;
 
     @Override
     public Optional<Category> getCategoryById(Long id) throws CategoryException {
-        return categoryRepository.getCategoryById(id);
+        return categoryRepositoryPort.getCategoryById(id);
     }
 
     @Override
     public List<Category> getAllCategories() {
-        return categoryRepository.getAllCategories();
+        return categoryRepositoryPort.getAllCategories();
     }
 
 }

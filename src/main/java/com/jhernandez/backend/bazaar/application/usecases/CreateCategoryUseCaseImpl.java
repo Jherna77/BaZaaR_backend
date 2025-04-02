@@ -12,11 +12,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CreateCategoryUseCaseImpl implements CreateCategoryUseCase {
 
-    private final CategoryRepositoryPort categoryRepository;
+    private final CategoryRepositoryPort categoryRepositoryPort;
 
     @Override
     public Optional<Category> createCategory(Category category) throws CategoryException {
-        return categoryRepository.createCategory(category);
+        return categoryRepositoryPort.createCategory(category);
     }
 
 }

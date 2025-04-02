@@ -33,29 +33,29 @@ public class CategoryService implements CategoryServicePort {
 
     @Override
     public Optional<Category> createCategory(Category category) throws CategoryException {
-        return this.createCategoryUseCase.createCategory(category);
+        return createCategoryUseCase.createCategory(category);
     }
 
     @Override
     public Optional<Category> getCategoryById(Long id) throws CategoryException {
-        return this.retrieveCategoryUseCase.getCategoryById(id);
+        return retrieveCategoryUseCase.getCategoryById(id);
     }
 
     @Override
     public List<Category> getAllCategories() {
-        return this.retrieveCategoryUseCase.getAllCategories();
+        return retrieveCategoryUseCase.getAllCategories();
         // log.info("Listing all categories");
         // return this.categoryRepository.getAllCategories();
     }
 
     @Override
     public Optional<Category> updateCategory(Long id, Category category) throws CategoryException {
-        return this.updateCategoryUseCase.updateCategory(id, category);
+        return updateCategoryUseCase.updateCategory(id, category);
     }
 
     @Override
     public boolean deleteCategory(Long id) throws CategoryException {
-        return this.deleteCategoryUseCase.deleteCategory(id);
+        return deleteCategoryUseCase.deleteCategory(id);
         /* this.userPersistence.deleteUserById(this.getUserById(id).
                 orElseThrow(UserNotFoundException::new).getId()); */
     }
