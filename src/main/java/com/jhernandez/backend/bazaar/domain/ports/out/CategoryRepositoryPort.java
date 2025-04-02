@@ -13,8 +13,8 @@ public interface CategoryRepositoryPort {
 
     Optional<Category> getCategoryById(Long id);
 
-    Optional<Category> updateCategory(Category category);
-    // Optional<Category> updateCategory(Long id, Category category);
+    // Optional<Category> updateCategory(Category category);
+    Optional<Category> updateCategory(Long id, Category category);
 
     boolean deleteCategoryById(Long id);
 

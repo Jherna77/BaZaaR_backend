@@ -17,8 +17,8 @@ public interface ProductRepositoryPort {
 
     Optional<Product> getProductById(Long id);
 
-    Optional<Product> updateProduct(Product product);
-    // Optional<Product> updateProduct(Long id, Product product);
+    // Optional<Product> updateProduct(Product product);
+    Optional<Product> updateProduct(Long id, Product product);
 
     boolean deleteProductById(Long id);
 
