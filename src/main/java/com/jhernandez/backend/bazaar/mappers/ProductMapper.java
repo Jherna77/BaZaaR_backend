@@ -18,11 +18,10 @@ public class ProductMapper {
             product.getName(),
             product.getDescription(),
             product.getPrice().toString(),
-            product.getDiscountPrice().toString(),
-            product.getDiscountRate().toString(),
+            // product.getDiscountPrice().toString(),
+            // product.getDiscountRate().toString(),
             product.getCategories().stream()
                 .map(CategoryEntity::getName)
                 .collect(Collectors.toList()));
     }
-
 }

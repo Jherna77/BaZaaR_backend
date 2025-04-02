@@ -54,11 +54,11 @@ public class ProductEntity {
     @NotNull
     private Double price;
 
-    @Column(name = "discount_price")
-    private Double discountPrice;
+    // @Column(name = "discount_price")
+    // private Double discountPrice;
 
-    @Column(name = "discount_rate")
-    private Double discountRate;
+    // @Column(name = "discount_rate")
+    // private Double discountRate;
 
     // private List<String> imagesUrl;
 

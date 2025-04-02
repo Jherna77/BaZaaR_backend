@@ -53,8 +53,8 @@ public class ProductServiceImpl implements ProductService {
             prod.setName(product.getName());
             prod.setDescription(product.getDescription());
             prod.setPrice(product.getPrice());
-            prod.setDiscountPrice(product.getDiscountPrice());
-            prod.setDiscountRate(product.getDiscountRate());
+            // prod.setDiscountPrice(product.getDiscountPrice());
+            // prod.setDiscountRate(product.getDiscountRate());
             prod.setEnabled(product.isEnabled());
             return save(prod);
         });

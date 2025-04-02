@@ -12,8 +12,8 @@ public class ProductDto {
     private String name;
     private String description;
     private String price;
-    private String discountPrice;
-    private String discountRate;
+    // private String discountPrice;
+    // private String discountRate;
     private List<String> categories;
 
 }
