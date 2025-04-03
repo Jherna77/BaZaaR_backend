@@ -4,6 +4,6 @@ import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 
 public interface DeleteProductUseCase {
 
-    boolean deleteProduct(Long id) throws ProductException;
+    void deleteProduct(Long id) throws ProductException;
 
 }

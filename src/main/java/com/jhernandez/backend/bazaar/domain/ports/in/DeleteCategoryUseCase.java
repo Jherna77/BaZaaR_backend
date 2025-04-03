@@ -4,6 +4,6 @@ import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 
 public interface DeleteCategoryUseCase {
 
-    boolean deleteCategory(Long id) throws CategoryException;
+    void deleteCategory(Long id) throws CategoryException;
 
 }

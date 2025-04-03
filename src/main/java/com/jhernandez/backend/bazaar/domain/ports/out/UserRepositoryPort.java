@@ -18,10 +18,12 @@ public interface UserRepositoryPort {
 
     Optional<User> getUserByEmail(final String email);
 
+    boolean existsByEmail(String email);
+
     // Optional<User> updateUser(User user);
     Optional<User> updateUser(Long id, User user);
 
-    boolean deleteUserById(Long id);
+    void deleteUserById(Long id);
 
     // boolean deleteUsers();
 

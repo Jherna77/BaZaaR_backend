@@ -20,7 +20,7 @@ public interface ProductRepositoryPort {
     // Optional<Product> updateProduct(Product product);
     Optional<Product> updateProduct(Long id, Product product);
 
-    boolean deleteProductById(Long id);
+    void deleteProductById(Long id);
 
     // boolean deleteProducts();
 

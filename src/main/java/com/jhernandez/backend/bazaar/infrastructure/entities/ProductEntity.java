@@ -1,11 +1,11 @@
-package com.jhernandez.backend.bazaar.entities;
+package com.jhernandez.backend.bazaar.infrastructure.entities;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.jhernandez.backend.bazaar.validation.RequiredField;
+// import com.jhernandez.backend.bazaar.validation.RequiredField;
 
-import jakarta.persistence.Column;
+// import jakarta.persistence.Column;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.PrePersist;
+// import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotNull;
@@ -37,10 +37,10 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @RequiredField
+    // @RequiredField
     private String name;
 
-    @RequiredField
+    // @RequiredField
     private String description;
 
     @ManyToMany
@@ -62,42 +62,10 @@ public class ProductEntity {
 
     // private List<String> imagesUrl;
 
-    private boolean enabled;
+    // private boolean enabled;
 
-    @PrePersist
-    public void prePersist() {
-        this.enabled = true;
-    }
-
-    // @Override
-    // public int hashCode() {
-    //     final int prime = 31;
-    //     int result = 1;
-    //     result = prime * result + ((id == null) ? 0 : id.hashCode());
-    //     result = prime * result + ((name == null) ? 0 : name.hashCode());
-    //     return result;
+    // @PrePersist
+    // public void prePersist() {
+    //     this.enabled = true;
     // }
-
-    // @Override
-    // public boolean equals(Object obj) {
-    //     if (this == obj)
-    //         return true;
-    //     if (obj == null)
-    //         return false;
-    //     if (getClass() != obj.getClass())
-    //         return false;
-    //     ProductEntity other = (ProductEntity) obj;
-    //     if (id == null) {
-    //         if (other.id != null)
-    //             return false;
-    //     } else if (!id.equals(other.id))
-    //         return false;
-    //     if (name == null) {
-    //         if (other.name != null)
-    //             return false;
-    //     } else if (!name.equals(other.name))
-    //         return false;
-    //     return true;
-    // }
-
 }

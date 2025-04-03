@@ -3,6 +3,8 @@ package com.jhernandez.backend.bazaar.application.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.models.Product;
 import com.jhernandez.backend.bazaar.domain.ports.in.CreateProductUseCase;
@@ -15,6 +17,7 @@ import lombok.AllArgsConstructor;
 
 // This class is responsible for implementing the ProductServicePort interface and delegating the calls to the use cases.
 // It uses the use cases to perform the operations and returns the results to the controller.
+@Service
 @AllArgsConstructor
 public class ProductService implements ProductServicePort{
     
@@ -44,8 +47,8 @@ public class ProductService implements ProductServicePort{
     }
 
     @Override
-    public boolean deleteProduct(Long id) throws ProductException {
-        return deleteProductUseCase.deleteProduct(id);
+    public void deleteProduct(Long id) throws ProductException {
+        deleteProductUseCase.deleteProduct(id);
     }
 
 }

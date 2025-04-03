@@ -12,8 +12,8 @@ public class DeleteCategoryUseCaseImpl implements DeleteCategoryUseCase {
     private final CategoryRepositoryPort categoryRepositoryPort;
 
     @Override
-    public boolean deleteCategory(Long id) throws CategoryException {
-        return categoryRepositoryPort.deleteCategoryById(id);
+    public void deleteCategory(Long id) throws CategoryException {
+        categoryRepositoryPort.deleteCategoryById(id);
     }
     
 }

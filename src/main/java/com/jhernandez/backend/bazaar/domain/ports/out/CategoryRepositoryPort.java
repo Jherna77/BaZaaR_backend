@@ -16,7 +16,7 @@ public interface CategoryRepositoryPort {
     // Optional<Category> updateCategory(Category category);
     Optional<Category> updateCategory(Long id, Category category);
 
-    boolean deleteCategoryById(Long id);
+    void deleteCategoryById(Long id);
 
     // boolean deleteCategories();
 

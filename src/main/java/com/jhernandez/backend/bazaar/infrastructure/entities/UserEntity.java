@@ -1,12 +1,12 @@
-package com.jhernandez.backend.bazaar.entities;
+package com.jhernandez.backend.bazaar.infrastructure.entities;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.jhernandez.backend.bazaar.validation.UniqueEmail;
-import com.jhernandez.backend.bazaar.validation.Password;
-import com.jhernandez.backend.bazaar.validation.RequiredField;
-import com.jhernandez.backend.bazaar.validation.ZipCode;
+// import com.jhernandez.backend.bazaar.validation.UniqueEmail;
+// import com.jhernandez.backend.bazaar.validation.Password;
+// import com.jhernandez.backend.bazaar.validation.RequiredField;
+// import com.jhernandez.backend.bazaar.validation.ZipCode;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +18,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+// import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -46,41 +46,41 @@ public class UserEntity {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id"),
         uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"})})
-    private List<RoleEntity> roles;
+    private List<UserRoleEntity> roles;
 
-    @UniqueEmail
-    @RequiredField
+    // @UniqueEmail
+    // @RequiredField
     @Email(message = "{validation.email.invalid.message}")
     @Column(unique = true)
     private String email;
 
-    @Password
+    // @Password
     private String password;
 
-    @RequiredField
+    // @RequiredField
     private String name;
 
-    @RequiredField
+    // @RequiredField
     private String surnames;
 
-    @RequiredField
+    // @RequiredField
     private String address;
     
-    @RequiredField
+    // @RequiredField
     private String city;
 
-    @RequiredField
+    // @RequiredField
     private String province;
 
-    @ZipCode
+    // @ZipCode
     @Column(name = "zip_code")
     private String zipCode;
 
-    @Transient // El atributo no se persistirá en la BD
-    private boolean isAdmin;
+    // @Transient // El atributo no se persistirá en la BD
+    // private boolean isAdmin;
 
-    @Transient
-    private boolean isShop;
+    // @Transient
+    // private boolean isShop;
 
     private boolean enabled;
 
@@ -88,35 +88,4 @@ public class UserEntity {
     public void prePersist() {
         this.enabled = true;
     }
-
-    // @Override
-    // public int hashCode() {
-    //     final int prime = 31;
-    //     int result = 1;
-    //     result = prime * result + ((id == null) ? 0 : id.hashCode());
-    //     result = prime * result + ((email == null) ? 0 : email.hashCode());
-    //     return result;
-    // }
-
-    // @Override
-    // public boolean equals(Object obj) {
-    //     if (this == obj)
-    //         return true;
-    //     if (obj == null)
-    //         return false;
-    //     if (getClass() != obj.getClass())
-    //         return false;
-    //     UserEntity other = (UserEntity) obj;
-    //     if (id == null) {
-    //         if (other.id != null)
-    //             return false;
-    //     } else if (!id.equals(other.id))
-    //         return false;
-    //     if (email == null) {
-    //         if (other.email != null)
-    //             return false;
-    //     } else if (!email.equals(other.email))
-    //         return false;
-    //     return true;
-    // }
 }

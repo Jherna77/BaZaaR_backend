@@ -3,13 +3,14 @@ package com.jhernandez.backend.bazaar.application.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.domain.models.Category;
 import com.jhernandez.backend.bazaar.domain.ports.in.CreateCategoryUseCase;
 import com.jhernandez.backend.bazaar.domain.ports.in.DeleteCategoryUseCase;
 import com.jhernandez.backend.bazaar.domain.ports.in.RetrieveCategoryUseCase;
 import com.jhernandez.backend.bazaar.domain.ports.in.UpdateCategoryUseCase;
-// import com.jhernandez.backend.bazaar.domain.ports.out.CategoryRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.ports.out.CategoryServicePort;
 
 import lombok.AllArgsConstructor;
@@ -20,16 +21,14 @@ import lombok.AllArgsConstructor;
 // The actual implementation of these methods would depend on the specific requirements of the application.
 // The CategoryService class is responsible for implementing the business logic related to categories.
 // It interacts with the data layer to perform CRUD operations on categories and handles any exceptions that may occur.
+@Service
 @AllArgsConstructor
-// @Slf4j
 public class CategoryService implements CategoryServicePort {
 
     private final CreateCategoryUseCase createCategoryUseCase;
     private final RetrieveCategoryUseCase retrieveCategoryUseCase;
     private final UpdateCategoryUseCase updateCategoryUseCase;
     private final DeleteCategoryUseCase deleteCategoryUseCase;
-
-    // private final CategoryRepositoryPort categoryRepository;
 
     @Override
     public Optional<Category> createCategory(Category category) throws CategoryException {
@@ -44,8 +43,6 @@ public class CategoryService implements CategoryServicePort {
     @Override
     public List<Category> getAllCategories() {
         return retrieveCategoryUseCase.getAllCategories();
-        // log.info("Listing all categories");
-        // return this.categoryRepository.getAllCategories();
     }
 
     @Override
@@ -54,11 +51,7 @@ public class CategoryService implements CategoryServicePort {
     }
 
     @Override
-    public boolean deleteCategory(Long id) throws CategoryException {
-        return deleteCategoryUseCase.deleteCategory(id);
-        /* this.userPersistence.deleteUserById(this.getUserById(id).
-                orElseThrow(UserNotFoundException::new).getId()); */
+    public void deleteCategory(Long id) throws CategoryException {
+        deleteCategoryUseCase.deleteCategory(id);
     }
-    
-    
 }

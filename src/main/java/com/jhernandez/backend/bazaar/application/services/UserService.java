@@ -3,6 +3,8 @@ package com.jhernandez.backend.bazaar.application.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.models.User;
 import com.jhernandez.backend.bazaar.domain.models.UserRole;
@@ -16,6 +18,7 @@ import lombok.AllArgsConstructor;
 
 // This class is responsible for handling user-related operations and acts as a service layer between the controller and the use cases.
 // It implements the UserServicePort interface, which defines the methods for user operations.
+@Service
 @AllArgsConstructor
 public class UserService implements UserServicePort{
     
@@ -56,8 +59,8 @@ public class UserService implements UserServicePort{
     }
 
     @Override
-    public boolean deleteUser(Long id) throws UserException {
-        return deleteUserUseCase.deleteUser(id);
+    public void deleteUser(Long id) throws UserException {
+        deleteUserUseCase.deleteUser(id);
     }
 
 }

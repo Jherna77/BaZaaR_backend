@@ -12,8 +12,8 @@ public class DeleteProductUseCaseImpl implements DeleteProductUseCase {
     private final ProductRepositoryPort productRepositoryPort;
 
     @Override
-    public boolean deleteProduct(Long id) throws ProductException {
-        return productRepositoryPort.deleteProductById(id);
+    public void deleteProduct(Long id) throws ProductException {
+        productRepositoryPort.deleteProductById(id);
     }
 
 }

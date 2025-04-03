@@ -3,7 +3,7 @@ package com.jhernandez.backend.bazaar.validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.jhernandez.backend.bazaar.services.UserService;
+import com.jhernandez.backend.bazaar.infrastructure.repositories.JpaUserRepositoryAdapter;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String>{
 
     @Autowired
-    private UserService userService;
+    private JpaUserRepositoryAdapter userService;
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {

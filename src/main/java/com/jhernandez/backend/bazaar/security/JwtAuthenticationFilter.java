@@ -15,7 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jhernandez.backend.bazaar.entities.UserEntity;
+import com.jhernandez.backend.bazaar.infrastructure.entities.UserEntity;
+
 import static com.jhernandez.backend.bazaar.configuration.TokenJwtConfig.*;
 
 import io.jsonwebtoken.Claims;
