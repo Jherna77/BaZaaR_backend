@@ -1,8 +1,8 @@
 package com.jhernandez.backend.bazaar.infrastructure.entities;
 
-import java.util.List;
+// import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+// import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 // import com.jhernandez.backend.bazaar.validation.UniqueEmail;
 // import com.jhernandez.backend.bazaar.validation.Password;
 // import com.jhernandez.backend.bazaar.validation.RequiredField;
@@ -14,12 +14,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+// import jakarta.persistence.JoinColumn;
+// import jakarta.persistence.JoinTable;
+// import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 // import jakarta.persistence.Transient;
-import jakarta.persistence.UniqueConstraint;
+// import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -40,13 +42,17 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany
-    @JsonIgnoreProperties({"users", "handler", "hibernateLazyInitializer"})
-    @JoinTable(name="users_roles",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id"),
-        uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"})})
-    private List<UserRoleEntity> roles;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private UserRoleEntity role;
+
+    // @ManyToMany
+    // @JsonIgnoreProperties({"users", "handler", "hibernateLazyInitializer"})
+    // @JoinTable(name="users_roles",
+    //     joinColumns = @JoinColumn(name = "user_id"),
+    //     inverseJoinColumns = @JoinColumn(name = "role_id"),
+    //     uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"})})
+    // private List<UserRoleEntity> roles;
 
     // @UniqueEmail
     // @RequiredField

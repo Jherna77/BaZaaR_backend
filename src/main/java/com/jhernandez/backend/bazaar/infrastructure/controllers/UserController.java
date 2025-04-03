@@ -32,7 +32,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<?> createUser(@RequestBody User user) {
         log.info("Registering user with email {}", user.getEmail());
         try {
@@ -62,7 +62,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Long id) {
         log.info("Updating user with id {}", id);
         try {
@@ -75,7 +75,7 @@ public class UserController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         log.info("Deleting user with ID {}", id);
         try {

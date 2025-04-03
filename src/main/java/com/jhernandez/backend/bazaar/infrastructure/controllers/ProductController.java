@@ -61,7 +61,7 @@ public class ProductController {
         }
     }
     
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@RequestBody Product product, @PathVariable Long id) {
         log.info("Updating product with ID {}", id);
         try {
@@ -73,16 +73,16 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         log.info("Deleting product with ID {}", id);
         try {
             productService.deleteProduct(id);
+            return ResponseEntity.noContent().build();
         } catch (ProductException e) {
             log.error("Error deleting product with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.noContent().build();
     }
     
     // @PutMapping("/disable/{id}")

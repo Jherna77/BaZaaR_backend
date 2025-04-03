@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
-import org.springframework.stereotype.Component;
+// import org.springframework.stereotype.Component;
 
 import com.jhernandez.backend.bazaar.domain.models.Product;
 import com.jhernandez.backend.bazaar.infrastructure.entities.ProductEntity;
 
-@Component
+// @Component
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ProductMapper {
 

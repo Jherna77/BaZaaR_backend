@@ -3,6 +3,8 @@ package com.jhernandez.backend.bazaar.application.usecases;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.models.Product;
 import com.jhernandez.backend.bazaar.domain.ports.in.RetrieveProductUseCase;
@@ -10,6 +12,7 @@ import com.jhernandez.backend.bazaar.domain.ports.out.ProductRepositoryPort;
 
 import lombok.AllArgsConstructor;
 
+@Service
 @AllArgsConstructor
 public class RetrieveProductUseCaseImpl implements RetrieveProductUseCase {
 

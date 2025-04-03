@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jhernandez.backend.bazaar.application.services.CategoryService;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.domain.models.Category;
+// import com.jhernandez.backend.bazaar.domain.ports.out.CategoryServicePort;
 
 // import static com.jhernandez.backend.bazaar.configuration.ValidationConfig.fieldValidation;
 
@@ -55,7 +56,7 @@ public class CategoryController {
     //             : ResponseEntity.ok(categoryService.createCategory(category));        
     // }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateCategory(@RequestBody Category category, @PathVariable Long id) {
         log.info("Updating category with ID {}", category.getName());
         try {

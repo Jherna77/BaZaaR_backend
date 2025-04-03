@@ -2,13 +2,15 @@ package com.jhernandez.backend.bazaar.application.usecases;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.models.Product;
 import com.jhernandez.backend.bazaar.domain.ports.in.CreateProductUseCase;
 import com.jhernandez.backend.bazaar.domain.ports.out.ProductRepositoryPort;
 
 import lombok.AllArgsConstructor;
-
+@Service
 @AllArgsConstructor
 public class CreateProductUseCaseImpl implements CreateProductUseCase {
 

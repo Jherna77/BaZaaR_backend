@@ -11,7 +11,7 @@ import com.jhernandez.backend.bazaar.domain.ports.in.CreateCategoryUseCase;
 import com.jhernandez.backend.bazaar.domain.ports.in.DeleteCategoryUseCase;
 import com.jhernandez.backend.bazaar.domain.ports.in.RetrieveCategoryUseCase;
 import com.jhernandez.backend.bazaar.domain.ports.in.UpdateCategoryUseCase;
-import com.jhernandez.backend.bazaar.domain.ports.out.CategoryServicePort;
+// import com.jhernandez.backend.bazaar.domain.ports.out.CategoryServicePort;
 
 import lombok.AllArgsConstructor;
 // import lombok.extern.slf4j.Slf4j;
@@ -23,34 +23,38 @@ import lombok.AllArgsConstructor;
 // It interacts with the data layer to perform CRUD operations on categories and handles any exceptions that may occur.
 @Service
 @AllArgsConstructor
-public class CategoryService implements CategoryServicePort {
+public class CategoryService {// implements
+//                             CreateCategoryUseCase,
+//                             RetrieveCategoryUseCase,
+//                             UpdateCategoryUseCase,
+//                             DeleteCategoryUseCase {
 
     private final CreateCategoryUseCase createCategoryUseCase;
     private final RetrieveCategoryUseCase retrieveCategoryUseCase;
     private final UpdateCategoryUseCase updateCategoryUseCase;
     private final DeleteCategoryUseCase deleteCategoryUseCase;
 
-    @Override
+    // @Override
     public Optional<Category> createCategory(Category category) throws CategoryException {
         return createCategoryUseCase.createCategory(category);
     }
 
-    @Override
+    // @Override
     public Optional<Category> getCategoryById(Long id) throws CategoryException {
         return retrieveCategoryUseCase.getCategoryById(id);
     }
 
-    @Override
+    // @Override
     public List<Category> getAllCategories() {
         return retrieveCategoryUseCase.getAllCategories();
     }
 
-    @Override
+    // @Override
     public Optional<Category> updateCategory(Long id, Category category) throws CategoryException {
         return updateCategoryUseCase.updateCategory(id, category);
     }
 
-    @Override
+    // @Override
     public void deleteCategory(Long id) throws CategoryException {
         deleteCategoryUseCase.deleteCategory(id);
     }

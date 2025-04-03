@@ -12,7 +12,6 @@ import com.jhernandez.backend.bazaar.domain.ports.in.CreateUserUseCase;
 import com.jhernandez.backend.bazaar.domain.ports.in.DeleteUserUseCase;
 import com.jhernandez.backend.bazaar.domain.ports.in.RetrieveUserUseCase;
 import com.jhernandez.backend.bazaar.domain.ports.in.UpdateUserUseCase;
-import com.jhernandez.backend.bazaar.domain.ports.out.UserServicePort;
 
 import lombok.AllArgsConstructor;
 
@@ -20,45 +19,37 @@ import lombok.AllArgsConstructor;
 // It implements the UserServicePort interface, which defines the methods for user operations.
 @Service
 @AllArgsConstructor
-public class UserService implements UserServicePort{
+public class UserService {
     
     private final CreateUserUseCase createUserUseCase;
     private final RetrieveUserUseCase retrieveUserUseCase;
     private final UpdateUserUseCase updateUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
     
-
-    @Override
     public Optional<User> createUser(User user) throws UserException {
         return createUserUseCase.createUser(user);
     }
 
-    @Override
     public List<UserRole> getUserRoles() throws UserException {
         return retrieveUserUseCase.getUserRoles();
     }
 
-    @Override
     public Optional<User> getUserById(Long id) throws UserException {
         return retrieveUserUseCase.getUserById(id);
     }
 
-    @Override
     public Optional<User> getUserByEmail(String email) throws UserException {
         return retrieveUserUseCase.getUserByEmail(email);
     }
 
-    @Override
     public List<User> getAllUsers() {
         return retrieveUserUseCase.getAllUsers();
     }
 
-    @Override
     public Optional<User> updateUser(Long id, User user) throws UserException {
         return updateUserUseCase.updateUser(id, user);
     }
 
-    @Override
     public void deleteUser(Long id) throws UserException {
         deleteUserUseCase.deleteUser(id);
     }

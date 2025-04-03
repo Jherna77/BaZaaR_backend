@@ -4,12 +4,12 @@ package com.jhernandez.backend.bazaar.infrastructure.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
-import org.springframework.stereotype.Component;
+// import org.springframework.stereotype.Component;
 
 import com.jhernandez.backend.bazaar.domain.models.Category;
 import com.jhernandez.backend.bazaar.infrastructure.entities.CategoryEntity;
 
-@Component
+// @Component
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CategoryMapper {
 
