@@ -22,14 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
 
     private final JpaProductRepository productRepository;
-    private final ProductEntityMapper productMapper;
+    private final ProductEntityMapper productEntityMapper;
     
     @Transactional
     @Override
     public Optional<Product> createProduct(Product product) {
         log.info("Creating product {}", product.getName());
-        ProductEntity productEntity = productMapper.toEntity(product);
-        return Optional.of(productMapper.toDomain(
+        ProductEntity productEntity = productEntityMapper.toEntity(product);
+        return Optional.of(productEntityMapper.toDomain(
                 productRepository.save(productEntity)));
     }
 
@@ -38,7 +38,7 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
     public List<Product> findAllProducts() {
         log.info("Finding all products {}");
         return productRepository.findAll().stream()
-                .map(productMapper::toDomain)
+                .map(productEntityMapper::toDomain)
                 .collect(Collectors.toList());
                 // .toList();
     }
@@ -63,7 +63,7 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
     @Override
     public Optional<Product> findProductById(Long id) {
         log.info("Finding product with ID {}", id);
-        return productRepository.findById(id).map(productMapper::toDomain);
+        return productRepository.findById(id).map(productEntityMapper::toDomain);
     }
 
     @Transactional
@@ -74,7 +74,7 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
             existingProduct.setName(product.getName());
             existingProduct.setDescription(product.getDescription());
             existingProduct.setPrice(product.getPrice());
-            return productMapper.toDomain(productRepository.save(existingProduct));
+            return productEntityMapper.toDomain(productRepository.save(existingProduct));
         });
     }
 

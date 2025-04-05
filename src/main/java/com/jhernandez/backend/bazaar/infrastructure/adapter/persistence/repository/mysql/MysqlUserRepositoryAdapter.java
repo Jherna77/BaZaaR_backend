@@ -22,14 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
 
     private final JpaUserRepository userRepository;
-    private final UserEntityMapper userMapper;
+    private final UserEntityMapper userEntityMapper;
 
     @Transactional
     @Override
     public Optional<User> createUser(User user) {
         log.info("Creating user {}", user.getEmail());
-        UserEntity userEntity = userMapper.toEntity(user);
-        return Optional.of(userMapper.toDomain(
+        UserEntity userEntity = userEntityMapper.toEntity(user);
+        return Optional.of(userEntityMapper.toDomain(
                 userRepository.save(userEntity)));
     }
 
@@ -38,7 +38,7 @@ public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
     public List<User> findAllUsers() {
         log.info("Finding all users");
          return userRepository.findAll().stream()
-            .map(userMapper::toDomain)
+            .map(userEntityMapper::toDomain)
             .collect(Collectors.toList());
     }
 
@@ -46,7 +46,7 @@ public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
     @Override
     public Optional<User> findUserById(Long id) {
         log.info("Finding user with ID {}", id);
-        return userRepository.findById(id).map(userMapper::toDomain);
+        return userRepository.findById(id).map(userEntityMapper::toDomain);
     }
 
     @Transactional(readOnly = true)
@@ -78,7 +78,7 @@ public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
             existingUser.setProvince(user.getProvince());
             existingUser.setZipCode(user.getZipCode());
             existingUser.setEnabled(user.isEnabled());
-            return userMapper.toDomain(userRepository.save(existingUser));
+            return userEntityMapper.toDomain(userRepository.save(existingUser));
         });
     }
 

@@ -22,14 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
 
     private final JpaCategoryRepository categoryRepository;
-    private final CategoryEntityMapper categoryMapper;
+    private final CategoryEntityMapper categoryEntityMapper;
 
     @Transactional
     @Override
     public Optional<Category> createCategory(Category category) {
         log.info("Creating category {}", category.getName());
-        CategoryEntity categoryEntity = categoryMapper.toEntity(category);
-        return Optional.of(categoryMapper.toDomain(
+        CategoryEntity categoryEntity = categoryEntityMapper.toEntity(category);
+        return Optional.of(categoryEntityMapper.toDomain(
                 categoryRepository.save(categoryEntity)));
     }
 
@@ -38,7 +38,7 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
     public List<Category> findAllCategories() {
         log.info("Finding all categories {}");
         return categoryRepository.findAll().stream()
-                .map(categoryMapper::toDomain)
+                .map(categoryEntityMapper::toDomain)
                 .collect(Collectors.toList());
     }
     
@@ -46,7 +46,7 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
     @Override
     public Optional<Category> findCategoryById(Long id) {
         log.info("Finding category with ID {}", id);
-        return categoryRepository.findById(id).map(categoryMapper::toDomain);
+        return categoryRepository.findById(id).map(categoryEntityMapper::toDomain);
     }
 
     @Transactional
@@ -56,7 +56,7 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
         return categoryRepository.findById(category.getId()).map(existingCategory -> {
             existingCategory.setName(category.getName());
             // existingCategory.setEnabled(category.isEnabled());
-            return categoryMapper.toDomain(categoryRepository.save(existingCategory));
+            return categoryEntityMapper.toDomain(categoryRepository.save(existingCategory));
         });
     }
 

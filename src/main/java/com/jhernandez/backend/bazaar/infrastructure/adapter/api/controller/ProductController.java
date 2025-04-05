@@ -1,6 +1,7 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jhernandez.backend.bazaar.application.port.ProductServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.model.Product;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ProductDto;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ProductDtoMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +30,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class ProductController {
 
     private final ProductServicePort productService;
+    private final ProductDtoMapper productDtoMapper;
 
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody Product product) {
         log.info("Creating product: {}", product.getName());
         try {
-            return ResponseEntity.ok(productService.createProduct(product));
+            return ResponseEntity.ok(
+                productService.createProduct(product).map(productDtoMapper::toDto));
         } catch (ProductException e) {
             log.error("Error creating product: {}", product.getName());
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -40,16 +45,19 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> findAllPoducts() {
+    public List<ProductDto> findAllPoducts() {
         log.info("Finding all products");
-        return productService.findAllProducts();
+        return productService.findAllProducts().stream()
+            .map(productDtoMapper::toDto)
+            .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findProductById(@PathVariable Long id) {
         log.info("Finding product with ID {}", id);
         try {
-            return productService.findProductById(id).map(ResponseEntity::ok)
+            return productService.findProductById(id).map(productDtoMapper::toDto)
+                    .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
         } catch (ProductException e) {
             log.error("Error getting product with ID {}", id);
@@ -62,7 +70,8 @@ public class ProductController {
         log.info("Updating product with ID {}", id);
         product.setId(id);
         try {
-            return productService.updateProduct(product).map(ResponseEntity::ok)
+            return productService.updateProduct(product).map(productDtoMapper::toDto)
+                        .map(ResponseEntity::ok)
                         .orElse(ResponseEntity.notFound().build());
         } catch (ProductException e) {
             log.error("Error updating product: {}", id);
