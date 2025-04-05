@@ -7,6 +7,10 @@ import org.springframework.context.annotation.PropertySource;
 import com.jhernandez.backend.bazaar.application.port.*;
 import com.jhernandez.backend.bazaar.application.service.*;
 
+/**
+ * Spring configuration class for defining beans and application properties.
+ * This class is responsible for creating and configuring the application services.
+ */
 @Configuration
 @PropertySource("classpath:messages.properties")
 public class AppConfig {
