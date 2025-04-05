@@ -16,7 +16,7 @@ public class Product {
     private String name;
     private String description;
     private BigDecimal price;
-    List<Category> categories;
+    private List<Category> categories;
     private boolean enabled;
 
     // private BigDecimal discountPrice;
