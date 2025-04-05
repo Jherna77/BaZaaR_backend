@@ -1,0 +1,28 @@
+package com.jhernandez.backend.bazaar.application.port;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.jhernandez.backend.bazaar.domain.model.Product;
+
+/*
+ * ProductRepositoryPort interface defines the contract for product repository operations.
+ * It provides methods to create, retrieve, update, and delete products.
+ */
+public interface ProductRepositoryPort {
+
+    Optional<Product> createProduct(Product product);
+
+    List<Product> findAllProducts();
+
+    List<Product> findProductsByCategoryId(Long categoryId);
+
+    List<Product> findProductsByUserId(Long userId);
+
+    Optional<Product> findProductById(Long id);
+
+    Optional<Product> updateProduct(Product product);
+    
+    void deleteProductById(Long id);
+
+}

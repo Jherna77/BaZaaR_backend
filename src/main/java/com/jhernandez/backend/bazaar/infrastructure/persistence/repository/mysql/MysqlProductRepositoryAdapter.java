@@ -1,0 +1,88 @@
+package com.jhernandez.backend.bazaar.infrastructure.persistence.repository.mysql;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
+import com.jhernandez.backend.bazaar.domain.model.Product;
+import com.jhernandez.backend.bazaar.infrastructure.persistence.entity.ProductEntity;
+import com.jhernandez.backend.bazaar.infrastructure.persistence.mapper.ProductMapper;
+import com.jhernandez.backend.bazaar.infrastructure.persistence.repository.JpaProductRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
+
+    private final JpaProductRepository productRepository;
+    private final ProductMapper productMapper;
+    
+    @Transactional
+    @Override
+    public Optional<Product> createProduct(Product product) {
+        log.info("Creating product {}", product.getName());
+        ProductEntity productEntity = productMapper.toEntity(product);
+        return Optional.of(productMapper.toDomain(
+                productRepository.save(productEntity)));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Product> findAllProducts() {
+        log.info("Finding all products {}");
+        return productRepository.findAll().stream()
+                .map(productMapper::toDomain)
+                .collect(Collectors.toList());
+                // .toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Product> findProductsByCategoryId(Long categoryId) {
+        log.info("Finding all products by category with ID {}", categoryId);
+
+        throw new UnsupportedOperationException("Unimplemented method 'findProductsByCategoryId'");
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Product> findProductsByUserId(Long userId) {
+        log.info("Finding all products by user with ID {}", userId);
+
+        throw new UnsupportedOperationException("Unimplemented method 'findProductsByUserId'");
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<Product> findProductById(Long id) {
+        log.info("Finding product with ID {}", id);
+        return productRepository.findById(id).map(productMapper::toDomain);
+    }
+
+    @Transactional
+    @Override
+    public Optional<Product> updateProduct(Product product) {
+        log.info("Updating product {}", product.getName());
+        return productRepository.findById(product.getId()).map(existingProduct -> {
+            existingProduct.setName(product.getName());
+            existingProduct.setDescription(product.getDescription());
+            existingProduct.setPrice(product.getPrice());
+            return productMapper.toDomain(productRepository.save(existingProduct));
+        });
+    }
+
+    @Transactional
+    @Override
+    public void deleteProductById(Long id) {
+        log.info("Deleting product with ID {}", id);
+        productRepository.deleteById(id);
+    }
+
+}
