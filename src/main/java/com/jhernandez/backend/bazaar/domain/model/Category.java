@@ -1,6 +1,6 @@
 package com.jhernandez.backend.bazaar.domain.model;
 
-import java.util.List;
+// import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ public class Category {
 
     private Long id;
     private String name;
-    private List<Product> products;
+    // private List<Product> products;
     private boolean enabled;
 
 }

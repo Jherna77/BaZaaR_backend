@@ -1,13 +1,13 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity;
 
-import java.util.List;
+// import java.util.List;
 // import java.util.UUID;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+// import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -31,8 +31,8 @@ public class CategoryEntity {
     private String name;
 
     // Relación inversa con ProductEntity
-    @ManyToMany(mappedBy = "categories")
-    private List<ProductEntity> products; // Lista de productos de esta categoría (opcional, si se necesita la relación inversa)
+    // @ManyToMany(mappedBy = "categories")
+    // private List<ProductEntity> products; // Lista de productos de esta categoría (opcional, si se necesita la relación inversa)
 
     // private String imageUrl;
     // private String description;

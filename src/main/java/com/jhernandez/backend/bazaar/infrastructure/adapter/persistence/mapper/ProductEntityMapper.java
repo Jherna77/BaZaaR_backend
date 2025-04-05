@@ -10,10 +10,10 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.P
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ProductEntityMapper {
 
-    @Mapping(target = "categories", ignore = true)
+    // @Mapping(target = "categories", ignore = true)
     ProductEntity toEntity(Product product);
     
-    @Mapping(target = "categories", ignore = true)
+    // @Mapping(target = "categories", ignore = true)
     Product toDomain(ProductEntity productEntity);
 
 }
