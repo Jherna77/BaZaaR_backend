@@ -26,15 +26,32 @@ INSERT INTO users (id, role_id, email, password, name, surnames, address, city, 
 -- INSERT INTO users_roles (user_id, role_id) VALUES (3, 3);
 
 -- -- Categorías de productos
--- INSERT INTO categories (id, name, enabled) VALUES (1, 'Deportes', 1);
--- INSERT INTO categories (id, name, enabled) VALUES (2, 'Electrónica', 1);
--- INSERT INTO categories (id, name, enabled) VALUES (3, 'Hogar', 1);
--- INSERT INTO categories (id, name, enabled) VALUES (4, 'Moda', 1);
--- INSERT INTO categories (id, name, enabled) VALUES (5, 'Juguetes', 1);
--- INSERT INTO categories (id, name, enabled) VALUES (6, 'Libros', 1);
--- INSERT INTO categories (id, name, enabled) VALUES (7, 'Otros', 1);
+INSERT INTO categories (id, name, enabled) VALUES (1, 'Deportes', 1);
+INSERT INTO categories (id, name, enabled) VALUES (2, 'Electrónica', 1);
+INSERT INTO categories (id, name, enabled) VALUES (3, 'Hogar', 1);
+INSERT INTO categories (id, name, enabled) VALUES (4, 'Moda', 1);
+INSERT INTO categories (id, name, enabled) VALUES (5, 'Juguetes', 1);
+INSERT INTO categories (id, name, enabled) VALUES (6, 'Libros', 1);
+INSERT INTO categories (id, name, enabled) VALUES (7, 'Otros', 1);
 
 -- -- Productos de prueba
+INSERT INTO products (id, name, description, price, enabled) VALUES (1, 'Balón de fútbol', 'Balón de fútbol de la marca Adidas', 20.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (2, 'Balón de baloncesto', 'Balón de baloncesto de la marca Spalding', 25.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (3, 'Balón de voleibol', 'Balón de voleibol de la marca Mikasa', 30.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (4, 'Smartphone', 'Smartphone de la marca Samsung', 300.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (5, 'Tablet', 'Tablet de la marca Apple', 400.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (6, 'Portátil', 'Portátil de la marca HP', 500.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (7, 'Sofá', 'Sofá de 3 plazas', 600.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (8, 'Mesa', 'Mesa de comedor', 200.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (9, 'Silla', 'Silla de oficina', 100.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (10, 'Camiseta', 'Camiseta de manga corta', 10.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (11, 'Pantalón', 'Pantalón vaquero', 20.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (12, 'Zapatos', 'Zapatos de vestir', 30.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (13, 'Muñeca', 'Muñeca de la marca Barbie', 15.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (14, 'Coche teledirigido', 'Coche teledirigido de la marca Nikko', 20.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (15, 'Pelota', 'Pelota de goma', 5.0, 1);
+INSERT INTO products (id, name, description, price, enabled) VALUES (16, 'El Quijote', 'Libro de Miguel de Cervantes', 10.0, 1);
+
 -- INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (1, 'Balón de fútbol', 'Balón de fútbol de la marca Adidas', 20.0, 0.0, 0.0, 1);
 -- INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (2, 'Balón de baloncesto', 'Balón de baloncesto de la marca Spalding', 25.0, 0.0, 0.0, 1);
 -- INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (3, 'Balón de voleibol', 'Balón de voleibol de la marca Mikasa', 30.0, 0.0, 0.0, 1);
@@ -53,19 +70,19 @@ INSERT INTO users (id, role_id, email, password, name, surnames, address, city, 
 -- INSERT INTO products (id, name, description, price, discount_price, discount_rate, enabled) VALUES (16, 'El Quijote', 'Libro de Miguel de Cervantes', 10.0, 0.0, 0.0, 1);
 
 -- -- Asignación de productos a categorías
--- INSERT INTO products_categories (product_id, category_id) VALUES (1, 1);
--- INSERT INTO products_categories (product_id, category_id) VALUES (2, 1);
--- INSERT INTO products_categories (product_id, category_id) VALUES (3, 1);
--- INSERT INTO products_categories (product_id, category_id) VALUES (4, 2);
--- INSERT INTO products_categories (product_id, category_id) VALUES (5, 2);
--- INSERT INTO products_categories (product_id, category_id) VALUES (6, 2);
--- INSERT INTO products_categories (product_id, category_id) VALUES (7, 3);
--- INSERT INTO products_categories (product_id, category_id) VALUES (8, 3);
--- INSERT INTO products_categories (product_id, category_id) VALUES (9, 3);
--- INSERT INTO products_categories (product_id, category_id) VALUES (10, 4);
--- INSERT INTO products_categories (product_id, category_id) VALUES (11, 4);
--- INSERT INTO products_categories (product_id, category_id) VALUES (12, 4);
--- INSERT INTO products_categories (product_id, category_id) VALUES (13, 5);
--- INSERT INTO products_categories (product_id, category_id) VALUES (14, 5);
--- INSERT INTO products_categories (product_id, category_id) VALUES (15, 5);
--- INSERT INTO products_categories (product_id, category_id) VALUES (16, 6);
+INSERT INTO products_categories (product_id, category_id) VALUES (1, 1);
+INSERT INTO products_categories (product_id, category_id) VALUES (2, 1);
+INSERT INTO products_categories (product_id, category_id) VALUES (3, 1);
+INSERT INTO products_categories (product_id, category_id) VALUES (4, 2);
+INSERT INTO products_categories (product_id, category_id) VALUES (5, 2);
+INSERT INTO products_categories (product_id, category_id) VALUES (6, 2);
+INSERT INTO products_categories (product_id, category_id) VALUES (7, 3);
+INSERT INTO products_categories (product_id, category_id) VALUES (8, 3);
+INSERT INTO products_categories (product_id, category_id) VALUES (9, 3);
+INSERT INTO products_categories (product_id, category_id) VALUES (10, 4);
+INSERT INTO products_categories (product_id, category_id) VALUES (11, 4);
+INSERT INTO products_categories (product_id, category_id) VALUES (12, 4);
+INSERT INTO products_categories (product_id, category_id) VALUES (13, 5);
+INSERT INTO products_categories (product_id, category_id) VALUES (14, 5);
+INSERT INTO products_categories (product_id, category_id) VALUES (15, 5);
+INSERT INTO products_categories (product_id, category_id) VALUES (16, 6);

@@ -11,11 +11,14 @@ import lombok.AllArgsConstructor;
 @Setter
 @AllArgsConstructor
 public class Product {
+
     private Long id;
     private String name;
     private String description;
     private BigDecimal price;
     List<Category> categories;
+    private boolean enabled;
+
     // private BigDecimal discountPrice;
     // private BigDecimal discountRate;
     // private String imageUrl;

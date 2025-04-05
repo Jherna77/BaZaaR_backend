@@ -1,24 +1,19 @@
 package com.jhernandez.backend.bazaar.infrastructure.persistence.mapper;
 
-import java.util.List;
-
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-// import org.springframework.stereotype.Component;
 
 import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.infrastructure.persistence.entity.ProductEntity;
 
-// @Component
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ProductMapper {
 
+    @Mapping(target = "categories", ignore = true)
     ProductEntity toEntity(Product product);
     
+    @Mapping(target = "categories", ignore = true)
     Product toDomain(ProductEntity productEntity);
-    
-    List<Product> toDomainList(List<ProductEntity> productEntities);
-    
-    List<ProductEntity> toEntityList(List<Product> products);
 
 }

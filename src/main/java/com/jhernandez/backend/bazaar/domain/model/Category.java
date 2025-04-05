@@ -10,7 +10,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Category {
+
     private Long id;
     private String name;
     private List<Product> products;
+    private boolean enabled;
+
 }

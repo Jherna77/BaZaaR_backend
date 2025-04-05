@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class User {
+
     private Long id;
     private UserRole role;
     private String email;
@@ -19,4 +20,5 @@ public class User {
     private String province;
     private String zipCode;
     private boolean enabled;
+    
 }
