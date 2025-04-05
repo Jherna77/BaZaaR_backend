@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jhernandez.backend.bazaar.application.port.ProductServicePort;
+// import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
+import com.jhernandez.backend.bazaar.domain.exception.DomainException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ProductDto;
@@ -50,6 +52,23 @@ public class ProductController {
         return productService.findAllProducts().stream()
             .map(productDtoMapper::toDto)
             .collect(Collectors.toList());
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<?> findProductsByCategoryId(@PathVariable Long categoryId) {
+        log.info("Finding products by category with ID {}", categoryId);
+        try {
+            return ResponseEntity.ok(productService.findProductsByCategoryId(categoryId).stream()
+                    .map(productDtoMapper::toDto)
+                    .collect(Collectors.toList()));
+        } catch (DomainException e) {
+            log.error("Error getting products by category with ID {}", categoryId);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        // } catch (CategoryException e) {
+        //     log.error("Error getting products by category with ID {}", categoryId);
+        //     return ResponseEntity.badRequest().body(e.getMessage());
+        // }
     }
 
     @GetMapping("/{id}")

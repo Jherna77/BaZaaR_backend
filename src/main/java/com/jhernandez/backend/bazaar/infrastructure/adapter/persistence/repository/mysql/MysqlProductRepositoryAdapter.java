@@ -47,8 +47,9 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
     @Override
     public List<Product> findProductsByCategoryId(Long categoryId) {
         log.info("Finding all products by category with ID {}", categoryId);
-
-        throw new UnsupportedOperationException("Unimplemented method 'findProductsByCategoryId'");
+        return productRepository.findByCategoryId(categoryId).stream()
+                .map(productEntityMapper::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
