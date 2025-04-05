@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.infrastructure.persistence.repository.mysql;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.mysql;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.model.User;
-import com.jhernandez.backend.bazaar.infrastructure.persistence.entity.UserEntity;
-import com.jhernandez.backend.bazaar.infrastructure.persistence.mapper.UserMapper;
-import com.jhernandez.backend.bazaar.infrastructure.persistence.repository.JpaUserRepository;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.UserEntity;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.UserEntityMapper;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaUserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
 
     private final JpaUserRepository userRepository;
-    private final UserMapper userMapper;
+    private final UserEntityMapper userMapper;
 
     @Transactional
     @Override

@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.infrastructure.persistence.entity;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity;
 
 // import com.jhernandez.backend.bazaar.validation.UniqueEmail;
 // import com.jhernandez.backend.bazaar.validation.Password;

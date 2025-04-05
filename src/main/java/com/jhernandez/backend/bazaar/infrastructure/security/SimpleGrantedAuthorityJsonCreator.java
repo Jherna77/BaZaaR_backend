@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.infrastructure.presenter.security;
+package com.jhernandez.backend.bazaar.infrastructure.security;
 
 // import com.fasterxml.jackson.annotation.JsonCreator;
 // import com.fasterxml.jackson.annotation.JsonProperty;

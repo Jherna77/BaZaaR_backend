@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.infrastructure.presenter.security;
+package com.jhernandez.backend.bazaar.infrastructure.security;
 
 // import static com.jhernandez.backend.bazaar.infrastructure.configuration.TokenJwtConfig.*;
 

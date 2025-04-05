@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.infrastructure.presenter.controller;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.api.controller;
 
 import java.util.List;
 

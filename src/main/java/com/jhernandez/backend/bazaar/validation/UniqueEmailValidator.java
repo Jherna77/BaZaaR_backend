@@ -3,7 +3,7 @@ package com.jhernandez.backend.bazaar.validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.jhernandez.backend.bazaar.infrastructure.persistence.repository.mysql.MysqlUserRepositoryAdapter;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.mysql.MysqlUserRepositoryAdapter;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

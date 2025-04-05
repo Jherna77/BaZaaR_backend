@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.infrastructure.persistence.repository.mysql;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.mysql;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.application.port.CategoryRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.model.Category;
-import com.jhernandez.backend.bazaar.infrastructure.persistence.entity.CategoryEntity;
-import com.jhernandez.backend.bazaar.infrastructure.persistence.mapper.CategoryMapper;
-import com.jhernandez.backend.bazaar.infrastructure.persistence.repository.JpaCategoryRepository;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.CategoryEntity;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.CategoryEntityMapper;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaCategoryRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
 
     private final JpaCategoryRepository categoryRepository;
-    private final CategoryMapper categoryMapper;
+    private final CategoryEntityMapper categoryMapper;
 
     @Transactional
     @Override

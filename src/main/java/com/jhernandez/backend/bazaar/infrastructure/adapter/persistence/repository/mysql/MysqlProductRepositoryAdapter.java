@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.infrastructure.persistence.repository.mysql;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.mysql;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.model.Product;
-import com.jhernandez.backend.bazaar.infrastructure.persistence.entity.ProductEntity;
-import com.jhernandez.backend.bazaar.infrastructure.persistence.mapper.ProductMapper;
-import com.jhernandez.backend.bazaar.infrastructure.persistence.repository.JpaProductRepository;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.ProductEntity;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.ProductEntityMapper;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaProductRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
 
     private final JpaProductRepository productRepository;
-    private final ProductMapper productMapper;
+    private final ProductEntityMapper productMapper;
     
     @Transactional
     @Override
