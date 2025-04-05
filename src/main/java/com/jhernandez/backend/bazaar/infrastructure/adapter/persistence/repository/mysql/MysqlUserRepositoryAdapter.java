@@ -53,8 +53,8 @@ public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
     @Override
     public Optional<User> findUserByEmail(String email) {
         log.info("Finding user with email {}", email);
-
-        throw new UnsupportedOperationException("Unimplemented method 'findUserByEmail'");
+        return userRepository.findByEmail(email)
+            .map(userEntityMapper::toDomain);
     }
 
     @Transactional(readOnly = true)
