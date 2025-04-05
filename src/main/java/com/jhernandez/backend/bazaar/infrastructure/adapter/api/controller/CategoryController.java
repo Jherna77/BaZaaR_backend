@@ -3,6 +3,7 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.api.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,18 @@ public class CategoryController {
         return categoryService.findAllCategories();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findCategoryById(@PathVariable Long id) {
+        log.info("Finding category with ID {}", id);
+        try {
+            return categoryService.findCategoryById(id).map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (CategoryException e) {
+            log.error("Error getting category with ID {}", id);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCategory(@RequestBody Category category, @PathVariable Long id) {
         log.info("Updating category with ID {}", category.getName());
@@ -54,6 +67,18 @@ public class CategoryController {
             log.error("Error updating category with ID {}", category.getName());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }  
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
+        log.info("Deleting category with ID {}", id);
+        try {
+            categoryService.deleteCategoryById(id);
+            return ResponseEntity.noContent().build();
+        } catch (CategoryException e) {
+            log.error("Error deleting category with ID {}", id);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 }
