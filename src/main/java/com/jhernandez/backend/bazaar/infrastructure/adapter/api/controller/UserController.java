@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jhernandez.backend.bazaar.application.port.UserServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
-import com.jhernandez.backend.bazaar.domain.model.User;
-import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserDto;
+// import com.jhernandez.backend.bazaar.domain.model.User;
+// import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserDto;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserRequestDto;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserResponseDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.UserDtoMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -38,11 +40,12 @@ public class UserController {
     private final UserDtoMapper userDtoMapper;
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@RequestBody UserRequestDto user) {
         log.info("Registering user with email {}", user.getEmail());
         try {
             return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userService.createUser(user).map(userDtoMapper::toDto));
+                .body(userService.createUser(userDtoMapper.toDomain(user))
+                .map(userDtoMapper::toResponseDto));
         } catch (UserException e) {
             log.error("Error registering user with email {}", user.getEmail());
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -50,10 +53,10 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserDto> findAllUsers() {
+    public List<UserResponseDto> findAllUsers() {
         log.info("Finding all users");
         return userService.findAllUsers().stream()
-                .map(userDtoMapper::toDto)
+                .map(userDtoMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
 
@@ -61,7 +64,7 @@ public class UserController {
     public ResponseEntity<?> findUserById(@PathVariable Long id) {
         log.info("Finding user with ID {}", id);
         try {
-            return userService.findUserById(id).map(userDtoMapper::toDto)
+            return userService.findUserById(id).map(userDtoMapper::toResponseDto)
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
         } catch (UserException e) {
@@ -71,11 +74,12 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Long id) {
+    public ResponseEntity<?> updateUser(@RequestBody UserRequestDto user, @PathVariable Long id) {
         log.info("Updating user with id {}", id);
         user.setId(id);
         try {
-            return userService.updateUser(user).map(userDtoMapper::toDto)
+            return userService.updateUser(userDtoMapper.toDomain(user))
+                    .map(userDtoMapper::toResponseDto)
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
         } catch (UserException e) {
