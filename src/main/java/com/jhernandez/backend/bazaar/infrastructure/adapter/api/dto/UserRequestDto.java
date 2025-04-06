@@ -15,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserRequestDto {
 
-    private Long id;
+    // private Long id;
 
     @UserRole
     private UserRoleDto role;
