@@ -3,7 +3,9 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.api.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +16,11 @@ import com.jhernandez.backend.bazaar.application.port.ProductServicePort;
 // import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.domain.exception.DomainException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
-import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ProductDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ProductDtoMapper;
 
+import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.fieldValidation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,11 +38,14 @@ public class ProductController {
     private final ProductDtoMapper productDtoMapper;
 
     @PostMapping
-    public ResponseEntity<?> createProduct(@RequestBody Product product) {
+    public ResponseEntity<?> createProduct(@Valid @RequestBody ProductDto product, BindingResult result) {
         log.info("Creating product: {}", product.getName());
         try {
-            return ResponseEntity.ok(
-                productService.createProduct(product).map(productDtoMapper::toDto));
+            return (result.hasErrors())
+                ? fieldValidation(result) 
+                : ResponseEntity.status(HttpStatus.CREATED)
+                    .body(productService.createProduct(productDtoMapper.toDomain(product))
+                    .map(productDtoMapper::toDto));
         } catch (ProductException e) {
             log.error("Error creating product: {}", product.getName());
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -85,13 +91,16 @@ public class ProductController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@RequestBody Product product, @PathVariable Long id) {
+    public ResponseEntity<?> updateProduct(@Valid @RequestBody ProductDto product, BindingResult result, @PathVariable Long id) {
         log.info("Updating product with ID {}", id);
         product.setId(id);
         try {
-            return productService.updateProduct(product).map(productDtoMapper::toDto)
-                        .map(ResponseEntity::ok)
-                        .orElse(ResponseEntity.notFound().build());
+            return (result.hasErrors())
+                ? fieldValidation(result) 
+                : productService.updateProduct(productDtoMapper.toDomain(product))
+                    .map(productDtoMapper::toDto)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
         } catch (ProductException e) {
             log.error("Error updating product: {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());

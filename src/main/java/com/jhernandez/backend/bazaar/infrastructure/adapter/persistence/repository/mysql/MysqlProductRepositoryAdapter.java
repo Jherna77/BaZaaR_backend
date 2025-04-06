@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.ProductEntity;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.CategoryEntityMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.ProductEntityMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaProductRepository;
 
@@ -23,6 +24,7 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
 
     private final JpaProductRepository productRepository;
     private final ProductEntityMapper productEntityMapper;
+    private final CategoryEntityMapper categoryEntityMapper;
     
     @Transactional
     @Override
@@ -75,6 +77,7 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
             existingProduct.setName(product.getName());
             existingProduct.setDescription(product.getDescription());
             existingProduct.setPrice(product.getPrice());
+            existingProduct.setCategories(categoryEntityMapper.toEntityList(product.getCategories()));
             return productEntityMapper.toDomain(productRepository.save(existingProduct));
         });
     }
