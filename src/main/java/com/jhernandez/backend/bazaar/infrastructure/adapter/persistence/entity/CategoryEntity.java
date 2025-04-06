@@ -10,12 +10,14 @@ import jakarta.persistence.Id;
 // import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode
 @Table(name = "categories")
 public class CategoryEntity {
 

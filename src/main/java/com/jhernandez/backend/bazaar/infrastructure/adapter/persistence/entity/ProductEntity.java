@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lombok.EqualsAndHashCode;
 // import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode
 @Table(name = "products")
 public class ProductEntity {
 
