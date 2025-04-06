@@ -9,6 +9,10 @@ import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/*
+ * Validates that a user role exists in the database.
+ * It is used in the validation of user roles in forms.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class UserRoleValidator implements ConstraintValidator<UserRole, UserRoleDto> {

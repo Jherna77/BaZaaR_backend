@@ -34,31 +34,21 @@ public class UserEntity {
     @JoinColumn(name = "role_id")
     private UserRoleEntity role;
 
-    // @UniqueEmail
-    // @RequiredField
-    // @Email(message = "{validation.email.invalid.message}")
     @Column(unique = true)
     private String email;
 
-    // @Password
     private String password;
 
-    // @RequiredField
     private String name;
 
-    // @RequiredField
     private String surnames;
 
-    // @RequiredField
     private String address;
     
-    // @RequiredField
     private String city;
 
-    // @RequiredField
     private String province;
 
-    // @ZipCode
     @Column(name = "zip_code")
     private String zipCode;
 

@@ -5,14 +5,14 @@ import jakarta.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 
 /*
- * Valida que una contraseña tenga:
- *      -Al menos 8 caracteres
- *      -Al menos una letra mayúscula
- *      -Al menos una letra minúscula
- *      -Al menos un dígito
- *      -Al menos un carácter especial (@#$%^&+=)
+ * Validates that a password has:
+ *      -At least 8 characters
+ *      -At least one uppercase letter
+ *      -At least one lowercase letter
+ *      -At least one digit
+ *      -At least one special character (@#$%^&+=)
  * 
- * Se utiliza en la validación de contraseñas en formularios.
+ * It is used in the validation of passwords in forms.
  */
 @Slf4j
 public class PasswordValidator implements ConstraintValidator<PasswordStrength, String> {

@@ -51,9 +51,6 @@ public class UserController {
             : ResponseEntity.status(HttpStatus.CREATED)
                 .body(userService.createUser(userDtoMapper.toDomain(user))
                 .map(userDtoMapper::toResponseDto));
-            // return ResponseEntity.status(HttpStatus.CREATED)
-            //     .body(userService.createUser(userDtoMapper.toDomain(user))
-            //     .map(userDtoMapper::toResponseDto));
         } catch (UserException e) {
             log.error("Error registering user with email {}", user.getEmail());
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -82,14 +79,15 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody UserRequestDto user, @PathVariable Long id) {
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserRequestDto user, BindingResult result, @PathVariable Long id) {
         log.info("Updating user with id {}", id);
         user.setId(id);
         try {
-            return userService.updateUser(userDtoMapper.toDomain(user))
-                    .map(userDtoMapper::toResponseDto)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
+            return (result.hasErrors())
+            ? fieldValidation(result)
+            : ResponseEntity.status(HttpStatus.CREATED)
+                .body(userService.createUser(userDtoMapper.toDomain(user))
+                .map(userDtoMapper::toResponseDto));
         } catch (UserException e) {
             log.error("Error updating user with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());

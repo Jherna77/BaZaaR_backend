@@ -2,6 +2,7 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto;
 
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.PasswordStrength;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.RequiredField;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.UniqueEmail;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.UserRole;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ZipCode;
 
@@ -19,6 +20,7 @@ public class UserRequestDto {
     @UserRole
     private UserRoleDto role;
 
+    @UniqueEmail
     @RequiredField
     private String email;
 

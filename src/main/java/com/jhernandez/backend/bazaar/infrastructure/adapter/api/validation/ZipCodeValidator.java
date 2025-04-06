@@ -4,8 +4,8 @@ import jakarta.validation.ConstraintValidator;
 import lombok.extern.slf4j.Slf4j;
 
 /*
- * Valida que un código postal tenga 5 dígitos.
- * Se utiliza en la validación de códigos postales en formularios.
+ * Validates that a zip code has 5 digits.
+ * It is used in the validation of zip codes in forms.
  */
 @Slf4j
 public class ZipCodeValidator implements ConstraintValidator<ZipCode, String> {

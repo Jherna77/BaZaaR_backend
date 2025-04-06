@@ -6,8 +6,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /*
- * Valida que un campo no esté vacío o nulo.
- * Se utiliza en la validación de campos obligatorios en formularios.
+ * Validates that a field is not empty or null.
+ * It is used in the validation of required fields in forms.
  */
 public class RequiredFieldValidator implements ConstraintValidator<RequiredField, String> {
 
