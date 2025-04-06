@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.validation;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
  * Se utiliza en la validación de contraseñas en formularios.
  */
 @Slf4j
-public class PasswordValidator implements ConstraintValidator<Password, String> {
+public class PasswordValidator implements ConstraintValidator<PasswordStrength, String> {
 
     private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
 

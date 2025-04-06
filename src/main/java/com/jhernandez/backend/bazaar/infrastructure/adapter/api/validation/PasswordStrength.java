@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.validation;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,12 +8,11 @@ import java.lang.annotation.Target;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
-@Constraint(validatedBy = UniqueEmailValidator.class)
-@Target({ElementType.FIELD})
+@Constraint(validatedBy = PasswordValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UniqueEmail {
-
-    String message() default "{validation.email.exists.message}";
+@Target({ElementType.FIELD})
+public @interface PasswordStrength {
+    String message() default "{validation.password.invalid.message}";
 
     Class<?>[] groups() default {};
 

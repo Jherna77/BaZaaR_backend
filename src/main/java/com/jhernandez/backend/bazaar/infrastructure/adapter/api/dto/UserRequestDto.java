@@ -1,5 +1,10 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto;
 
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.PasswordStrength;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.RequiredField;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.UserRole;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ZipCode;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,15 +15,32 @@ import lombok.Setter;
 public class UserRequestDto {
 
     private Long id;
+
+    @UserRole
     private UserRoleDto role;
+
+    @RequiredField
     private String email;
+
+    @PasswordStrength
     private String password;
+    
+    @RequiredField
     private String name;
+
+    @RequiredField
     private String surnames;
+
+    @RequiredField
     private String address;
+
+    @RequiredField
     private String city;
+
+    @RequiredField
     private String province;
+
+    @ZipCode
     private String zipCode;
-    private boolean enabled;
     
 }

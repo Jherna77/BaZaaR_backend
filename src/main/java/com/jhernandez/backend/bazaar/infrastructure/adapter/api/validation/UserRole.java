@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.validation;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,11 +8,11 @@ import java.lang.annotation.Target;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
-@Constraint(validatedBy = PasswordValidator.class)
+@Constraint(validatedBy = UserRoleValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface Password {
-    String message() default "{validation.password.invalid.message}";
+public @interface UserRole {
+    String message() default "{validation.role.invalid.message}";
 
     Class<?>[] groups() default {};
 

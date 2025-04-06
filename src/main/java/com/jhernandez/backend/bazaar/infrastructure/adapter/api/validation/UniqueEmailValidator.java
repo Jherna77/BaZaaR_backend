@@ -1,24 +1,24 @@
-package com.jhernandez.backend.bazaar.validation;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Component;
 
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.mysql.MysqlUserRepositoryAdapter;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /*
  * Se comprueba si el email ya existe en la base de datos
  * Se utiliza en el registro de usuarios para validar el email
  */
-@Component
 @Slf4j
+@RequiredArgsConstructor
 public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String>{
 
-    @Autowired
-    private MysqlUserRepositoryAdapter userService;
+    private final MysqlUserRepositoryAdapter userService;
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {

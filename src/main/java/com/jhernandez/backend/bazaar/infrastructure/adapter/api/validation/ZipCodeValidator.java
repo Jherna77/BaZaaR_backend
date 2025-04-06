@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.validation;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation;
 
 import jakarta.validation.ConstraintValidator;
 import lombok.extern.slf4j.Slf4j;

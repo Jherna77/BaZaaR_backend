@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,8 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserRequestD
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserResponseDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.UserDtoMapper;
 
+import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.FieldValidation.fieldValidation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,12 +43,17 @@ public class UserController {
     private final UserDtoMapper userDtoMapper;
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody UserRequestDto user) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserRequestDto user, BindingResult result) {
         log.info("Registering user with email {}", user.getEmail());
         try {
-            return ResponseEntity.status(HttpStatus.CREATED)
+            return (result.hasErrors())
+            ? fieldValidation(result)
+            : ResponseEntity.status(HttpStatus.CREATED)
                 .body(userService.createUser(userDtoMapper.toDomain(user))
                 .map(userDtoMapper::toResponseDto));
+            // return ResponseEntity.status(HttpStatus.CREATED)
+            //     .body(userService.createUser(userDtoMapper.toDomain(user))
+            //     .map(userDtoMapper::toResponseDto));
         } catch (UserException e) {
             log.error("Error registering user with email {}", user.getEmail());
             return ResponseEntity.badRequest().body(e.getMessage());

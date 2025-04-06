@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.validation;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation;
 
 import org.springframework.util.StringUtils;
 

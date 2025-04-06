@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.infrastructure.configuration;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
-public class ValidationConfig {
+public class FieldValidation {
 
     public static ResponseEntity<?> fieldValidation(BindingResult result) {
         Map<String, String> errors = new HashMap<>();
