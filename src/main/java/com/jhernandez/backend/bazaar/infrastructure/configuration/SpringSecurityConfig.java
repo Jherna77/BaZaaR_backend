@@ -1,5 +1,7 @@
 package com.jhernandez.backend.bazaar.infrastructure.configuration;
 
+import javax.crypto.SecretKey;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.jhernandez.backend.bazaar.infrastructure.security.JwtAuthenticationFilter;
 import com.jhernandez.backend.bazaar.infrastructure.security.JwtValidationFilter;
 
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 
 /*
@@ -23,6 +26,17 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @RequiredArgsConstructor
 public class SpringSecurityConfig {
+
+  /* Configuration for JWT tokens:
+   *    Secret key used for signing the tokens
+   *    Prefix for the token
+   *    Header name for authorization
+   *    Content type for JSON/
+   */
+    public static final SecretKey SECRET_KEY = Jwts.SIG.HS256.key().build();
+    public static final String PREFIX_TOKEN = "Bearer ";
+    public static final String HEADER_AUTHORIZATION = "Authorization";
+    public static final String CONTENT_TYPE_JSON = "application/json";
 
     private final AuthenticationConfiguration authenticationConfiguration;
 

@@ -1,6 +1,6 @@
 package com.jhernandez.backend.bazaar.infrastructure.security;
 
-import static com.jhernandez.backend.bazaar.infrastructure.configuration.TokenJwtConfig.*;
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.SpringSecurityConfig.*;
 
 import java.io.IOException;
 import java.util.Collection;
