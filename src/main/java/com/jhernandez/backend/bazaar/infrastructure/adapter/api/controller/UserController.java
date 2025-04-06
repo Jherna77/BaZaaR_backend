@@ -23,7 +23,7 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserRequestD
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserResponseDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.UserDtoMapper;
 
-import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.FieldValidation.fieldValidation;
+import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.fieldValidation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -85,9 +85,13 @@ public class UserController {
         try {
             return (result.hasErrors())
             ? fieldValidation(result)
-            : ResponseEntity.status(HttpStatus.CREATED)
-                .body(userService.createUser(userDtoMapper.toDomain(user))
-                .map(userDtoMapper::toResponseDto));
+            : userService.updateUser(userDtoMapper.toDomain(user))
+                .map(userDtoMapper::toResponseDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+            // ResponseEntity.status(HttpStatus.CREATED)
+            //     .body(userService.createUser(userDtoMapper.toDomain(user))
+            //     .map(userDtoMapper::toResponseDto));
         } catch (UserException e) {
             log.error("Error updating user with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());

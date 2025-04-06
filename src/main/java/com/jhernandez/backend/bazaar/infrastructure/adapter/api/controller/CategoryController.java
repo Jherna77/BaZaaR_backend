@@ -3,7 +3,9 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.api.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
-import com.jhernandez.backend.bazaar.domain.model.Category;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.CategoryDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.CategoryDtoMapper;
 
+import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.fieldValidation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,11 +40,19 @@ public class CategoryController {
     private final CategoryDtoMapper categoryDtoMapper;
 
     @PostMapping
-    public ResponseEntity<?> createCategory(@RequestBody Category category) {
+    public ResponseEntity<?> createCategory(@Valid @RequestBody CategoryDto category, BindingResult result) {
         log.info("Creating category: {}", category.getName());
         try {
-            return ResponseEntity.ok(
-                categoryService.createCategory(category).map(categoryDtoMapper::toDto));
+            return (result.hasErrors())
+                ? fieldValidation(result) 
+                : ResponseEntity.status(HttpStatus.CREATED)
+                    .body(categoryService.createCategory(categoryDtoMapper.toDomain(category))
+                    .map(categoryDtoMapper::toDto));
+                // categoryService.createCategory(category).map(categoryDtoMapper::toDto)
+                //     .map(ResponseEntity::ok)
+                //     .orElse(ResponseEntity.badRequest().body("Category already exists"));
+            // return ResponseEntity.ok(
+            //     categoryService.createCategory(category).map(categoryDtoMapper::toDto));
         } catch (CategoryException e) {
             log.error("Error creating category: {}", category.getName());
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -70,13 +81,17 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCategory(@RequestBody Category category, @PathVariable Long id) {
+    public ResponseEntity<?> updateCategory(@Valid @RequestBody CategoryDto category, BindingResult result, @PathVariable Long id) {
         log.info("Updating category with ID {}", category.getName());
         category.setId(id);
         try {
-            return categoryService.updateCategory(category).map(categoryDtoMapper::toDto)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
+            return (result.hasErrors())
+                ? fieldValidation(result) 
+                : categoryService.updateCategory(categoryDtoMapper.toDomain(category))
+                        .map(categoryDtoMapper::toDto)
+                        .map(ResponseEntity::ok)
+                        .orElse(ResponseEntity.notFound().build());
+                
         } catch (CategoryException e) {
             log.error("Error updating category with ID {}", category.getName());
             return ResponseEntity.badRequest().body(e.getMessage());
