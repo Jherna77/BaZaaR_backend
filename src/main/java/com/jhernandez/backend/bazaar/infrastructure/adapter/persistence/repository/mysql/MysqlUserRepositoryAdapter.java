@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,12 +24,14 @@ public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
 
     private final JpaUserRepository userRepository;
     private final UserEntityMapper userEntityMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
     public Optional<User> createUser(User user) {
         log.info("Creating user {}", user.getEmail());
         UserEntity userEntity = userEntityMapper.toEntity(user);
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         return Optional.of(userEntityMapper.toDomain(
                 userRepository.save(userEntity)));
     }
@@ -70,7 +73,7 @@ public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
         log.info("Updating user {}", user.getEmail());
         return userRepository.findById(user.getId()).map(existingUser -> {
             existingUser.setEmail(user.getEmail());
-            existingUser.setPassword(user.getPassword());
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
             existingUser.setName(user.getName());
             existingUser.setSurnames(user.getSurnames());
             existingUser.setAddress(user.getAddress());
