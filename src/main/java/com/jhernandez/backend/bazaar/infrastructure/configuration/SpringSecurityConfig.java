@@ -2,8 +2,10 @@ package com.jhernandez.backend.bazaar.infrastructure.configuration;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -13,6 +15,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.jhernandez.backend.bazaar.infrastructure.security.JwtAuthenticationFilter;
 import com.jhernandez.backend.bazaar.infrastructure.security.JwtValidationFilter;
@@ -21,6 +27,8 @@ import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.ApiRoutes.*;
+
+import java.util.List;
 
 /*
  * Spring Security configuration class.
@@ -44,11 +52,19 @@ public class SpringSecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
 
+    /*
+     * AuthenticationManager bean that provides authentication capabilities.
+     * It is used to authenticate users based on their credentials.
+     */
     @Bean
     AuthenticationManager authenticationManager() throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    /*
+     * PasswordEncoder bean that uses BCryptPasswordEncoder for hashing passwords.
+     * This is used for encoding passwords before storing them in the database.
+     */
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -77,9 +93,35 @@ public class SpringSecurityConfig {
             .addFilter(new JwtAuthenticationFilter(authenticationManager()))
             .addFilter(new JwtValidationFilter(authenticationManager()))
             .csrf(config -> config.disable()) // Disable CSRF to avoid vulnerabilities
+            .cors(config -> config.configurationSource(corsConfigurationSource())) // Enable CORS to allow cross-origin requests
             .sessionManagement(management ->
                 management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session to handle authentication in token
             .build();
+    }
+
+    /*
+     * CORS configuration to allow cross-origin requests.
+     * This is necessary for the frontend to communicate with the backend.
+     */
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOriginPatterns(List.of("*"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+
+    @Bean
+    FilterRegistrationBean<CorsFilter> corsFilter() {
+        FilterRegistrationBean<CorsFilter> corsRegistrationBean = new FilterRegistrationBean<>(
+            new CorsFilter(corsConfigurationSource()));
+        corsRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE); // Set the order of the filter to be the first one
+        return corsRegistrationBean;
     }
 
 }
