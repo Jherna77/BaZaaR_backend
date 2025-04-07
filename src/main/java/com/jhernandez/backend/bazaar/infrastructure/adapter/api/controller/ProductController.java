@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,7 @@ public class ProductController {
     private final ProductDtoMapper productDtoMapper;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SHOP')")
     public ResponseEntity<?> createProduct(@Valid @RequestBody ProductDto product, BindingResult result) {
         log.info("Creating product: {}", product.getName());
         try {
@@ -71,10 +73,6 @@ public class ProductController {
             log.error("Error getting products by category with ID {}", categoryId);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        // } catch (CategoryException e) {
-        //     log.error("Error getting products by category with ID {}", categoryId);
-        //     return ResponseEntity.badRequest().body(e.getMessage());
-        // }
     }
 
     @GetMapping("/{id}")
@@ -91,6 +89,7 @@ public class ProductController {
     }
     
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SHOP')")
     public ResponseEntity<?> updateProduct(@Valid @RequestBody ProductDto product, BindingResult result, @PathVariable Long id) {
         log.info("Updating product with ID {}", id);
         product.setId(id);
@@ -108,6 +107,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SHOP')")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         log.info("Deleting product with ID {}", id);
         try {

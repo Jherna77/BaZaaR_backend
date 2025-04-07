@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +41,7 @@ public class CategoryController {
     private final CategoryDtoMapper categoryDtoMapper;
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createCategory(@Valid @RequestBody CategoryDto category, BindingResult result) {
         log.info("Creating category: {}", category.getName());
         try {
@@ -48,11 +50,6 @@ public class CategoryController {
                 : ResponseEntity.status(HttpStatus.CREATED)
                     .body(categoryService.createCategory(categoryDtoMapper.toDomain(category))
                     .map(categoryDtoMapper::toDto));
-                // categoryService.createCategory(category).map(categoryDtoMapper::toDto)
-                //     .map(ResponseEntity::ok)
-                //     .orElse(ResponseEntity.badRequest().body("Category already exists"));
-            // return ResponseEntity.ok(
-            //     categoryService.createCategory(category).map(categoryDtoMapper::toDto));
         } catch (CategoryException e) {
             log.error("Error creating category: {}", category.getName());
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -81,6 +78,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateCategory(@Valid @RequestBody CategoryDto category, BindingResult result, @PathVariable Long id) {
         log.info("Updating category with ID {}", category.getName());
         category.setId(id);
@@ -99,6 +97,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
         log.info("Deleting category with ID {}", id);
         try {

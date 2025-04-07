@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jhernandez.backend.bazaar.application.port.UserServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
-// import com.jhernandez.backend.bazaar.domain.model.User;
-// import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserRequestDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserResponseDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.UserDtoMapper;
@@ -42,7 +41,7 @@ public class UserController {
     private final UserServicePort userService;
     private final UserDtoMapper userDtoMapper;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserRequestDto user, BindingResult result) {
         log.info("Registering user with email {}", user.getEmail());
         try {
@@ -58,6 +57,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserResponseDto> findAllUsers() {
         log.info("Finding all users");
         return userService.findAllUsers().stream()
@@ -100,6 +100,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         log.info("Deleting user with ID {}", id);
         try {
