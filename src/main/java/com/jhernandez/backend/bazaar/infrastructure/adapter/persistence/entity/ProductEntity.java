@@ -1,6 +1,5 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -33,7 +32,7 @@ public class ProductEntity {
 
     private String description;
 
-    private BigDecimal price;
+    private Double price;
 
     @ManyToMany
     @JoinTable(name="products_categories",
