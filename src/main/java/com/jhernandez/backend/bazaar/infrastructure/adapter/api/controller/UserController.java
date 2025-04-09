@@ -67,7 +67,7 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<?> findUserById(@PathVariable Long id) {
         log.info("Finding user with ID {}", id);
         try {
@@ -76,6 +76,19 @@ public class UserController {
                     .orElse(ResponseEntity.notFound().build());
         } catch (UserException e) {
             log.error("Error getting user with ID {}", id);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> findUserByEmail(@PathVariable String email) {
+        log.info("Finding user with email {}", email);
+        try {
+            return userService.findUserByEmail(email).map(userDtoMapper::toResponseDto)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (UserException e) {
+            log.error("Error getting user with email {}", email);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
