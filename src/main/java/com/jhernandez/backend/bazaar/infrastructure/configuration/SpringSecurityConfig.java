@@ -76,6 +76,7 @@ public class SpringSecurityConfig {
      * Public endpoints:
      *      - GET /api/categories
      *      - GET /api/products
+     *      - GET /api/roles
      *      - GET /api/categories/{id}
      *      - GET /api/products/{id}
      *      - GET /api/products/category/{categoryId}
@@ -86,7 +87,7 @@ public class SpringSecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-            .requestMatchers(HttpMethod.GET, CATEGORIES, PRODUCTS, CATEGORY_ID, PRODUCT_ID, PRODUCTS_CATEGORY_ID).permitAll()
+            .requestMatchers(HttpMethod.GET, CATEGORIES, ROLES, PRODUCTS, CATEGORY_ID, PRODUCT_ID, PRODUCTS_CATEGORY_ID).permitAll()
             .requestMatchers(HttpMethod.POST, REGISTER).permitAll()
             .anyRequest().authenticated())
             // .anyRequest().permitAll()) // Allow all requests for testing purposes

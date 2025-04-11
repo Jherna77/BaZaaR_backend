@@ -21,6 +21,7 @@ import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ProductDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ProductDtoMapper;
 
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.ApiRoutes.PRODUCTS;
 import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.fieldValidation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping(PRODUCTS)
 @CrossOrigin(originPatterns = "*")
 @RequiredArgsConstructor
 @Slf4j

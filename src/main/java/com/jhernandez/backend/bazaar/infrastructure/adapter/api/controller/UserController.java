@@ -23,6 +23,7 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserRequestD
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserResponseDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.UserDtoMapper;
 
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.ApiRoutes.USERS;
 import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.fieldValidation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  * The controller uses the UserServicePort to perform the operations and the UserDtoMapper to convert between domain models and DTOs.
  */
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping(USERS)
 @CrossOrigin(originPatterns = "*")
 @RequiredArgsConstructor
 @Slf4j

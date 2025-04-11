@@ -30,4 +30,9 @@ public class AppConfig {
         return new CategoryService(categoryRepositoryPort);
     }
 
+    @Bean
+    UserRoleServicePort userRoleServicePort(UserRoleRepositoryPort userRoleRepositoryPort) {
+        return new UserRoleService(userRoleRepositoryPort);
+    }
+
 }

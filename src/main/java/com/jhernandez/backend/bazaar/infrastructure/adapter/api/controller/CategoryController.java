@@ -22,6 +22,7 @@ import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.CategoryDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.CategoryDtoMapper;
 
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.ApiRoutes.CATEGORIES;
 import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.fieldValidation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
  * The controller uses the CategoryServicePort to perform the operations and the CategoryDtoMapper to convert between domain models and DTOs.
  */
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping(CATEGORIES)
 @CrossOrigin(originPatterns = "*")
 @RequiredArgsConstructor
 @Slf4j
