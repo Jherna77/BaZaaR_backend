@@ -35,4 +35,9 @@ public class AppConfig {
         return new UserRoleService(userRoleRepositoryPort);
     }
 
+    @Bean
+    ImageServicePort imageServicePort(ImageRepositoryPort imageRepositoryPort) {
+        return new ImageService(imageRepositoryPort);
+    }
+
 }

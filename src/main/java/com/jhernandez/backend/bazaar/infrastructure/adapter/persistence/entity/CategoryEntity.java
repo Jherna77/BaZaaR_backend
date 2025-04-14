@@ -36,7 +36,7 @@ public class CategoryEntity {
     // @ManyToMany(mappedBy = "categories")
     // private List<ProductEntity> products; // Lista de productos de esta categoría (opcional, si se necesita la relación inversa)
 
-    // private String imageUrl;
+    private String imageUrl;
     // private String description;
     // private CategoryEntity parentCategory;
     // private List<CategoryEntity> subcategories;
