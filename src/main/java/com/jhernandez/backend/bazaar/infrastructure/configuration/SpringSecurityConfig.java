@@ -26,7 +26,7 @@ import com.jhernandez.backend.bazaar.infrastructure.security.JwtValidationFilter
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 
-import static com.jhernandez.backend.bazaar.infrastructure.configuration.ApiRoutes.*;
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.*;
 
 import java.util.List;
 

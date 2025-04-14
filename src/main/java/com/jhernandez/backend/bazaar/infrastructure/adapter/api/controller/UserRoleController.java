@@ -9,7 +9,7 @@ import com.jhernandez.backend.bazaar.application.port.UserRoleServicePort;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserRoleDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.UserRoleDtoMapper;
 
-import static com.jhernandez.backend.bazaar.infrastructure.configuration.ApiRoutes.ROLES;
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ROLES;
 
 import java.util.List;
 import java.util.stream.Collectors;

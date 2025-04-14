@@ -22,7 +22,7 @@ import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.CategoryDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.CategoryDtoMapper;
 
-import static com.jhernandez.backend.bazaar.infrastructure.configuration.ApiRoutes.CATEGORIES;
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.CATEGORIES;
 import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.fieldValidation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

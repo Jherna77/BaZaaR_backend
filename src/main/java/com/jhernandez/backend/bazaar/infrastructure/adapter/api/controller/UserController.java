@@ -23,7 +23,7 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserRequestD
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserResponseDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.UserDtoMapper;
 
-import static com.jhernandez.backend.bazaar.infrastructure.configuration.ApiRoutes.USERS;
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.USERS;
 import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.fieldValidation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
