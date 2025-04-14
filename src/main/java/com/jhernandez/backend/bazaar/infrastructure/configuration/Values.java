@@ -2,7 +2,7 @@ package com.jhernandez.backend.bazaar.infrastructure.configuration;
 
 public class Values {
 
-    public static final String UPLOAD_DIR = "uploads/";
+    public static final String UPLOAD_DIR = "/bazaar/uploads/";
 
     // API Endpoints
     public static final String USERS = "/api/users";
@@ -19,5 +19,6 @@ public class Values {
     public static final String PRODUCTS_CATEGORY_ID = PRODUCTS + "/category/{categoryId}";
 
     public static final String IMAGES = "/api/images";
+    public static final String IMAGE_ID = IMAGES + "/{filename:.+}";
 
 }

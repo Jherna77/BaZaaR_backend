@@ -80,6 +80,7 @@ public class SpringSecurityConfig {
      *      - GET /api/categories/{id}
      *      - GET /api/products/{id}
      *      - GET /api/products/category/{categoryId}
+     *      - GET /api/images/{filename:.+}
      *      - POST /api/users/register
      * 
      * All other endpoints require authentication.
@@ -87,10 +88,9 @@ public class SpringSecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-            .requestMatchers(HttpMethod.GET, CATEGORIES, ROLES, PRODUCTS, CATEGORY_ID, PRODUCT_ID, PRODUCTS_CATEGORY_ID).permitAll()
+            .requestMatchers(HttpMethod.GET, CATEGORIES, ROLES, PRODUCTS, CATEGORY_ID, PRODUCT_ID, PRODUCTS_CATEGORY_ID, IMAGE_ID).permitAll()
             .requestMatchers(HttpMethod.POST, REGISTER).permitAll()
             .anyRequest().authenticated())
-            // .anyRequest().permitAll()) // Allow all requests for testing purposes
             .addFilter(new JwtAuthenticationFilter(authenticationManager()))
             .addFilter(new JwtValidationFilter(authenticationManager()))
             .csrf(config -> config.disable()) // Disable CSRF to avoid vulnerabilities
