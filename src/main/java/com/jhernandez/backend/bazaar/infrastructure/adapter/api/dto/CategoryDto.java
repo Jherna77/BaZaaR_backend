@@ -18,4 +18,7 @@ public class CategoryDto {
     @UniqueCategoryName
     private String name;
 
+    @RequiredField
+    private String imageUrl;
+
 }
