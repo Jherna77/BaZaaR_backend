@@ -55,6 +55,7 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
         log.info("Updating category", category.getName());
         return categoryRepository.findById(category.getId()).map(existingCategory -> {
             existingCategory.setName(category.getName());
+            existingCategory.setImageUrl(category.getImageUrl());
             // existingCategory.setEnabled(category.isEnabled());
             return categoryEntityMapper.toDomain(categoryRepository.save(existingCategory));
         });
