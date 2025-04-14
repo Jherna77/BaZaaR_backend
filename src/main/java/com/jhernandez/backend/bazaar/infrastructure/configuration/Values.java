@@ -2,6 +2,9 @@ package com.jhernandez.backend.bazaar.infrastructure.configuration;
 
 public class Values {
 
+    public static final String UPLOAD_DIR = "uploads/";
+
+    // API Endpoints
     public static final String USERS = "/api/users";
     public static final String USER_ID = USERS + "/{id}";
     public static final String REGISTER = USERS + "/register";

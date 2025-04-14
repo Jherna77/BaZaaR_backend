@@ -13,6 +13,7 @@ public class Category {
 
     private Long id;
     private String name;
+    // private String imageUrl;
     // private List<Product> products;
     private boolean enabled;
 
