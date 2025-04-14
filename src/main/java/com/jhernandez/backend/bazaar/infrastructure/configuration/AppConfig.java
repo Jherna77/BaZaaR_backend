@@ -36,8 +36,8 @@ public class AppConfig {
     }
 
     @Bean
-    ImageServicePort imageServicePort(ImageRepositoryPort imageRepositoryPort) {
-        return new ImageService(imageRepositoryPort);
+    ImageServicePort imageServicePort(ImageStoragePort imageStoragePort) {
+        return new ImageService(imageStoragePort);
     }
 
 }

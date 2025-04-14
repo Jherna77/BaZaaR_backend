@@ -2,7 +2,8 @@ package com.jhernandez.backend.bazaar.application.service;
 
 import java.io.IOException;
 
-import com.jhernandez.backend.bazaar.application.port.ImageRepositoryPort;
+import com.jhernandez.backend.bazaar.application.port.ImageStoragePort;
+import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 
 import lombok.RequiredArgsConstructor;
@@ -10,11 +11,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ImageService implements ImageServicePort {
 
-    private final ImageRepositoryPort imageRepositoryPort;
+    private final ImageStoragePort imageStoragePort;
 
     @Override
-    public String save(byte[] image, String fileName) throws IOException {
-        return imageRepositoryPort.save(image, fileName);
+    public String saveImage(byte[] image, String fileName) throws IOException {
+        return imageStoragePort.saveImage(image, fileName);
+    }
+
+    @Override
+    public ImageFile getImage(String fileName) throws IOException {
+        return imageStoragePort.getImage(fileName);
     }
 
 }

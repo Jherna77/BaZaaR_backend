@@ -10,27 +10,54 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.jhernandez.backend.bazaar.application.port.ImageRepositoryPort;
+import com.jhernandez.backend.bazaar.application.port.ImageStoragePort;
 import com.jhernandez.backend.bazaar.domain.exception.ImageStorageException;
+import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class LocalImageStorageAdapter implements ImageRepositoryPort {
+public class LocalImageStorageAdapter implements ImageStoragePort {
 
     @Override
-    public String save(byte[] image, String originalFileName) {
+    public String saveImage(byte[] image, String originalFileName) {
         String fileName = UUID.randomUUID() + "-" + originalFileName;
         Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName);
         try {
             Files.createDirectories(filePath.getParent());
             Files.write(filePath, image);
+            return "/api/images/" + fileName;
         } catch (IOException e) {
             log.error("Error saving image: {}", e.getMessage());
             throw new ImageStorageException();
         }
-        return "/api/images/" + fileName;
+    }
+
+    @Override
+    public ImageFile getImage(String fileName) {
+        Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
+
+        if (!Files.exists(filePath)) {
+            log.error("Image not found: {}", fileName);
+            throw new ImageStorageException();
+        }
+
+        // if (!Files.isReadable(filePath)) {
+        //     log.error("Image not readable: {}", fileName);
+        //     throw new ImageStorageException();
+        // }
+        
+        byte[] data;
+        try {
+            data = Files.readAllBytes(filePath);
+            String contentType = Files.probeContentType(filePath);
+            return new ImageFile(data, contentType != null ? contentType : "application/octet-stream", fileName);
+        } catch (IOException e) {
+            log.error("Error reading image: {}", e.getMessage());
+            throw new ImageStorageException();
+        }
+        
     }
 
 }

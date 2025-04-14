@@ -4,6 +4,6 @@ import java.io.IOException;
 
 public interface CreateImageUseCase {
 
-    String save(byte[] image, String fileName) throws IOException;
+    String saveImage(byte[] image, String fileName) throws IOException;
 
 }
