@@ -6,6 +6,7 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.Uniqu
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.UserRole;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ZipCode;
 
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class UserRequestDto {
 
     @UniqueEmail
     @RequiredField
+    @Email(message = "{validation.email.invalid.message}")
     private String email;
 
     @PasswordStrength
