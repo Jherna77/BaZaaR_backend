@@ -1,5 +1,7 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity;
 
+import jakarta.persistence.Column;
+
 // import java.util.List;
 // import java.util.UUID;
 
@@ -36,6 +38,7 @@ public class CategoryEntity {
     // @ManyToMany(mappedBy = "categories")
     // private List<ProductEntity> products; // Lista de productos de esta categoría (opcional, si se necesita la relación inversa)
 
+    @Column(name = "image_url")
     private String imageUrl;
     // private String description;
     // private CategoryEntity parentCategory;
