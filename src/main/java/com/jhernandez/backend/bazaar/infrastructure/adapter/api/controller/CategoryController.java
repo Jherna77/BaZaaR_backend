@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,7 +60,7 @@ public class CategoryController {
         log.info("Creating category: {}", category.getName());
 
         try {
-            // Guardar imagen y actualizar url
+            // Save image and update URL
             String imageUrl = imageService.saveImage(imageFileDtoMapper.toDomain((imageFile))).getImageUrl();
             category.setImageUrl(imageUrl);
 
@@ -113,12 +113,27 @@ public class CategoryController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updateCategory(@Valid @RequestBody CategoryDto category, BindingResult result, @PathVariable Long id) {
+    public ResponseEntity<?> updateCategory(
+        @RequestPart("category") @Valid CategoryDto category,
+        BindingResult result,
+        @RequestPart(value = "image", required = false) MultipartFile imageFile,
+        @PathVariable Long id) {
+        
         log.info("Updating category with ID {}", category.getName());
         category.setId(id);
         try {
+
+            // Check if image is provided and save image and update URL
+            if (imageFile != null && !imageFile.isEmpty()) {
+                // imageService.deleteImage(category.getImageUrl());
+                String imageUrl = imageService
+                    .saveImage(imageFileDtoMapper.toDomain(imageFile))
+                    .getImageUrl();
+                category.setImageUrl(imageUrl);
+            }
+
             return (result.hasErrors())
                 ? fieldValidation(result) 
                 : categoryService.updateCategory(categoryDtoMapper.toDomain(category))
@@ -126,11 +141,30 @@ public class CategoryController {
                         .map(ResponseEntity::ok)
                         .orElse(ResponseEntity.notFound().build());
                 
-        } catch (CategoryException e) {
+        } catch (CategoryException | IOException e) {
             log.error("Error updating category with ID {}", category.getName());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    // @PutMapping("/{id}")
+    // @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // public ResponseEntity<?> updateCategory(@Valid @RequestBody CategoryDto category, BindingResult result, @PathVariable Long id) {
+    //     log.info("Updating category with ID {}", category.getName());
+    //     category.setId(id);
+    //     try {
+    //         return (result.hasErrors())
+    //             ? fieldValidation(result) 
+    //             : categoryService.updateCategory(categoryDtoMapper.toDomain(category))
+    //                     .map(categoryDtoMapper::toDto)
+    //                     .map(ResponseEntity::ok)
+    //                     .orElse(ResponseEntity.notFound().build());
+                
+    //     } catch (CategoryException e) {
+    //         log.error("Error updating category with ID {}", category.getName());
+    //         return ResponseEntity.badRequest().body(e.getMessage());
+    //     }
+    // }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
