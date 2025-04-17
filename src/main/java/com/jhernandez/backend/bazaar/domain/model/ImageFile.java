@@ -1,14 +1,17 @@
 package com.jhernandez.backend.bazaar.domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@RequiredArgsConstructor
+@Setter
+@AllArgsConstructor
 public class ImageFile {
 
-    private final byte[] data;
-    private final String fileName;
-    private final String contentType;
+    private byte[] data;
+    private String fileName;
+    private String contentType;
+    private String imageUrl;
 
 }

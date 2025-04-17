@@ -1,12 +1,16 @@
 package com.jhernandez.backend.bazaar.application.port;
 
+import java.util.List;
+
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 
 public interface ImageStoragePort {
 
-        String saveImage(ImageFile image);
+        ImageFile saveImage(ImageFile image);
 
-        ImageFile getImageByFileName(String fileName);
+        List<ImageFile> saveImagesList(List<ImageFile> images);
+
+        // ImageFile getImageByFileName(String fileName);
 
         void deleteImageByFilename(String fileName);
 
