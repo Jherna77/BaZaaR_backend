@@ -25,7 +25,7 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
     public String saveImage(ImageFile image) {
         String fileName = UUID.randomUUID() + "-" + image.getFileName();
         Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName);
-        log.info("Saving image {} to {}", fileName, filePath.toString());
+        log.info("Saving image {}", filePath.toString());
         try {
             Files.createDirectories(filePath.getParent());
             Files.write(filePath, image.getData());
@@ -54,7 +54,7 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
     public ImageFile getImageByFileName(String fileName) {
         Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
 
-        log.info("Fetching image {} from {}", fileName, filePath.toString());
+        log.info("Fetching image {}", filePath.toString());
 
         if (!Files.exists(filePath)) {
             log.error("Image not found: {}", fileName);
@@ -85,7 +85,7 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
     public void deleteImageByFilename(String fileName) {
         Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
 
-        log.info("Deleting image {} from {}", fileName, filePath.toString());
+        log.info("Deleting image {}", filePath.toString());
         try {
             Files.deleteIfExists(filePath);
         } catch (IOException e) {
