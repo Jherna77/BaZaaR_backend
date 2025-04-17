@@ -16,6 +16,7 @@ public class Product {
     private String description;
     private Double price;
     private List<Category> categories;
+    private List<String> imagesUrl;
     private boolean enabled;
 
     // private BigDecimal discountPrice;

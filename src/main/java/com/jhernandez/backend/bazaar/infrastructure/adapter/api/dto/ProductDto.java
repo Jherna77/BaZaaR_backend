@@ -28,5 +28,7 @@ public class ProductDto {
     
     private List<CategoryDto> categories;
 
+    private List<String> imagesUrl;
+
 }
 
