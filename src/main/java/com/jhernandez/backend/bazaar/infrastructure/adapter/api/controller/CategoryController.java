@@ -1,5 +1,6 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,12 +16,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
+import com.jhernandez.backend.bazaar.application.service.ImageService;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.CategoryDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.CategoryDtoMapper;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ImageFileDtoMapper;
 
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.CATEGORIES;
 import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.fieldValidation;
@@ -42,22 +47,50 @@ public class CategoryController {
 
     private final CategoryServicePort categoryService;
     private final CategoryDtoMapper categoryDtoMapper;
+    private final ImageService imageService;
+    private final ImageFileDtoMapper imageFileDtoMapper;
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> createCategory(@Valid @RequestBody CategoryDto category, BindingResult result) {
+    public ResponseEntity<?> createCategory(
+            @RequestPart("category") @Valid CategoryDto category,
+            BindingResult result,
+            @RequestPart("image") MultipartFile imageFile) {
+
         log.info("Creating category: {}", category.getName());
+
         try {
+            // Guardar imagen y actualizar url
+            String imageUrl = imageService.saveImage(imageFileDtoMapper.toDomain((imageFile))).getImageUrl();
+            category.setImageUrl(imageUrl);
+
             return (result.hasErrors())
                 ? fieldValidation(result) 
                 : ResponseEntity.status(HttpStatus.CREATED)
                     .body(categoryService.createCategory(categoryDtoMapper.toDomain(category))
                     .map(categoryDtoMapper::toDto));
-        } catch (CategoryException e) {
-            log.error("Error creating category: {}", category.getName());
+
+        } catch (CategoryException | IOException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
-        }        
+        }
     }
+
+
+    // @PostMapping
+    // @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // public ResponseEntity<?> createCategory(@Valid @RequestBody CategoryDto category, BindingResult result) {
+    //     log.info("Creating category: {}", category.getName());
+    //     try {
+    //         return (result.hasErrors())
+    //             ? fieldValidation(result) 
+    //             : ResponseEntity.status(HttpStatus.CREATED)
+    //                 .body(categoryService.createCategory(categoryDtoMapper.toDomain(category))
+    //                 .map(categoryDtoMapper::toDto));
+    //     } catch (CategoryException e) {
+    //         log.error("Error creating category: {}", category.getName());
+    //         return ResponseEntity.badRequest().body(e.getMessage());
+    //     }        
+    // }
 
     @GetMapping
     public List<CategoryDto> findAllCategories() {
