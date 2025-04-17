@@ -26,13 +26,13 @@ INSERT INTO users (id, role_id, email, password, name, surnames, address, city, 
 -- INSERT INTO users_roles (user_id, role_id) VALUES (3, 3);
 
 -- -- Categorías de productos
-INSERT INTO categories (id, name, enabled) VALUES (1, 'Deportes', 1);
-INSERT INTO categories (id, name, enabled) VALUES (2, 'Electrónica', 1);
-INSERT INTO categories (id, name, enabled) VALUES (3, 'Hogar', 1);
-INSERT INTO categories (id, name, enabled) VALUES (4, 'Moda', 1);
-INSERT INTO categories (id, name, enabled) VALUES (5, 'Juguetes', 1);
-INSERT INTO categories (id, name, enabled) VALUES (6, 'Libros', 1);
-INSERT INTO categories (id, name, enabled) VALUES (7, 'Otros', 1);
+INSERT INTO categories (id, name, image_url, enabled) VALUES (1, 'Deportes', '/api/images/c72be8a2-7da6-4500-9cac-006a97f26581-image.jpg', 1);
+INSERT INTO categories (id, name, image_url, enabled) VALUES (2, 'Electrónica', '/api/images/87cb8f01-374a-437e-b304-8de97745bd2f-image.jpg', 1);
+INSERT INTO categories (id, name, image_url, enabled) VALUES (3, 'Hogar', '/api/images/', 1);
+INSERT INTO categories (id, name, image_url, enabled) VALUES (4, 'Moda', '/api/images/', 1);
+INSERT INTO categories (id, name, image_url, enabled) VALUES (5, 'Juguetes', '/api/images/', 1);
+INSERT INTO categories (id, name, image_url, enabled) VALUES (6, 'Libros', '/api/images/9f081f87-0a7b-4b78-a0fc-b2504f1b998e-image.jpg', 1);
+INSERT INTO categories (id, name, image_url, enabled) VALUES (7, 'Otros', '/api/images/', 1);
 
 -- -- Productos de prueba
 INSERT INTO products (id, name, description, price, enabled) VALUES (1, 'Balón de fútbol', 'Balón de fútbol de la marca Adidas', 20.0, 1);
