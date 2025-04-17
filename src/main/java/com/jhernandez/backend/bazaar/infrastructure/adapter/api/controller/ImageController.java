@@ -47,7 +47,7 @@ public class ImageController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SHOP')")
     public ResponseEntity<ImageUploadResponseDto> uploadImage(@RequestParam("image") MultipartFile image)
             throws IOException {
-        log.info("Uploading image: {}", image.getOriginalFilename());
+        log.info("Uploading image");
         ImageFile imageFile = new ImageFile(image.getBytes(), image.getOriginalFilename(), image.getContentType());
         return ResponseEntity.ok(new ImageUploadResponseDto(
                 imageService.saveImage(imageFile)));
