@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
-import com.jhernandez.backend.bazaar.application.service.ImageService;
+import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.CategoryDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.CategoryDtoMapper;
@@ -47,7 +47,7 @@ public class CategoryController {
 
     private final CategoryServicePort categoryService;
     private final CategoryDtoMapper categoryDtoMapper;
-    private final ImageService imageService;
+    private final ImageServicePort imageService;
     private final ImageFileDtoMapper imageFileDtoMapper;
 
     @PostMapping

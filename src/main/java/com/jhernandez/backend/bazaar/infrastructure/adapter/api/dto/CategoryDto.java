@@ -18,7 +18,7 @@ public class CategoryDto {
     @UniqueCategoryName
     private String name;
 
-    @RequiredField
+    // @RequiredField
     private String imageUrl;
 
 }
