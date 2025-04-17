@@ -3,6 +3,7 @@ package com.jhernandez.backend.bazaar.infrastructure.configuration;
 public class Values {
 
     public static final String UPLOAD_DIR = "/bazaar/uploads/";
+    public static final String IMG_CONTENT_TYPE_OCTET = "application/octet-stream";
 
     // API Endpoints
     public static final String AUTH = "/api/auth";

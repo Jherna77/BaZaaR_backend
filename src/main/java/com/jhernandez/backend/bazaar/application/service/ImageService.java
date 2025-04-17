@@ -14,13 +14,18 @@ public class ImageService implements ImageServicePort {
     private final ImageStoragePort imageStoragePort;
 
     @Override
-    public String saveImage(byte[] image, String fileName) throws IOException {
-        return imageStoragePort.saveImage(image, fileName);
+    public String saveImage(ImageFile image) throws IOException {
+        return imageStoragePort.saveImage(image);
     }
 
     @Override
-    public ImageFile getImage(String fileName) throws IOException {
-        return imageStoragePort.getImage(fileName);
+    public ImageFile getImageByFileName(String fileName) throws IOException {
+        return imageStoragePort.getImageByFileName(fileName);
+    }
+
+    @Override
+    public void deleteImageByFilename(String fileName) throws IOException {
+        imageStoragePort.deleteImageByFilename(fileName);
     }
 
 }

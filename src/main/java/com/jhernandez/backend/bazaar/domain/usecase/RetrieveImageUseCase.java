@@ -6,6 +6,6 @@ import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 
 public interface RetrieveImageUseCase {
 
-    ImageFile getImage(String fileName) throws IOException;
+    ImageFile getImageByFileName(String fileName) throws IOException;
 
 }

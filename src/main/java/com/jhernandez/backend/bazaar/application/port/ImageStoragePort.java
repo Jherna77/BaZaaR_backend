@@ -4,8 +4,10 @@ import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 
 public interface ImageStoragePort {
 
-        String saveImage(byte[] image, String fileName);
+        String saveImage(ImageFile image);
 
-        ImageFile getImage(String fileName);
+        ImageFile getImageByFileName(String fileName);
+
+        void deleteImageByFilename(String fileName);
 
 }

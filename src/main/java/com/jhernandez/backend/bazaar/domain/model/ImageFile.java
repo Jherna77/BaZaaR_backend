@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public class ImageFile {
 
     private final byte[] data;
-    private final String contentType;
     private final String fileName;
+    private final String contentType;
 
 }
