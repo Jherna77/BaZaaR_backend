@@ -1,6 +1,6 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.storage;
 
-// import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.IMG_CONTENT_TYPE_OCTET;
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.IMG_CONTENT_TYPE_OCTET;
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.UPLOAD_DIR;
 
 import java.io.IOException;
@@ -37,20 +37,6 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
             throw new ImageStorageException();
         }
     }
-    // @Override
-    // public String saveImage(ImageFile image) {
-    //     String fileName = UUID.randomUUID() + "-" + image.getFileName();
-    //     Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName);
-    //     log.info("Saving image {}", filePath.toString());
-    //     try {
-    //         Files.createDirectories(filePath.getParent());
-    //         Files.write(filePath, image.getData());
-    //         return "/api/images/" + fileName;
-    //     } catch (IOException e) {
-    //         log.error("Error saving image: {}", e.getMessage());
-    //         throw new ImageStorageException();
-    //     }
-    // }
 
     @Override
     public List<ImageFile> saveImagesList(List<ImageFile> images) {
@@ -59,33 +45,34 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
             .toList();
     }
 
-    // @Override
-    // public ImageFile getImageByFileName(String fileName) {
-        // Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
+    @Override
+    public ImageFile getImageByFileName(String fileName) {
+        Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
 
-        // log.info("Fetching image {}", filePath.toString());
+        log.info("Fetching image {}", filePath.toString());
 
-        // if (!Files.exists(filePath)) {
-        //     log.error("Image not found: {}", fileName);
-        //     throw new ImageStorageException();
-        // }
+        if (!Files.exists(filePath)) {
+            log.error("Image not found: {}", fileName);
+            throw new ImageStorageException();
+        }
 
-        // if (!Files.isReadable(filePath)) {
-        //     log.error("Image not readable: {}", fileName);
-        //     throw new ImageStorageException();
-        // }
+        if (!Files.isReadable(filePath)) {
+            log.error("Image not readable: {}", fileName);
+            throw new ImageStorageException();
+        }
         
-        // try {
-        //     String contentType = Files.probeContentType(filePath);
-        //     return new ImageFile(
-        //         Files.readAllBytes(filePath),
-        //         fileName,
-        //         contentType != null ? contentType : IMG_CONTENT_TYPE_OCTET);
-        // } catch (IOException e) {
-        //     log.error("Error reading image: {}", e.getMessage());
-        //     throw new ImageStorageException();
-        // }
-    // }
+        try {
+            String contentType = Files.probeContentType(filePath);
+            return new ImageFile(
+                Files.readAllBytes(filePath),
+                fileName,
+                contentType != null ? contentType : IMG_CONTENT_TYPE_OCTET
+                ,null);
+        } catch (IOException e) {
+            log.error("Error reading image: {}", e.getMessage());
+            throw new ImageStorageException();
+        }
+    }
 
     @Override
     public void deleteImageByFilename(String fileName) {

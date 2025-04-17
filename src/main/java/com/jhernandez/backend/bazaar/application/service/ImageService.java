@@ -25,10 +25,10 @@ public class ImageService implements ImageServicePort {
     }
 
 
-    // @Override
-    // public ImageFile getImageByFileName(String fileName) throws IOException {
-    //     return imageStoragePort.getImageByFileName(fileName);
-    // }
+    @Override
+    public ImageFile getImageByFileName(String fileName) throws IOException {
+        return imageStoragePort.getImageByFileName(fileName);
+    }
 
     @Override
     public void deleteImageByFilename(String fileName) throws IOException {

@@ -10,7 +10,7 @@ public interface ImageStoragePort {
 
         List<ImageFile> saveImagesList(List<ImageFile> images);
 
-        // ImageFile getImageByFileName(String fileName);
+        ImageFile getImageByFileName(String fileName);
 
         void deleteImageByFilename(String fileName);
 
