@@ -9,14 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping(AUTH)
 @CrossOrigin(originPatterns = "*")
+@Slf4j
 public class AuthController {
 
     @GetMapping("/validate-token")
     public ResponseEntity<?> validateToken(HttpServletRequest request) {
+        log.info("Token is valid");
         // Token authenticated by the filter
         return ResponseEntity.ok().build();
     }

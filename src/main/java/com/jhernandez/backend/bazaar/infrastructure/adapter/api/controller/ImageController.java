@@ -47,6 +47,7 @@ public class ImageController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SHOP')")
     public ResponseEntity<ImageUploadResponseDto> uploadImage(@RequestParam("image") MultipartFile image)
             throws IOException {
+        log.info("Uploading image: {}", image.getOriginalFilename());
         ImageFile imageFile = new ImageFile(image.getBytes(), image.getOriginalFilename(), image.getContentType());
         return ResponseEntity.ok(new ImageUploadResponseDto(
                 imageService.saveImage(imageFile)));
@@ -58,6 +59,7 @@ public class ImageController {
 
     @GetMapping("/{filename:.+}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
+        log.info("Fetching image: {}", filename);
         try {
             ImageFile image = imageService.getImageByFileName(filename);
             ByteArrayResource resource = new ByteArrayResource(image.getData());
@@ -74,6 +76,7 @@ public class ImageController {
     @DeleteMapping("/{filename}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SHOP')")
     public ResponseEntity<Void> deleteImage(@PathVariable String filename) {
+        log.info("Deleting image: {}", filename);
         try {
             imageService.deleteImageByFilename(filename);
             return ResponseEntity.noContent().build();
