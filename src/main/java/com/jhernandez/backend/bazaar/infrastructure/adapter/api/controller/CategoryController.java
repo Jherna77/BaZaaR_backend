@@ -67,10 +67,6 @@ public class CategoryController {
             log.debug("No errors found in field validation");
 
             // Save image and update URL
-            // String imageUrl = imageService.saveImage(imageFileDtoMapper.toDomain((imageFile))).getImageUrl();
-            // category.setImageUrl(imageUrl);
-            /*imageService.saveImage(imageFileDtoMapper.toDomain((imageFile))).getImageUrl() */
-
             category.setImageUrl(saveImage(imageFile));
 
             return ResponseEntity.status(HttpStatus.CREATED)
@@ -103,16 +99,15 @@ public class CategoryController {
         }
     }
 
-    @PutMapping(/*value = "/{id}",*/ consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateCategory(
         @RequestPart("category") @Valid CategoryDto category,
         BindingResult result,
-        @RequestPart(value = "image", required = false) MultipartFile imageFile) {//,
-        // @PathVariable Long id) {
+        @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         
         log.info("Updating category {}", category.getName());
-        // category.setId(id);
+        
         try {
             if (result.hasErrors()) {
                 return fieldValidation(result);
