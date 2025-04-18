@@ -6,4 +6,6 @@ public interface DeleteImageUseCase {
 
     void deleteImageByFilename(String fileName) throws IOException;
 
+    void deleteImageByUrl(String url) throws IOException;
+
 }

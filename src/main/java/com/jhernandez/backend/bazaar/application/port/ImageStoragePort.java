@@ -14,4 +14,7 @@ public interface ImageStoragePort {
 
         void deleteImageByFilename(String fileName);
 
+        void deleteImageByUrl(String url);
+
+
 }

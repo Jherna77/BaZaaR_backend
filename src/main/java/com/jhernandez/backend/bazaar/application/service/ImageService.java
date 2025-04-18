@@ -35,4 +35,9 @@ public class ImageService implements ImageServicePort {
         imageStoragePort.deleteImageByFilename(fileName);
     }
 
+    @Override
+    public void deleteImageByUrl(String url) throws IOException {
+        imageStoragePort.deleteImageByUrl(url);
+    }
+
 }

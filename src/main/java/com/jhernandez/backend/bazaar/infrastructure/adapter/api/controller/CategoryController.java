@@ -50,7 +50,7 @@ public class CategoryController {
     private final ImageServicePort imageService;
     private final ImageFileDtoMapper imageFileDtoMapper;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createCategory(
             @RequestPart("category") @Valid CategoryDto category,
@@ -60,13 +60,20 @@ public class CategoryController {
         log.info("Creating category: {}", category.getName());
 
         try {
-            // Save image and update URL
-            String imageUrl = imageService.saveImage(imageFileDtoMapper.toDomain((imageFile))).getImageUrl();
-            category.setImageUrl(imageUrl);
+            if (result.hasErrors()) {
+                return fieldValidation(result);
+            }
 
-            return (result.hasErrors())
-                ? fieldValidation(result) 
-                : ResponseEntity.status(HttpStatus.CREATED)
+            log.debug("No errors found in field validation");
+
+            // Save image and update URL
+            // String imageUrl = imageService.saveImage(imageFileDtoMapper.toDomain((imageFile))).getImageUrl();
+            // category.setImageUrl(imageUrl);
+            /*imageService.saveImage(imageFileDtoMapper.toDomain((imageFile))).getImageUrl() */
+
+            category.setImageUrl(saveImage(imageFile));
+
+            return ResponseEntity.status(HttpStatus.CREATED)
                     .body(categoryService.createCategory(categoryDtoMapper.toDomain(category))
                     .map(categoryDtoMapper::toDto));
 
@@ -74,23 +81,6 @@ public class CategoryController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-
-    // @PostMapping
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
-    // public ResponseEntity<?> createCategory(@Valid @RequestBody CategoryDto category, BindingResult result) {
-    //     log.info("Creating category: {}", category.getName());
-    //     try {
-    //         return (result.hasErrors())
-    //             ? fieldValidation(result) 
-    //             : ResponseEntity.status(HttpStatus.CREATED)
-    //                 .body(categoryService.createCategory(categoryDtoMapper.toDomain(category))
-    //                 .map(categoryDtoMapper::toDto));
-    //     } catch (CategoryException e) {
-    //         log.error("Error creating category: {}", category.getName());
-    //         return ResponseEntity.badRequest().body(e.getMessage());
-    //     }        
-    // }
 
     @GetMapping
     public List<CategoryDto> findAllCategories() {
@@ -113,7 +103,7 @@ public class CategoryController {
         }
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(/*value = "/{id}",*/ consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateCategory(
         @RequestPart("category") @Valid CategoryDto category,
@@ -121,22 +111,20 @@ public class CategoryController {
         @RequestPart(value = "image", required = false) MultipartFile imageFile,
         @PathVariable Long id) {
         
-        log.info("Updating category with ID {}", category.getName());
-        category.setId(id);
+        log.info("Updating category {}", category.getName());
+        // category.setId(id);
         try {
+            if (result.hasErrors()) {
+                return fieldValidation(result);
+            }
 
             // Check if image is provided and save image and update URL
             if (imageFile != null && !imageFile.isEmpty()) {
-                // imageService.deleteImage(category.getImageUrl());
-                String imageUrl = imageService
-                    .saveImage(imageFileDtoMapper.toDomain(imageFile))
-                    .getImageUrl();
-                category.setImageUrl(imageUrl);
+                imageService.deleteImageByUrl(category.getImageUrl());
+                category.setImageUrl(saveImage(imageFile));
             }
 
-            return (result.hasErrors())
-                ? fieldValidation(result) 
-                : categoryService.updateCategory(categoryDtoMapper.toDomain(category))
+            return categoryService.updateCategory(categoryDtoMapper.toDomain(category))
                         .map(categoryDtoMapper::toDto)
                         .map(ResponseEntity::ok)
                         .orElse(ResponseEntity.notFound().build());
@@ -146,25 +134,6 @@ public class CategoryController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    // @PutMapping("/{id}")
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
-    // public ResponseEntity<?> updateCategory(@Valid @RequestBody CategoryDto category, BindingResult result, @PathVariable Long id) {
-    //     log.info("Updating category with ID {}", category.getName());
-    //     category.setId(id);
-    //     try {
-    //         return (result.hasErrors())
-    //             ? fieldValidation(result) 
-    //             : categoryService.updateCategory(categoryDtoMapper.toDomain(category))
-    //                     .map(categoryDtoMapper::toDto)
-    //                     .map(ResponseEntity::ok)
-    //                     .orElse(ResponseEntity.notFound().build());
-                
-    //     } catch (CategoryException e) {
-    //         log.error("Error updating category with ID {}", category.getName());
-    //         return ResponseEntity.badRequest().body(e.getMessage());
-    //     }
-    // }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -177,6 +146,11 @@ public class CategoryController {
             log.error("Error deleting category with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    // Saves image in storage and returns the URL
+    private String saveImage (MultipartFile imageFile) throws IOException {
+            return imageService.saveImage(imageFileDtoMapper.toDomain((imageFile))).getImageUrl();
     }
 
 }
