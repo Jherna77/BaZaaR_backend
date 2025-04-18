@@ -20,6 +20,10 @@ public interface CategoryRepositoryPort {
 
     Optional<Category> updateCategory(Category category);
 
+    Optional<Category> enableCategoryById(Long id);
+
+    Optional<Category> disableCategoryById(Long id);
+
     void deleteCategoryById(Long id);
 
 }

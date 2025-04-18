@@ -16,10 +16,10 @@ public class CategoryDto {
     private Long id;
 
     @RequiredField
-    // @UniqueCategoryName
     private String name;
 
-    // @RequiredField
     private String imageUrl;
+
+    private boolean enabled;
 
 }

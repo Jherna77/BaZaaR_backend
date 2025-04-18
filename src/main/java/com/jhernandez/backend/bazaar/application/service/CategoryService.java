@@ -44,6 +44,16 @@ public class CategoryService implements CategoryServicePort{
     }
 
     @Override
+    public Optional<Category> enableCategoryById(Long id) throws CategoryException {
+        return categoryRepositoryPort.enableCategoryById(id);
+    }
+
+    @Override
+    public Optional<Category> disableCategoryById(Long id) throws CategoryException {
+        return categoryRepositoryPort.disableCategoryById(id);
+    }
+
+    @Override
     public void deleteCategoryById(Long id) throws CategoryException {
         categoryRepositoryPort.deleteCategoryById(id);
     }    

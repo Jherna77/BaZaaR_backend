@@ -130,6 +130,34 @@ public class CategoryController {
         }
     }
 
+    @PutMapping("/enable/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> enableCategory(@PathVariable Long id) {
+        log.info("Enabling category with ID {}", id);
+        try {
+            return categoryService.enableCategoryById(id).map(categoryDtoMapper::toDto)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (CategoryException e) {
+            log.error("Error enabling category with ID {}", id);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/disable/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> disableCategory(@PathVariable Long id) {
+        log.info("Disabling category with ID {}", id);
+        try {
+            return categoryService.disableCategoryById(id).map(categoryDtoMapper::toDto)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (CategoryException e) {
+            log.error("Error disabling category with ID {}", id);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> deleteCategory(@PathVariable Long id) {

@@ -56,8 +56,27 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
         return categoryRepository.findById(category.getId()).map(existingCategory -> {
             existingCategory.setName(category.getName());
             existingCategory.setImageUrl(category.getImageUrl());
-            // existingCategory.setEnabled(category.isEnabled());
             return categoryEntityMapper.toDomain(categoryRepository.save(existingCategory));
+        });
+    }
+
+    @Transactional
+    @Override
+    public Optional<Category> enableCategoryById(Long id) {
+        log.info("Enabling category with ID {}", id);
+        return categoryRepository.findById(id).map(category -> {
+            category.setEnabled(true);
+            return categoryEntityMapper.toDomain(categoryRepository.save(category));
+        });
+    }
+
+    @Transactional
+    @Override
+    public Optional<Category> disableCategoryById(Long id) {
+        log.info("Disabling category with ID {}", id);
+        return categoryRepository.findById(id).map(category -> {
+            category.setEnabled(false);
+            return categoryEntityMapper.toDomain(categoryRepository.save(category));
         });
     }
 

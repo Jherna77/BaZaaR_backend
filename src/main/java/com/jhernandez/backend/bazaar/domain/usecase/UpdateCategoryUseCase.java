@@ -9,4 +9,8 @@ public interface UpdateCategoryUseCase {
 
     Optional<Category> updateCategory(Category category) throws CategoryException;
 
+    Optional<Category> enableCategoryById(Long id) throws CategoryException;
+
+    Optional<Category> disableCategoryById(Long id) throws CategoryException;
+
 }
