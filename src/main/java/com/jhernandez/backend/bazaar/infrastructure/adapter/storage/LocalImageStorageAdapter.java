@@ -79,6 +79,7 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
         Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
 
         log.info("Deleting image {}", filePath.toString());
+        
         try {
             Files.deleteIfExists(filePath);
         } catch (IOException e) {
@@ -90,15 +91,7 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
     @Override
     public void deleteImageByUrl(String url) {
         String fileName = url.substring(url.lastIndexOf("/") + 1);
-        Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
-
-        log.info("Deleting image {}", filePath.toString());
-        try {
-            Files.deleteIfExists(filePath);
-        } catch (IOException e) {
-            log.error("Error deleting image: {}", e.getMessage());
-            throw new ImageStorageException();
-        }
+        deleteImageByFilename(fileName);
     }
 
 }
