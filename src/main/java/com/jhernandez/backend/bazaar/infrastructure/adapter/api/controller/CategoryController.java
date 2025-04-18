@@ -108,8 +108,8 @@ public class CategoryController {
     public ResponseEntity<?> updateCategory(
         @RequestPart("category") @Valid CategoryDto category,
         BindingResult result,
-        @RequestPart(value = "image", required = false) MultipartFile imageFile,
-        @PathVariable Long id) {
+        @RequestPart(value = "image", required = false) MultipartFile imageFile) {//,
+        // @PathVariable Long id) {
         
         log.info("Updating category {}", category.getName());
         // category.setId(id);
