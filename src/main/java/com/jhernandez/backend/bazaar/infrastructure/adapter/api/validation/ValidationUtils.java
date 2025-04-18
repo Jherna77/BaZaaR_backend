@@ -17,6 +17,9 @@ public class ValidationUtils {
         result.getFieldErrors().forEach(err -> {
             errors.put(err.getField(), err.getDefaultMessage());
         });
+        result.getAllErrors().forEach(err -> {
+            errors.put(err.getObjectName(), err.getDefaultMessage());
+        });
         return ResponseEntity.badRequest().body(errors);
     }
 

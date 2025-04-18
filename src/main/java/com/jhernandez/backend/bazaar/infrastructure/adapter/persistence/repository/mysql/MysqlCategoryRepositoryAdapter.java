@@ -1,5 +1,7 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.mysql;
 
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.DISABLED_ITEM;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,6 +77,7 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
     public Optional<Category> disableCategoryById(Long id) {
         log.info("Disabling category with ID {}", id);
         return categoryRepository.findById(id).map(category -> {
+            category.setName(category.getName() + DISABLED_ITEM);
             category.setEnabled(false);
             return categoryEntityMapper.toDomain(categoryRepository.save(category));
         });
