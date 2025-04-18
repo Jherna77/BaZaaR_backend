@@ -10,12 +10,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+@UniqueCategoryName
 public class CategoryDto {
 
     private Long id;
 
     @RequiredField
-    @UniqueCategoryName
+    // @UniqueCategoryName
     private String name;
 
     // @RequiredField
