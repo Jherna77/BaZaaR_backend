@@ -17,6 +17,11 @@ public class ValidationUtils {
         result.getFieldErrors().forEach(err -> {
             errors.put(err.getField(), err.getDefaultMessage());
         });
+        return ResponseEntity.badRequest().body(errors);
+    }
+
+    public static ResponseEntity<?> typeValidation(BindingResult result) {
+        Map<String, String> errors = new HashMap<>();
         result.getAllErrors().forEach(err -> {
             errors.put(err.getObjectName(), err.getDefaultMessage());
         });
