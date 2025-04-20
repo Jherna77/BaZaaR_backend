@@ -90,6 +90,7 @@ public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
     public Optional<User> enableUserById(Long id) {
         log.info("Enabling user with ID {}", id);
         return userRepository.findById(id).map(user -> {
+            user.setName(user.getName().replace(DISABLED_ITEM, ""));
             user.setEnabled(true);
             return userEntityMapper.toDomain(userRepository.save(user));
         });
