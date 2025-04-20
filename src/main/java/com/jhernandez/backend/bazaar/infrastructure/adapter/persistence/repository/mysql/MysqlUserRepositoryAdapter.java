@@ -1,6 +1,6 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.mysql;
 
-import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.DISABLED_ITEM;
+// import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.DISABLED_ITEM;
 
 import java.util.List;
 import java.util.Optional;
