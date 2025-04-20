@@ -27,8 +27,8 @@ public class ProductDto {
     private Double price;
     
     private List<CategoryDto> categories;
-
     private List<String> imagesUrl;
+    private boolean enabled;
 
 }
 

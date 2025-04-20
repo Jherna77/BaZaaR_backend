@@ -6,7 +6,6 @@ import org.mapstruct.MappingConstants;
 
 import com.jhernandez.backend.bazaar.domain.model.User;
 import com.jhernandez.backend.bazaar.domain.model.UserRole;
-// import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserRequestDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserResponseDto;
 
@@ -14,6 +13,7 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserResponse
 public interface UserDtoMapper {
 
     @Mapping(source = "user.role.name", target = "role")
+    @Mapping(target = "name", expression = "java(NameDisabler.adjust(user.getName(), user.isEnabled()))")
     UserResponseDto toResponseDto(User user);
 
     @Mapping(target = "enabled", ignore = true)
@@ -22,4 +22,5 @@ public interface UserDtoMapper {
     default String mapRoleToString(UserRole role) {
         return role != null ? role.getName() : null;
     }
+
 }
