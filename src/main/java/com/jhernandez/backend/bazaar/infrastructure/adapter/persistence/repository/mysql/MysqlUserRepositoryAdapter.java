@@ -1,5 +1,7 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.mysql;
 
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.DISABLED_ITEM;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -97,6 +99,7 @@ public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
     public Optional<User> disableUserById(Long id) {
         log.info("Disabling user with ID {}", id);
         return userRepository.findById(id).map(user -> {
+            user.setName(user.getName() + DISABLED_ITEM);
             user.setEnabled(false);
             return userEntityMapper.toDomain(userRepository.save(user));
         });
