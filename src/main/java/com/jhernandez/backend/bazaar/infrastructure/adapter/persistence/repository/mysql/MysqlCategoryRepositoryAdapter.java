@@ -72,7 +72,6 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
             category.setName(categoryRepository.existsByName(newName)
                 ? originalName
                 : newName);
-            category.setName(category.getName().replace(DISABLED_ITEM, ""));
             category.setEnabled(true);
             return categoryEntityMapper.toDomain(categoryRepository.save(category));
         });
