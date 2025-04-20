@@ -1,6 +1,6 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.mysql;
 
-import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.DISABLED_ITEM;
+// import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.DISABLED_ITEM;
 
 import java.util.List;
 import java.util.Optional;
@@ -67,11 +67,11 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
     public Optional<Category> enableCategoryById(Long id) {
         log.info("Enabling category with ID {}", id);
         return categoryRepository.findById(id).map(category -> {
-            String originalName = category.getName();
-            String newName = originalName.replace(DISABLED_ITEM, "");
-            category.setName(categoryRepository.existsByName(newName)
-                ? originalName
-                : newName);
+            // String originalName = category.getName();
+            // String newName = originalName.replace(DISABLED_ITEM, "");
+            // category.setName(categoryRepository.existsByName(newName)
+            //     ? originalName
+            //     : newName);
             category.setEnabled(true);
             return categoryEntityMapper.toDomain(categoryRepository.save(category));
         });
@@ -82,9 +82,9 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
     public Optional<Category> disableCategoryById(Long id) {
         log.info("Disabling category with ID {}", id);
         return categoryRepository.findById(id).map(category -> {
-            do {
-                category.setName(category.getName() + DISABLED_ITEM);
-            } while (categoryRepository.existsByName(category.getName()));
+            // do {
+            //     category.setName(category.getName() + DISABLED_ITEM);
+            // } while (categoryRepository.existsByName(category.getName()));
             category.setEnabled(false);
             return categoryEntityMapper.toDomain(categoryRepository.save(category));
         });

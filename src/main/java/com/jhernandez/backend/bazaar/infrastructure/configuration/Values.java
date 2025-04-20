@@ -4,7 +4,6 @@ public class Values {
 
     public static final String UPLOAD_DIR = "/bazaar/uploads/";
     public static final String IMG_CONTENT_TYPE_OCTET = "application/octet-stream";
-    public static final String DISABLED_ITEM = " (disabled)";
 
     // API Endpoints
     public static final String AUTH = "/api/auth";
