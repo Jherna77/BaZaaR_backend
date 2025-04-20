@@ -18,5 +18,6 @@ public class UserResponseDto {
     private String city;
     private String province;
     private String zipCode;
+    private boolean enabled;
 
 }

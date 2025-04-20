@@ -20,7 +20,6 @@ public class CategoryDto {
     private String name;
 
     private String imageUrl;
-
     private boolean enabled;
 
 }
