@@ -49,6 +49,9 @@ public class UserService implements UserServicePort {
 
     @Override
     public Optional<User> updateUser(User user) throws UserException {
+        if (user.getId() == 1L) {
+            throw new UserException("Cannot update the master admin user.");
+        }
         return userRepositoryPort.updateUser(user);
     }
 
@@ -59,11 +62,18 @@ public class UserService implements UserServicePort {
 
     @Override
     public Optional<User> disableUserById(Long id) throws UserException {
+        if (id == 1L) {
+            throw new UserException("Cannot disable the master admin user.");
+        }
+
         return userRepositoryPort.disableUserById(id);
     }
 
     @Override
     public void deleteUserById(Long id) throws UserException {
+        if (id == 1L) {
+            throw new UserException("Cannot delete the master admin user.");
+        }
         userRepositoryPort.deleteUserById(id);
     }
     
