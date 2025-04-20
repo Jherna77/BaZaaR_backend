@@ -53,6 +53,16 @@ public class UserService implements UserServicePort {
     }
 
     @Override
+    public Optional<User> enableUserById(Long id) throws UserException {
+        return userRepositoryPort.enableUserById(id);
+    }
+
+    @Override
+    public Optional<User> disableUserById(Long id) throws UserException {
+        return userRepositoryPort.disableUserById(id);
+    }
+
+    @Override
     public void deleteUserById(Long id) throws UserException {
         userRepositoryPort.deleteUserById(id);
     }

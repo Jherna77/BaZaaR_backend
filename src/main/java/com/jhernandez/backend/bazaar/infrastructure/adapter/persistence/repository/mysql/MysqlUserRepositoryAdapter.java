@@ -80,10 +80,28 @@ public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
             existingUser.setCity(user.getCity());
             existingUser.setProvince(user.getProvince());
             existingUser.setZipCode(user.getZipCode());
-            existingUser.setEnabled(user.isEnabled());
             return userEntityMapper.toDomain(userRepository.save(existingUser));
         });
     }
+
+    @Override
+    public Optional<User> enableUserById(Long id) {
+        log.info("Enabling user with ID {}", id);
+        return userRepository.findById(id).map(user -> {
+            user.setEnabled(true);
+            return userEntityMapper.toDomain(userRepository.save(user));
+        });
+    }
+
+    @Override
+    public Optional<User> disableUserById(Long id) {
+        log.info("Disabling user with ID {}", id);
+        return userRepository.findById(id).map(user -> {
+            user.setEnabled(false);
+            return userEntityMapper.toDomain(userRepository.save(user));
+        });
+    }
+
 
     @Transactional
     @Override

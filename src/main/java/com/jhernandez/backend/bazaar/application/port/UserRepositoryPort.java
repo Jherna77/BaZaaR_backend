@@ -23,6 +23,10 @@ public interface UserRepositoryPort {
 
     Optional<User> updateUser(User user);
 
+    Optional<User> enableUserById(Long id);
+
+    Optional<User> disableUserById(Long id);
+
     void deleteUserById(Long id);
 
 }

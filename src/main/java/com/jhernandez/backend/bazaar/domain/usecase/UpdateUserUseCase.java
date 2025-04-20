@@ -9,4 +9,8 @@ public interface UpdateUserUseCase {
     
     Optional<User> updateUser(User user) throws UserException;
 
+    Optional<User> enableUserById(Long id) throws UserException;
+
+    Optional<User> disableUserById(Long id) throws UserException;
+
 }

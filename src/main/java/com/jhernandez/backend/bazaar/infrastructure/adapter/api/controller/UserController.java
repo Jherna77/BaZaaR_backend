@@ -112,7 +112,34 @@ public class UserController {
             log.error("Error updating user with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
 
+    @PutMapping("/enable/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> enableUser(@PathVariable Long id) {
+        log.info("Enabling user with ID {}", id);
+        try {
+            return userService.enableUserById(id).map(userDtoMapper::toResponseDto)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (UserException e) {
+            log.error("Error enabling user with ID {}", id);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/disable/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> disableUser(@PathVariable Long id) {
+        log.info("Disabling user with ID {}", id);
+        try {
+            return userService.disableUserById(id).map(userDtoMapper::toResponseDto)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (UserException e) {
+            log.error("Error disabling user with ID {}", id);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
