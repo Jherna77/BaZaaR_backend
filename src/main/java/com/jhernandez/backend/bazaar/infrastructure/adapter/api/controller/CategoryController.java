@@ -28,7 +28,8 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.CategoryD
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ImageFileDtoMapper;
 
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.CATEGORIES;
-import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.typeValidation;
+import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.fieldValidation;
+// import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.typeValidation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +62,8 @@ public class CategoryController {
 
         try {
             if (result.hasErrors()) {
-                return typeValidation(result);
+                // return typeValidation(result);
+                return fieldValidation(result);
             }
 
             log.debug("No errors found in field validation");
@@ -99,18 +101,20 @@ public class CategoryController {
         }
     }
 
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateCategory(
         @RequestPart("category") @Valid CategoryDto category,
         BindingResult result,
-        @RequestPart(value = "image", required = false) MultipartFile imageFile) {
-        
+        @RequestPart(value = "image", required = false) MultipartFile imageFile,
+        @PathVariable Long id) {
+            
         log.info("Updating category {}", category.getName());
         
         try {
             if (result.hasErrors()) {
-                return typeValidation(result);
+                // return typeValidation(result);
+                return fieldValidation(result);
             }
 
             // Check if image is provided and save image and update URL

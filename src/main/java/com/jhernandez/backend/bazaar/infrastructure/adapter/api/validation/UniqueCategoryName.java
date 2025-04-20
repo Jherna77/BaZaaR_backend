@@ -9,7 +9,8 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 @Constraint(validatedBy = UniqueCategoryNameValidator.class)
-@Target({ElementType.TYPE})
+// @Target({ElementType.TYPE})
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueCategoryName {
 

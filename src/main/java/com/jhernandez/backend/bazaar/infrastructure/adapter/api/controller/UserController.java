@@ -68,7 +68,7 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> findUserById(@PathVariable Long id) {
         log.info("Finding user with ID {}", id);
         try {
