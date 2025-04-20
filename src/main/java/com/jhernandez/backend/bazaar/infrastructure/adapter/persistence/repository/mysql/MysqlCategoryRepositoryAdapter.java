@@ -82,7 +82,9 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
     public Optional<Category> disableCategoryById(Long id) {
         log.info("Disabling category with ID {}", id);
         return categoryRepository.findById(id).map(category -> {
-            category.setName(category.getName() + DISABLED_ITEM);
+            do {
+                category.setName(category.getName() + DISABLED_ITEM);
+            } while (categoryRepository.existsByName(category.getName()));
             category.setEnabled(false);
             return categoryEntityMapper.toDomain(categoryRepository.save(category));
         });
