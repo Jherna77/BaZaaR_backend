@@ -2,6 +2,8 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation;
 
 import java.util.Optional;
 
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.PUT_REQUEST;
+
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaUserRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +27,7 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
     public boolean isValid(String email, ConstraintValidatorContext context) {
         log.info("Validating unique email: {}", email);
         
-        return request.getMethod().equals("PUT") ? isValidForUpdate(email) : !userRepository.existsByEmail(email);
+        return request.getMethod().equals(PUT_REQUEST) ? isValidForUpdate(email) : !userRepository.existsByEmail(email);
     }
 
     /*

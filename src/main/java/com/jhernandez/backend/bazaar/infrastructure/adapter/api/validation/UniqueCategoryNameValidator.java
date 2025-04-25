@@ -2,6 +2,8 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation;
 
 import java.util.Optional;
 
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.PUT_REQUEST;
+
 // import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.CategoryDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaCategoryRepository;
 
@@ -26,7 +28,7 @@ public class UniqueCategoryNameValidator implements ConstraintValidator<UniqueCa
     public boolean isValid(String categoryName, ConstraintValidatorContext context) {
         log.info("Validating unique category name: {}", categoryName);
         
-        return request.getMethod().equals("PUT") ? isValidForUpdate(categoryName) : !categoryRepository.existsByName(categoryName);
+        return request.getMethod().equals(PUT_REQUEST) ? isValidForUpdate(categoryName) : !categoryRepository.existsByName(categoryName);
     }
 
     /*
