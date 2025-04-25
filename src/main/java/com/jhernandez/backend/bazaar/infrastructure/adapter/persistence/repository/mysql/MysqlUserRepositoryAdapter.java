@@ -75,7 +75,8 @@ public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
         log.info("Updating user {}", user.getEmail());
         return userRepository.findById(user.getId()).map(existingUser -> {
             existingUser.setEmail(user.getEmail());
-            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            // existingUser.setPassword(existingUser.getPassword()); // Do not update password
+            // existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
             existingUser.setName(user.getName());
             existingUser.setSurnames(user.getSurnames());
             existingUser.setAddress(user.getAddress());
