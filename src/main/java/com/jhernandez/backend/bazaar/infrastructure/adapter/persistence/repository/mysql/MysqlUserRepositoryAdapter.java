@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.model.User;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.UserEntity;
+// import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.UserRoleEntity;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.UserEntityMapper;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.UserRoleEntityMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaUserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
 
     private final JpaUserRepository userRepository;
     private final UserEntityMapper userEntityMapper;
+    private final UserRoleEntityMapper userRoleEntityMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -74,6 +77,7 @@ public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
     public Optional<User> updateUser(User user) {
         log.info("Updating user {}", user.getEmail());
         return userRepository.findById(user.getId()).map(existingUser -> {
+            existingUser.setRole(userRoleEntityMapper.toEntity(user.getRole()));
             existingUser.setEmail(user.getEmail());
             // existingUser.setPassword(existingUser.getPassword()); // Do not update password
             // existingUser.setPassword(passwordEncoder.encode(user.getPassword()));

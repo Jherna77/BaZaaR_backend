@@ -11,4 +11,6 @@ public interface UserRoleDtoMapper {
 
     UserRoleDto toDto(UserRole userRole);
 
+    UserRole toDomain(UserRoleDto userRoleDto);
+
 }
