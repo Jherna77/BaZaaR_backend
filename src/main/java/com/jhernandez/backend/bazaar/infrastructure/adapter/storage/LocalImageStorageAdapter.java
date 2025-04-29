@@ -1,5 +1,6 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.storage;
 
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.IMAGES;
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.IMG_CONTENT_TYPE_OCTET;
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.UPLOAD_DIR;
 
@@ -8,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
+// import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -24,13 +25,14 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
 
     @Override
     public ImageFile saveImage(ImageFile image) {
-        String fileName = UUID.randomUUID() + "-" + image.getFileName();
+        String fileName = image.getFileName();
+        // String fileName = UUID.randomUUID() + "-" + image.getFileName();
         Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName);
         log.info("Saving image {}", filePath.toString());
         try {
             Files.createDirectories(filePath.getParent());
             Files.write(filePath, image.getData());
-            image.setImageUrl("/api/images/" + fileName);
+            image.setImageUrl(IMAGES + "/" + fileName);
             return image;
         } catch (IOException e) {
             log.error("Error saving image: {}", e.getMessage());

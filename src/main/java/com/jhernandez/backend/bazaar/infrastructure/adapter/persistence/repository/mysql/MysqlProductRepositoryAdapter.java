@@ -82,6 +82,29 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         });
     }
 
+
+
+    @Transactional
+    @Override
+    public Optional<Product> enableProductById(Long id) {
+        log.info("Enabling category with ID {}", id);
+        return productRepository.findById(id).map(product -> {
+            product.setEnabled(true);
+            return productEntityMapper.toDomain(productRepository.save(product));
+        });
+    }
+
+    @Transactional
+    @Override
+    public Optional<Product> disableProductById(Long id) {
+        log.info("Disabling category with ID {}", id);
+        return productRepository.findById(id).map(product -> {
+            product.setEnabled(false);
+            return productEntityMapper.toDomain(productRepository.save(product));
+        });
+    }
+
+
     @Transactional
     @Override
     public void deleteProductById(Long id) {

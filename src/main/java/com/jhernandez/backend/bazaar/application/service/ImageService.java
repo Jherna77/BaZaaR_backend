@@ -24,7 +24,6 @@ public class ImageService implements ImageServicePort {
         return imageStoragePort.saveImagesList(images);
     }
 
-
     @Override
     public ImageFile getImageByFileName(String fileName) throws IOException {
         return imageStoragePort.getImageByFileName(fileName);

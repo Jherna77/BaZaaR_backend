@@ -9,4 +9,8 @@ public interface UpdateProductUseCase {
 
     Optional<Product> updateProduct(Product product) throws ProductException;
 
+    Optional<Product> enableProductById(Long id) throws ProductException;
+
+    Optional<Product> disableProductById(Long id) throws ProductException;
+
 }

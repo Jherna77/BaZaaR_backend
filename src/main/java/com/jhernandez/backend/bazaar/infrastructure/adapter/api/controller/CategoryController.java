@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ARG_CATEGORY;
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ARG_IMAGE;
 import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
 import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
@@ -54,9 +56,9 @@ public class CategoryController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createCategory(
-            @RequestPart("category") @Valid CategoryDto category,
+            @RequestPart(ARG_CATEGORY) @Valid CategoryDto category,
             BindingResult result,
-            @RequestPart("image") MultipartFile imageFile) {
+            @RequestPart(ARG_IMAGE) MultipartFile imageFile) {
 
         log.info("Creating category: {}", category.getName());
 
@@ -104,9 +106,9 @@ public class CategoryController {
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateCategory(
-        @RequestPart("category") @Valid CategoryDto category,
+        @RequestPart(ARG_CATEGORY) @Valid CategoryDto category,
         BindingResult result,
-        @RequestPart(value = "image", required = false) MultipartFile imageFile,
+        @RequestPart(value = ARG_IMAGE, required = false) MultipartFile imageFile,
         @PathVariable Long id) {
             
         log.info("Updating category {}", category.getName());
@@ -177,7 +179,7 @@ public class CategoryController {
 
     // Saves image in storage and returns the URL
     private String saveImage (MultipartFile imageFile) throws IOException {
-            return imageService.saveImage(imageFileDtoMapper.toDomain((imageFile))).getImageUrl();
+        return imageService.saveImage(imageFileDtoMapper.toDomain((imageFile))).getImageUrl();
     }
 
 }

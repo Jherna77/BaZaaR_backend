@@ -55,6 +55,16 @@ public class ProductService implements ProductServicePort {
     }
 
     @Override
+    public Optional<Product> enableProductById(Long id) throws ProductException {
+        return productRepositoryPort.enableProductById(id);
+    }
+
+    @Override
+    public Optional<Product> disableProductById(Long id) throws ProductException {
+        return productRepositoryPort.disableProductById(id);
+    }
+
+    @Override
     public void deleteProductById(Long id) throws ProductException {
         productRepositoryPort.deleteProductById(id);
     }

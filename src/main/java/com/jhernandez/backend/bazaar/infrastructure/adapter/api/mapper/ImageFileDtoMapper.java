@@ -1,6 +1,7 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,5 +28,17 @@ public class ImageFileDtoMapper {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    public List<ImageFile> toDomainList(List<MultipartFile> multipartFileList) {
+        return multipartFileList.stream()
+            .map(this::toDomain)
+            .toList();
+    }
+
+    public List<ImageFileDto> toDtoList(List<ImageFile> imageFileList) {
+        return imageFileList.stream()
+            .map(this::toDto)
+            .toList();
     }
 }
