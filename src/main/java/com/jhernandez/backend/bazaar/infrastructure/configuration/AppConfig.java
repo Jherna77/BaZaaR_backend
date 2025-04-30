@@ -21,13 +21,13 @@ public class AppConfig {
     }
 
     @Bean
-    ProductServicePort productServicePort(ProductRepositoryPort productRepositoryPort) {
-        return new ProductService(productRepositoryPort);
+    ProductServicePort productServicePort(ProductRepositoryPort productRepositoryPort, ImageStoragePort imageStoragePort) {
+        return new ProductService(productRepositoryPort, imageStoragePort);
     }
 
     @Bean
-    CategoryServicePort categoryServicePort(CategoryRepositoryPort categoryRepositoryPort) {
-        return new CategoryService(categoryRepositoryPort);
+    CategoryServicePort categoryServicePort(CategoryRepositoryPort categoryRepositoryPort, ImageStoragePort imageStoragePort) {
+        return new CategoryService(categoryRepositoryPort, imageStoragePort);
     }
 
     @Bean

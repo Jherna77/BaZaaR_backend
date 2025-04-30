@@ -1,6 +1,5 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.controller;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,9 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ARG_PRODUCT;
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ARG_IMAGE;
-import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.application.port.ProductServicePort;
-// import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.domain.exception.DomainException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ProductDto;
@@ -37,7 +34,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping(PRODUCTS)
@@ -48,7 +44,6 @@ public class ProductController {
 
     private final ProductServicePort productService;
     private final ProductDtoMapper productDtoMapper;
-    private final ImageServicePort imageService;
     private final ImageFileDtoMapper imageFileDtoMapper;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -59,37 +54,17 @@ public class ProductController {
         @RequestPart(ARG_IMAGE) List<MultipartFile> imageFileList) {
         log.info("Creating product: {}", product.getName());
         try {
-    
-            if (result.hasErrors()) {
-                return fieldValidation(result);
-            }
-
-            product.setImagesUrl(saveImageList(imageFileList));
-
+            if (result.hasErrors()) return fieldValidation(result);        
             return ResponseEntity.status(HttpStatus.CREATED)
-                .body(productService.createProduct(productDtoMapper.toDomain(product))
+                .body(productService.createProduct(
+                    productDtoMapper.toDomain(product),
+                    imageFileDtoMapper.toDomainList(imageFileList))
                 .map(productDtoMapper::toDto));
-        } catch (ProductException | IOException e) {
+        } catch (ProductException e) {
             log.error("Error creating product: {}", product.getName());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    // @PostMapping
-    // @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SHOP')")
-    // public ResponseEntity<?> createProduct(@Valid @RequestBody ProductDto product, BindingResult result) {
-    //     log.info("Creating product: {}", product.getName());
-    //     try {
-    //         return (result.hasErrors())
-    //             ? fieldValidation(result) 
-    //             : ResponseEntity.status(HttpStatus.CREATED)
-    //                 .body(productService.createProduct(productDtoMapper.toDomain(product))
-    //                 .map(productDtoMapper::toDto));
-    //     } catch (ProductException e) {
-    //         log.error("Error creating product: {}", product.getName());
-    //         return ResponseEntity.badRequest().body(e.getMessage());
-    //     }
-    // }
 
     @GetMapping
     public List<ProductDto> findAllPoducts() {
@@ -125,19 +100,26 @@ public class ProductController {
         }
     }
     
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SHOP')")
-    public ResponseEntity<?> updateProduct(@Valid @RequestBody ProductDto product, BindingResult result, @PathVariable Long id) {
+    public ResponseEntity<?> updateProduct(
+        @RequestPart(ARG_PRODUCT) @Valid ProductDto product,
+        BindingResult result,
+        @RequestPart(value = ARG_IMAGE, required = false) List<MultipartFile> imageFileList,
+        @PathVariable Long id) {
+
         log.info("Updating product with ID {}", id);
-        product.setId(id);
+        
         try {
-            return (result.hasErrors())
-                ? fieldValidation(result) 
-                : productService.updateProduct(productDtoMapper.toDomain(product))
+            if(result.hasErrors()) return fieldValidation(result);
+            return productService.updateProduct(
+                        productDtoMapper.toDomain(product),
+                        imageFileDtoMapper.toDomainList(imageFileList))
                     .map(productDtoMapper::toDto)
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
-        } catch (ProductException e) {
+
+        } catch (ProductException /*| IOException*/ e) {
             log.error("Error updating product: {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -182,14 +164,6 @@ public class ProductController {
             log.error("Error deleting product with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
-
-    // Saves List of images in storage and returns the URL
-    private List<String> saveImageList (List<MultipartFile> imageFileList) throws IOException {
-        return imageService.saveImagesList(imageFileDtoMapper.toDomainList(imageFileList))
-            .stream()
-            .map(imageFile -> imageFile.getImageUrl())
-            .collect(Collectors.toList());
     }
 
 }

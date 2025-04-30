@@ -96,4 +96,9 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
         deleteImageByFilename(fileName);
     }
 
+    @Override
+    public void deleteImageListByUrl(List<String> urls) {
+        urls.forEach(this::deleteImageByUrl);
+    }
+
 }

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.ProductEntity;
-import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.CategoryEntityMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.ProductEntityMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaProductRepository;
 
@@ -24,12 +23,11 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
 
     private final JpaProductRepository productRepository;
     private final ProductEntityMapper productEntityMapper;
-    private final CategoryEntityMapper categoryEntityMapper;
     
     @Transactional
     @Override
-    public Optional<Product> createProduct(Product product) {
-        log.info("Creating product {}", product.getName());
+    public Optional<Product> saveProduct(Product product) {
+        log.info("Saving product {}", product.getName());
         ProductEntity productEntity = productEntityMapper.toEntity(product);
         return Optional.of(productEntityMapper.toDomain(
                 productRepository.save(productEntity)));
@@ -42,7 +40,6 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         return productRepository.findAll().stream()
                 .map(productEntityMapper::toDomain)
                 .collect(Collectors.toList());
-                // .toList();
     }
 
     @Transactional(readOnly = true)
@@ -68,42 +65,6 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         log.info("Finding product with ID {}", id);
         return productRepository.findById(id).map(productEntityMapper::toDomain);
     }
-
-    @Transactional
-    @Override
-    public Optional<Product> updateProduct(Product product) {
-        log.info("Updating product {}", product.getName());
-        return productRepository.findById(product.getId()).map(existingProduct -> {
-            existingProduct.setName(product.getName());
-            existingProduct.setDescription(product.getDescription());
-            existingProduct.setPrice(product.getPrice());
-            existingProduct.setCategories(categoryEntityMapper.toEntityList(product.getCategories()));
-            return productEntityMapper.toDomain(productRepository.save(existingProduct));
-        });
-    }
-
-
-
-    @Transactional
-    @Override
-    public Optional<Product> enableProductById(Long id) {
-        log.info("Enabling category with ID {}", id);
-        return productRepository.findById(id).map(product -> {
-            product.setEnabled(true);
-            return productEntityMapper.toDomain(productRepository.save(product));
-        });
-    }
-
-    @Transactional
-    @Override
-    public Optional<Product> disableProductById(Long id) {
-        log.info("Disabling category with ID {}", id);
-        return productRepository.findById(id).map(product -> {
-            product.setEnabled(false);
-            return productEntityMapper.toDomain(productRepository.save(product));
-        });
-    }
-
 
     @Transactional
     @Override

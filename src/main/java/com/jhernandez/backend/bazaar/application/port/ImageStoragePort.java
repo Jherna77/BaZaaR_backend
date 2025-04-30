@@ -16,5 +16,6 @@ public interface ImageStoragePort {
 
         void deleteImageByUrl(String url);
 
+        void deleteImageListByUrl(List<String> urls);
 
 }

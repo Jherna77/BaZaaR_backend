@@ -20,20 +20,24 @@ public class ImageFileDtoMapper {
 
     public ImageFile toDomain(MultipartFile multipartFile) {
         try {
-            return new ImageFile(
-                multipartFile.getBytes(),
-                multipartFile.getOriginalFilename(),
-                multipartFile.getContentType(),
-                null);
+            return multipartFile != null
+                ? new ImageFile(
+                    multipartFile.getBytes(),
+                    multipartFile.getOriginalFilename(),
+                    multipartFile.getContentType(),
+                    null)
+                : null;
         } catch (IOException e) {
             return null;
         }
     }
 
     public List<ImageFile> toDomainList(List<MultipartFile> multipartFileList) {
-        return multipartFileList.stream()
-            .map(this::toDomain)
-            .toList();
+        return multipartFileList != null
+            ? multipartFileList.stream()
+                .map(this::toDomain)
+                .toList()
+            : null;
     }
 
     public List<ImageFileDto> toDtoList(List<ImageFile> imageFileList) {
