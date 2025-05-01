@@ -75,10 +75,12 @@ public class ProductService implements ProductServicePort {
         existingProduct.setCategories(product.getCategories());
 
         List<String> finalImages = new ArrayList<>(product.getImagesUrl());
-        imageServicePort.deleteImageListByUrl(
-                existingProduct.getImagesUrl().stream()
-                        .filter(img -> !finalImages.contains(img))
-                        .toList());
+        List<String> imagesToDelete = new ArrayList<>(existingProduct.getImagesUrl()
+            .stream()
+            .filter(img -> !finalImages.contains(img))
+            .toList());
+        
+        if (imagesToDelete != null && !imagesToDelete.isEmpty()) imageServicePort.deleteImageListByUrl(imagesToDelete);
         if (productsImages != null && !productsImages.isEmpty()) {
             finalImages.addAll(
                     imageServicePort.saveImagesList(productsImages).stream()
