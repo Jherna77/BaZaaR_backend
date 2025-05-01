@@ -79,6 +79,7 @@ public class SpringSecurityConfig {
      *      - GET /api/roles
      *      - GET /api/categories/{id}
      *      - GET /api/products/{id}
+     *      - GET /api/products/user/{userId}
      *      - GET /api/products/category/{categoryId}
      *      - GET /api/images/{filename:.+}
      *      - POST /api/users/register
@@ -88,7 +89,16 @@ public class SpringSecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-            .requestMatchers(HttpMethod.GET, CATEGORIES, ROLES, PRODUCTS, CATEGORY_ID, PRODUCT_ID, PRODUCTS_CATEGORY_ID, IMAGE_ID).permitAll()
+            .requestMatchers(HttpMethod.GET,
+                CATEGORIES,
+                ROLES,
+                PRODUCTS,
+                CATEGORY_ID,
+                PRODUCT_ID,
+                PRODUCTS_USER_ID,
+                PRODUCTS_CATEGORY_ID,
+                IMAGE_ID)
+                .permitAll()
             .requestMatchers(HttpMethod.POST, REGISTER).permitAll()
             .anyRequest().authenticated())
             .addFilter(new JwtAuthenticationFilter(authenticationManager()))

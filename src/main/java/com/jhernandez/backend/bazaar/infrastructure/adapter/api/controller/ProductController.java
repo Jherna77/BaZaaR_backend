@@ -73,19 +73,6 @@ public class ProductController {
             .collect(Collectors.toList());
     }
 
-    @GetMapping("/category/{categoryId}")
-    public ResponseEntity<?> findProductsByCategoryId(@PathVariable Long categoryId) {
-        log.info("Finding products by category with ID {}", categoryId);
-        try {
-            return ResponseEntity.ok(productService.findProductsByCategoryId(categoryId).stream()
-                    .map(productDtoMapper::toDto)
-                    .collect(Collectors.toList()));
-        } catch (DomainException e) {
-            log.error("Error getting products by category with ID {}", categoryId);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> findProductById(@PathVariable Long id) {
         log.info("Finding product with ID {}", id);
@@ -95,6 +82,32 @@ public class ProductController {
                     .orElse(ResponseEntity.notFound().build());
         } catch (DomainException e) {
             log.error("Error getting product with ID {}", id);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> findProductsByUserId(@PathVariable Long userId) {
+        log.info("Finding products by shop with ID {}", userId);
+        try {
+            return ResponseEntity.ok(productService.findProductsByUserId(userId).stream()
+                    .map(productDtoMapper::toDto)
+                    .collect(Collectors.toList()));
+        } catch (DomainException e) {
+            log.error("Error getting products by user with ID {}", userId);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<?> findProductsByCategoryId(@PathVariable Long categoryId) {
+        log.info("Finding products by category with ID {}", categoryId);
+        try {
+            return ResponseEntity.ok(productService.findProductsByCategoryId(categoryId).stream()
+                    .map(productDtoMapper::toDto)
+                    .collect(Collectors.toList()));
+        } catch (DomainException e) {
+            log.error("Error getting products by category with ID {}", categoryId);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

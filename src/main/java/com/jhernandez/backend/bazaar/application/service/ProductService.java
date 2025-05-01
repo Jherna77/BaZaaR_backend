@@ -7,12 +7,14 @@ import java.util.Optional;
 import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.ProductServicePort;
+import com.jhernandez.backend.bazaar.application.port.UserServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 import com.jhernandez.backend.bazaar.domain.model.Product;
+import com.jhernandez.backend.bazaar.domain.model.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +35,7 @@ public class ProductService implements ProductServicePort {
 
     private final ProductRepositoryPort productRepositoryPort;
     private final ImageServicePort imageServicePort;
+    private final UserServicePort userServicePort;
 
     @Override
     public Optional<Product> createProduct(Product product, List<ImageFile> productImages) throws ProductException, ImageFileException {
@@ -49,18 +52,21 @@ public class ProductService implements ProductServicePort {
     }
 
     @Override
+    public Optional<Product> findProductById(Long id) throws ProductException {
+        return productRepositoryPort.findProductById(id);
+    }
+
+    @Override
     public List<Product> findProductsByCategoryId(Long categoryId) throws ProductException, CategoryException {
         return productRepositoryPort.findProductsByCategoryId(categoryId);
     }
 
     @Override
-    public List<Product> findProductsByUserId(Long userId) throws ProductException, UserException {
-        return productRepositoryPort.findProductsByUserId(userId);
-    }
-
-    @Override
-    public Optional<Product> findProductById(Long id) throws ProductException {
-        return productRepositoryPort.findProductById(id);
+    public List<Product> findProductsByUserId(Long userId) throws UserException {
+        if (userId == null) throw new UserException("User ID must not be null");
+        User user = userServicePort.findUserById(userId)
+                .orElseThrow(() -> new UserException("User not found"));
+        return user.getProductsSafe();
     }
 
     @Override

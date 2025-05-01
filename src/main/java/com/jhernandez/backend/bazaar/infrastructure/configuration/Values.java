@@ -24,6 +24,7 @@ public class Values {
 
     public static final String PRODUCTS = "/api/products";
     public static final String PRODUCT_ID = PRODUCTS + "/{id}";
+    public static final String PRODUCTS_USER_ID = PRODUCTS + "/user/{userId}";
     public static final String PRODUCTS_CATEGORY_ID = PRODUCTS + "/category/{categoryId}";
 
     public static final String IMAGES = "/api/images";

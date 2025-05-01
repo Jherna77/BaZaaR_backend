@@ -1,5 +1,8 @@
 package com.jhernandez.backend.bazaar.domain.model;
 
+import java.util.Collections;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +23,11 @@ public class User {
     private String province;
     private String zipCode;
     private boolean enabled;
+    private List<Product> products;
+
+    public List<Product> getProductsSafe() {
+        return products == null ? Collections.emptyList() : products;
+    }
+    
     
 }

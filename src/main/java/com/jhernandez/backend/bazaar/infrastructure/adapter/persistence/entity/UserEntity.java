@@ -1,5 +1,7 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity;
 
+import java.util.List;
+
 // import com.jhernandez.backend.bazaar.validation.UniqueEmail;
 // import com.jhernandez.backend.bazaar.validation.Password;
 // import com.jhernandez.backend.bazaar.validation.RequiredField;
@@ -11,9 +13,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 // import jakarta.persistence.Transient;
 // import jakarta.persistence.UniqueConstraint;
 // import jakarta.validation.constraints.Email;
@@ -59,6 +64,13 @@ public class UserEntity {
     // private boolean isShop;
 
     private boolean enabled;
+
+    @ManyToMany
+    @JoinTable(name="user_products",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "product_id"),
+        uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "product_id"})})  
+    private List<ProductEntity> products;
 
     @PrePersist
     public void prePersist() {
