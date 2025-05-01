@@ -11,7 +11,7 @@ import com.jhernandez.backend.bazaar.domain.model.User;
  */
 public interface UserRepositoryPort {
 
-    Optional<User> createUser(User user);
+    Optional<User> saveUser(User user);
 
     List<User> findAllUsers();
 
@@ -20,12 +20,6 @@ public interface UserRepositoryPort {
     Optional<User> findUserByEmail(String email);
 
     boolean existsByEmail(String email);
-
-    Optional<User> updateUser(User user);
-
-    Optional<User> enableUserById(Long id);
-
-    Optional<User> disableUserById(Long id);
 
     void deleteUserById(Long id);
 

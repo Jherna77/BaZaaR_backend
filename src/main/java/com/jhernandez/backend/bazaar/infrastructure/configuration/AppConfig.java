@@ -3,6 +3,7 @@ package com.jhernandez.backend.bazaar.infrastructure.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.jhernandez.backend.bazaar.application.port.*;
 import com.jhernandez.backend.bazaar.application.service.*;
@@ -16,8 +17,8 @@ import com.jhernandez.backend.bazaar.application.service.*;
 public class AppConfig {
 
     @Bean
-    UserServicePort userServicePort(UserRepositoryPort userRepositoryPort) {
-        return new UserService(userRepositoryPort);
+    UserServicePort userServicePort(UserRepositoryPort userRepositoryPort, PasswordEncoder passwordEncoder) {
+        return new UserService(userRepositoryPort, passwordEncoder);
     }
 
     @Bean
