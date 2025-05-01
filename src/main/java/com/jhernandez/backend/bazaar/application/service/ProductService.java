@@ -64,6 +64,7 @@ public class ProductService implements ProductServicePort {
 
     @Override
     public Optional<Product> updateProduct(Product product, List<ImageFile> productsImages) throws ProductException {
+        if (product.getId() == null) throw new ProductException("Product ID must not be null");
         Product existingProduct = findProductById(product.getId())
                 .orElseThrow(() -> new ProductException("Product not found"));
 
@@ -90,24 +91,30 @@ public class ProductService implements ProductServicePort {
 
     @Override
     public Optional<Product> enableProductById(Long id) throws ProductException {
+        if (id == null) throw new ProductException("Product ID must not be null");
         Product existingProduct = findProductById(id)
                 .orElseThrow(() -> new ProductException("Product not found"));
-
+        if (existingProduct.isEnabled()) throw new ProductException("Product is already enabled");
         existingProduct.setEnabled(true);
         return productRepositoryPort.saveProduct(existingProduct);
     }
 
     @Override
     public Optional<Product> disableProductById(Long id) throws ProductException {
+        if (id == null) throw new ProductException("Product ID must not be null");
         Product existingProduct = findProductById(id)
                 .orElseThrow(() -> new ProductException("Product not found"));
-
+        if (!existingProduct.isEnabled()) throw new ProductException("Product is already disabled");
         existingProduct.setEnabled(false);
         return productRepositoryPort.saveProduct(existingProduct);
     }
 
     @Override
     public void deleteProductById(Long id) throws ProductException {
+        if (id == null) throw new ProductException("Product ID must not be null");
+        Product existingProduct = findProductById(id)
+                .orElseThrow(() -> new ProductException("Product not found"));
+        imageStoragePort.deleteImageListByUrl(existingProduct.getImagesUrl());
         productRepositoryPort.deleteProductById(id);
     }
 

@@ -5,10 +5,11 @@ import java.util.Optional;
 
 import com.jhernandez.backend.bazaar.application.port.CategoryRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
+import com.jhernandez.backend.bazaar.application.port.ImageStoragePort;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.domain.model.Category;
+import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 
-// import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 
 /*
@@ -22,10 +23,13 @@ import lombok.RequiredArgsConstructor;
 public class CategoryService implements CategoryServicePort{
 
     private final CategoryRepositoryPort categoryRepositoryPort;
+    private final ImageStoragePort imageStoragePort;
 
     @Override
-    public Optional<Category> createCategory(Category category) throws CategoryException {
-        return categoryRepositoryPort.createCategory(category);
+    public Optional<Category> createCategory(Category category, ImageFile categoryImage) throws CategoryException {
+        // Save image in storage and update URL
+        category.setImageUrl(imageStoragePort.saveImage(categoryImage).getImageUrl());
+        return categoryRepositoryPort.saveCategory(category);
     }
 
     @Override
@@ -39,22 +43,46 @@ public class CategoryService implements CategoryServicePort{
     }
 
     @Override
-    public Optional<Category> updateCategory(Category category) throws CategoryException {
-        return categoryRepositoryPort.updateCategory(category);
+    public Optional<Category> updateCategory(Category category, ImageFile categoryImage) throws CategoryException {
+        if (category.getId() == null) throw new CategoryException("Category ID must not be null");
+        Category existingCategory = findCategoryById(category.getId())
+                .orElseThrow(() -> new CategoryException("Category not found"));
+        existingCategory.setName(category.getName());
+        
+        // Check if image is provided and save image /update URL
+        if (categoryImage != null) {
+            imageStoragePort.deleteImageByUrl(existingCategory.getImageUrl());
+            existingCategory.setImageUrl(imageStoragePort.saveImage(categoryImage).getImageUrl());
+        }
+        return categoryRepositoryPort.saveCategory(existingCategory);
     }
 
     @Override
     public Optional<Category> enableCategoryById(Long id) throws CategoryException {
-        return categoryRepositoryPort.enableCategoryById(id);
+        if (id == null) throw new CategoryException("Category ID must not be null");
+        Category existingCategory = findCategoryById(id)
+                .orElseThrow(() -> new CategoryException("Category not found"));
+        if (existingCategory.isEnabled()) throw new CategoryException("Category is already enabled");
+        existingCategory.setEnabled(true);
+        return categoryRepositoryPort.saveCategory(existingCategory);
     }
 
     @Override
     public Optional<Category> disableCategoryById(Long id) throws CategoryException {
-        return categoryRepositoryPort.disableCategoryById(id);
-    }
+        if (id == null) throw new CategoryException("Category ID must not be null");
+        Category existingCategory = findCategoryById(id)
+                .orElseThrow(() -> new CategoryException("Category not found"));
+        if (!existingCategory.isEnabled()) throw new CategoryException("Category is already disabled");
+        existingCategory.setEnabled(false);
+        return categoryRepositoryPort.saveCategory(existingCategory);
+        }
 
     @Override
     public void deleteCategoryById(Long id) throws CategoryException {
+        if (id == null) throw new CategoryException("Category ID must not be null");
+        Category existingCategory = findCategoryById(id)
+                .orElseThrow(() -> new CategoryException("Category not found"));
+        if (existingCategory.getImageUrl() != null) imageStoragePort.deleteImageByUrl(existingCategory.getImageUrl());
         categoryRepositoryPort.deleteCategoryById(id);
     }    
 

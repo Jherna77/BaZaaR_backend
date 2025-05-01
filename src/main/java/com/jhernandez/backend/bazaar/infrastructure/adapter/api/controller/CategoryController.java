@@ -1,6 +1,5 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.controller;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ARG_CATEGORY;
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ARG_IMAGE;
 import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
-import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.CategoryDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.CategoryDtoMapper;
@@ -31,7 +29,6 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ImageFile
 
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.CATEGORIES;
 import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.fieldValidation;
-// import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.typeValidation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +47,6 @@ public class CategoryController {
 
     private final CategoryServicePort categoryService;
     private final CategoryDtoMapper categoryDtoMapper;
-    private final ImageServicePort imageService;
     private final ImageFileDtoMapper imageFileDtoMapper;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -63,21 +59,15 @@ public class CategoryController {
         log.info("Creating category: {}", category.getName());
 
         try {
-            if (result.hasErrors()) {
-                // return typeValidation(result);
-                return fieldValidation(result);
-            }
-
+            if (result.hasErrors()) return fieldValidation(result);
             log.debug("No errors found in field validation");
-
-            // Save image and update URL
-            category.setImageUrl(saveImage(imageFile));
-
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(categoryService.createCategory(categoryDtoMapper.toDomain(category))
+                    .body(categoryService.createCategory(
+                        categoryDtoMapper.toDomain(category),
+                        imageFileDtoMapper.toDomain(imageFile))
                     .map(categoryDtoMapper::toDto));
 
-        } catch (CategoryException | IOException e) {
+        } catch (CategoryException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -114,23 +104,16 @@ public class CategoryController {
         log.info("Updating category {}", category.getName());
         
         try {
-            if (result.hasErrors()) {
-                // return typeValidation(result);
-                return fieldValidation(result);
-            }
-
-            // Check if image is provided and save image and update URL
-            if (imageFile != null && !imageFile.isEmpty()) {
-                imageService.deleteImageByUrl(category.getImageUrl());
-                category.setImageUrl(saveImage(imageFile));
-            }
-
-            return categoryService.updateCategory(categoryDtoMapper.toDomain(category))
+            if (result.hasErrors()) return fieldValidation(result);
+            log.debug("No errors found in field validation");
+            return categoryService.updateCategory(
+                            categoryDtoMapper.toDomain(category),
+                            imageFileDtoMapper.toDomain(imageFile))
                         .map(categoryDtoMapper::toDto)
                         .map(ResponseEntity::ok)
                         .orElse(ResponseEntity.notFound().build());
                 
-        } catch (CategoryException | IOException e) {
+        } catch (CategoryException e) {
             log.error("Error updating category with ID {}", category.getName());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -175,11 +158,6 @@ public class CategoryController {
             log.error("Error deleting category with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
-
-    // Saves image in storage and returns the URL
-    private String saveImage (MultipartFile imageFile) throws IOException {
-        return imageService.saveImage(imageFileDtoMapper.toDomain((imageFile))).getImageUrl();
     }
 
 }

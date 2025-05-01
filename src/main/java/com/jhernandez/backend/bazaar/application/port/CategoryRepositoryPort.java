@@ -12,17 +12,11 @@ import com.jhernandez.backend.bazaar.domain.model.Category;
  */
 public interface CategoryRepositoryPort {
 
-    Optional<Category> createCategory(Category category);
+    Optional<Category> saveCategory(Category category);
 
     List<Category> findAllCategories();
 
     Optional<Category> findCategoryById(Long id);
-
-    Optional<Category> updateCategory(Category category);
-
-    Optional<Category> enableCategoryById(Long id);
-
-    Optional<Category> disableCategoryById(Long id);
 
     void deleteCategoryById(Long id);
 

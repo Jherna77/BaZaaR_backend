@@ -28,8 +28,8 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
 
     @Transactional
     @Override
-    public Optional<Category> createCategory(Category category) {
-        log.info("Creating category {}", category.getName());
+    public Optional<Category> saveCategory(Category category) {
+        log.info("Saving category {}", category.getName());
         CategoryEntity categoryEntity = categoryEntityMapper.toEntity(category);
         return Optional.of(categoryEntityMapper.toDomain(
                 categoryRepository.save(categoryEntity)));
@@ -49,45 +49,6 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
     public Optional<Category> findCategoryById(Long id) {
         log.info("Finding category with ID {}", id);
         return categoryRepository.findById(id).map(categoryEntityMapper::toDomain);
-    }
-
-    @Transactional
-    @Override
-    public Optional<Category> updateCategory(Category category) {
-        log.info("Updating category", category.getName());
-        return categoryRepository.findById(category.getId()).map(existingCategory -> {
-            existingCategory.setName(category.getName());
-            existingCategory.setImageUrl(category.getImageUrl());
-            return categoryEntityMapper.toDomain(categoryRepository.save(existingCategory));
-        });
-    }
-
-    @Transactional
-    @Override
-    public Optional<Category> enableCategoryById(Long id) {
-        log.info("Enabling category with ID {}", id);
-        return categoryRepository.findById(id).map(category -> {
-            // String originalName = category.getName();
-            // String newName = originalName.replace(DISABLED_ITEM, "");
-            // category.setName(categoryRepository.existsByName(newName)
-            //     ? originalName
-            //     : newName);
-            category.setEnabled(true);
-            return categoryEntityMapper.toDomain(categoryRepository.save(category));
-        });
-    }
-
-    @Transactional
-    @Override
-    public Optional<Category> disableCategoryById(Long id) {
-        log.info("Disabling category with ID {}", id);
-        return categoryRepository.findById(id).map(category -> {
-            // do {
-            //     category.setName(category.getName() + DISABLED_ITEM);
-            // } while (categoryRepository.existsByName(category.getName()));
-            category.setEnabled(false);
-            return categoryEntityMapper.toDomain(categoryRepository.save(category));
-        });
     }
 
     @Transactional

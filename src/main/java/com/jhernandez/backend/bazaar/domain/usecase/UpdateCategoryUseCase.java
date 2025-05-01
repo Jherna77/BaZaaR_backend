@@ -4,10 +4,11 @@ import java.util.Optional;
 
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.domain.model.Category;
+import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 
 public interface UpdateCategoryUseCase {
 
-    Optional<Category> updateCategory(Category category) throws CategoryException;
+    Optional<Category> updateCategory(Category category, ImageFile imageFile) throws CategoryException;
 
     Optional<Category> enableCategoryById(Long id) throws CategoryException;
 
