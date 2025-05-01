@@ -66,8 +66,7 @@ public class UserService implements UserServicePort {
                 .orElseThrow(() -> new UserException("User not found"));
         existingUser.setRole(user.getRole());
         existingUser.setEmail(user.getEmail());
-        // existingUser.setPassword(existingUser.getPassword()); // Do not update
-        // password
+        // existingUser.setPassword(existingUser.getPassword()); 
         // existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
         existingUser.setName(user.getName());
         existingUser.setSurnames(user.getSurnames());

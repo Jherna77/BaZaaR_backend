@@ -5,8 +5,9 @@ import java.util.Optional;
 
 import com.jhernandez.backend.bazaar.application.port.CategoryRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
-import com.jhernandez.backend.bazaar.application.port.ImageStoragePort;
+import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
+import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.model.Category;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 
@@ -23,12 +24,12 @@ import lombok.RequiredArgsConstructor;
 public class CategoryService implements CategoryServicePort{
 
     private final CategoryRepositoryPort categoryRepositoryPort;
-    private final ImageStoragePort imageStoragePort;
+    private final ImageServicePort imageServicePort;
 
     @Override
-    public Optional<Category> createCategory(Category category, ImageFile categoryImage) throws CategoryException {
+    public Optional<Category> createCategory(Category category, ImageFile categoryImage) throws CategoryException, ImageFileException {
         // Save image in storage and update URL
-        category.setImageUrl(imageStoragePort.saveImage(categoryImage).getImageUrl());
+        category.setImageUrl(imageServicePort.saveImage(categoryImage).getImageUrl());
         return categoryRepositoryPort.saveCategory(category);
     }
 
@@ -43,7 +44,7 @@ public class CategoryService implements CategoryServicePort{
     }
 
     @Override
-    public Optional<Category> updateCategory(Category category, ImageFile categoryImage) throws CategoryException {
+    public Optional<Category> updateCategory(Category category, ImageFile categoryImage) throws CategoryException, ImageFileException {
         if (category.getId() == null) throw new CategoryException("Category ID must not be null");
         Category existingCategory = findCategoryById(category.getId())
                 .orElseThrow(() -> new CategoryException("Category not found"));
@@ -51,8 +52,8 @@ public class CategoryService implements CategoryServicePort{
         
         // Check if image is provided and save image /update URL
         if (categoryImage != null) {
-            imageStoragePort.deleteImageByUrl(existingCategory.getImageUrl());
-            existingCategory.setImageUrl(imageStoragePort.saveImage(categoryImage).getImageUrl());
+            imageServicePort.deleteImageByUrl(existingCategory.getImageUrl());
+            existingCategory.setImageUrl(imageServicePort.saveImage(categoryImage).getImageUrl());
         }
         return categoryRepositoryPort.saveCategory(existingCategory);
     }
@@ -78,11 +79,11 @@ public class CategoryService implements CategoryServicePort{
         }
 
     @Override
-    public void deleteCategoryById(Long id) throws CategoryException {
+    public void deleteCategoryById(Long id) throws CategoryException, ImageFileException {
         if (id == null) throw new CategoryException("Category ID must not be null");
         Category existingCategory = findCategoryById(id)
                 .orElseThrow(() -> new CategoryException("Category not found"));
-        if (existingCategory.getImageUrl() != null) imageStoragePort.deleteImageByUrl(existingCategory.getImageUrl());
+        if (existingCategory.getImageUrl() != null) imageServicePort.deleteImageByUrl(existingCategory.getImageUrl());
         categoryRepositoryPort.deleteCategoryById(id);
     }    
 

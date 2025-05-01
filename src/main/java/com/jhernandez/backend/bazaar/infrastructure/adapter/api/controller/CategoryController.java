@@ -23,6 +23,7 @@ import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ARG_IMAGE;
 import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
+import com.jhernandez.backend.bazaar.domain.exception.DomainException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.CategoryDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.CategoryDtoMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ImageFileDtoMapper;
@@ -67,7 +68,7 @@ public class CategoryController {
                         imageFileDtoMapper.toDomain(imageFile))
                     .map(categoryDtoMapper::toDto));
 
-        } catch (CategoryException e) {
+        } catch (DomainException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -113,7 +114,7 @@ public class CategoryController {
                         .map(ResponseEntity::ok)
                         .orElse(ResponseEntity.notFound().build());
                 
-        } catch (CategoryException e) {
+        } catch (DomainException e) {
             log.error("Error updating category with ID {}", category.getName());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -154,7 +155,7 @@ public class CategoryController {
         try {
             categoryService.deleteCategoryById(id);
             return ResponseEntity.noContent().build();
-        } catch (CategoryException e) {
+        } catch (DomainException e) {
             log.error("Error deleting category with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }

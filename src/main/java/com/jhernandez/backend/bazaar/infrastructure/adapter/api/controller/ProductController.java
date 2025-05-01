@@ -21,7 +21,6 @@ import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ARG_IMAGE;
 import com.jhernandez.backend.bazaar.application.port.ProductServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.DomainException;
-import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ProductDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ImageFileDtoMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ProductDtoMapper;
@@ -60,7 +59,7 @@ public class ProductController {
                     productDtoMapper.toDomain(product),
                     imageFileDtoMapper.toDomainList(imageFileList))
                 .map(productDtoMapper::toDto));
-        } catch (ProductException e) {
+        } catch (DomainException e) {
             log.error("Error creating product: {}", product.getName());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -94,7 +93,7 @@ public class ProductController {
             return productService.findProductById(id).map(productDtoMapper::toDto)
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
-        } catch (ProductException e) {
+        } catch (DomainException e) {
             log.error("Error getting product with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -119,7 +118,7 @@ public class ProductController {
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
 
-        } catch (ProductException /*| IOException*/ e) {
+        } catch (DomainException e) {
             log.error("Error updating product: {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -133,7 +132,7 @@ public class ProductController {
             return productService.enableProductById(id).map(productDtoMapper::toDto)
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
-        } catch (ProductException e) {
+        } catch (DomainException e) {
             log.error("Error enabling product with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -147,7 +146,7 @@ public class ProductController {
             return productService.disableProductById(id).map(productDtoMapper::toDto)
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
-        } catch (ProductException e) {
+        } catch (DomainException e) {
             log.error("Error disabling product with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -160,7 +159,7 @@ public class ProductController {
         try {
             productService.deleteProductById(id);
             return ResponseEntity.noContent().build();
-        } catch (ProductException e) {
+        } catch (DomainException e) {
             log.error("Error deleting product with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }

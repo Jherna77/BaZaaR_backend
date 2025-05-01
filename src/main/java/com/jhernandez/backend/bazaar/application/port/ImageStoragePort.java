@@ -1,21 +1,14 @@
 package com.jhernandez.backend.bazaar.application.port;
 
-import java.util.List;
-
+import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 
 public interface ImageStoragePort {
 
-        ImageFile saveImage(ImageFile image);
+        ImageFile saveImage(ImageFile image) throws ImageFileException;
 
-        List<ImageFile> saveImagesList(List<ImageFile> images);
+        ImageFile getImageByFileName(String fileName) throws ImageFileException;
 
-        ImageFile getImageByFileName(String fileName);
-
-        void deleteImageByFilename(String fileName);
-
-        void deleteImageByUrl(String url);
-
-        void deleteImageListByUrl(List<String> urls);
+        void deleteImageByFilename(String fileName) throws ImageFileException;
 
 }

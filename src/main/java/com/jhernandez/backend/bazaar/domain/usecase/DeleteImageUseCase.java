@@ -1,14 +1,15 @@
 package com.jhernandez.backend.bazaar.domain.usecase;
 
-import java.io.IOException;
 import java.util.List;
+
+import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 
 public interface DeleteImageUseCase {
 
-    void deleteImageByFilename(String fileName) throws IOException;
+    void deleteImageByFilename(String fileName) throws ImageFileException;
 
-    void deleteImageByUrl(String url) throws IOException;
+    void deleteImageByUrl(String url) throws ImageFileException;
 
-    void deleteImageListByUrl(List<String> urls) throws IOException;
+    void deleteImageListByUrl(List<String> urls) throws ImageFileException;
 
 }

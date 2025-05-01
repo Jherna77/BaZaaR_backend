@@ -17,13 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
+import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
-import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ImageFileDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ImageFileDtoMapper;
 
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -41,14 +42,20 @@ public class ImageController {
 
     @PostMapping("/upload")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SHOP')")
-    public ResponseEntity<ImageFileDto> uploadImage(@RequestParam("image") MultipartFile image)
+    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile image)
             throws IOException {
         log.info("Uploading image");
 
-        ImageFile imageFile = imageService.saveImage(imageFileDtoMapper.toDomain(image));
-
-        return ResponseEntity.status(HttpStatus.CREATED)
+        try {
+            ImageFile imageFile = imageService.saveImage(imageFileDtoMapper.toDomain(image));
+            return ResponseEntity.status(HttpStatus.CREATED)
                 .body(imageFileDtoMapper.toDto(imageFile));
+        } catch (ImageFileException e) {
+            log.error("Error uploading image: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(e.getMessage());
+        }
+
     }
 
     @PostMapping("/uploadList")
@@ -57,15 +64,17 @@ public class ImageController {
         log.info("Uploading image list");
 
         try {
-            List<ImageFile> imageFiles = images.stream()
-                    .map(imageFileDtoMapper::toDomain)
-                    .toList();
+            List<ImageFile> imageFiles = new ArrayList<>();
+            for (MultipartFile multipartFile : images) {
+                imageFiles.add(imageFileDtoMapper.toDomain(multipartFile));
+            }
 
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(imageService.saveImagesList(imageFiles).stream()
                             .map(imageFileDtoMapper::toDto)
                             .toList());
-        } catch (IOException e) {
+        } catch (ImageFileException e) {
+            log.error("Error uploading image list: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
@@ -81,7 +90,8 @@ public class ImageController {
                     .contentType(MediaType.parseMediaType(image.getContentType()))
                     .body(resource);
 
-        } catch (IOException e) {
+        } catch (ImageFileException e) {
+            log.error("Error fetching image: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }
@@ -93,7 +103,8 @@ public class ImageController {
         try {
             imageService.deleteImageByFilename(filename);
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
+        } catch (ImageFileException e) {
+            log.error("Error deleting image: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }

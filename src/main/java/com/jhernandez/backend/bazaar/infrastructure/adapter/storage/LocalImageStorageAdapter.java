@@ -8,13 +8,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-// import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
 import com.jhernandez.backend.bazaar.application.port.ImageStoragePort;
-import com.jhernandez.backend.bazaar.domain.exception.ImageStorageException;
+import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 public class LocalImageStorageAdapter implements ImageStoragePort {
 
     @Override
-    public ImageFile saveImage(ImageFile image) {
+    public ImageFile saveImage(ImageFile image) throws ImageFileException {
         String fileName = image.getFileName();
-        // String fileName = UUID.randomUUID() + "-" + image.getFileName();
         Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName);
         log.info("Saving image {}", filePath.toString());
         try {
@@ -36,31 +33,24 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
             return image;
         } catch (IOException e) {
             log.error("Error saving image: {}", e.getMessage());
-            throw new ImageStorageException();
+            throw new ImageFileException("Error saving image: ");
         }
     }
 
     @Override
-    public List<ImageFile> saveImagesList(List<ImageFile> images) {
-        return images.stream()
-            .map(this::saveImage)
-            .toList();
-    }
-
-    @Override
-    public ImageFile getImageByFileName(String fileName) {
+    public ImageFile getImageByFileName(String fileName) throws ImageFileException {
         Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
 
         log.info("Fetching image {}", filePath.toString());
 
         if (!Files.exists(filePath)) {
             log.error("Image not found: {}", fileName);
-            throw new ImageStorageException();
+            throw new ImageFileException("Image not found");
         }
 
         if (!Files.isReadable(filePath)) {
             log.error("Image not readable: {}", fileName);
-            throw new ImageStorageException();
+            throw new ImageFileException("Image not readable");
         }
         
         try {
@@ -72,12 +62,12 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
                 ,null);
         } catch (IOException e) {
             log.error("Error reading image: {}", e.getMessage());
-            throw new ImageStorageException();
+            throw new ImageFileException("Error reading image");
         }
     }
 
     @Override
-    public void deleteImageByFilename(String fileName) {
+    public void deleteImageByFilename(String fileName) throws ImageFileException {
         Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
 
         log.info("Deleting image {}", filePath.toString());
@@ -86,19 +76,8 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
             Files.deleteIfExists(filePath);
         } catch (IOException e) {
             log.error("Error deleting image: {}", e.getMessage());
-            throw new ImageStorageException();
+            throw new ImageFileException("Error deleting image");
         }
-    }
-
-    @Override
-    public void deleteImageByUrl(String url) {
-        String fileName = url.substring(url.lastIndexOf("/") + 1);
-        deleteImageByFilename(fileName);
-    }
-
-    @Override
-    public void deleteImageListByUrl(List<String> urls) {
-        urls.forEach(this::deleteImageByUrl);
     }
 
 }

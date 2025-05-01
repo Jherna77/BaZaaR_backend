@@ -1,11 +1,13 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ImageFileDto;
 
@@ -14,35 +16,36 @@ public class ImageFileDtoMapper {
 
     public ImageFileDto toDto(ImageFile imageFile) {
         return new ImageFileDto(
-            imageFile.getImageUrl()
-        );
+                imageFile.getImageUrl());
     }
 
-    public ImageFile toDomain(MultipartFile multipartFile) {
+    public ImageFile toDomain(MultipartFile multipartFile) throws ImageFileException {
         try {
             return multipartFile != null
-                ? new ImageFile(
-                    multipartFile.getBytes(),
-                    multipartFile.getOriginalFilename(),
-                    multipartFile.getContentType(),
-                    null)
-                : null;
+                    ? new ImageFile(
+                            multipartFile.getBytes(),
+                            multipartFile.getOriginalFilename(),
+                            multipartFile.getContentType(),
+                            null)
+                    : null;
         } catch (IOException e) {
-            return null;
+            throw new ImageFileException("Error converting MultipartFile to ImageFile");
         }
     }
 
-    public List<ImageFile> toDomainList(List<MultipartFile> multipartFileList) {
-        return multipartFileList != null
-            ? multipartFileList.stream()
-                .map(this::toDomain)
-                .toList()
-            : null;
+    public List<ImageFile> toDomainList(List<MultipartFile> multipartFileList) throws ImageFileException {
+        if (multipartFileList == null) return null;
+
+        List<ImageFile> result = new ArrayList<>();
+        for (MultipartFile file : multipartFileList) {
+            result.add(toDomain(file)); 
+        }
+        return result;
     }
 
     public List<ImageFileDto> toDtoList(List<ImageFile> imageFileList) {
         return imageFileList.stream()
-            .map(this::toDto)
-            .toList();
+                .map(this::toDto)
+                .toList();
     }
 }

@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.jhernandez.backend.bazaar.application.port.ImageStoragePort;
+import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.ProductServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
+import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
@@ -31,11 +32,11 @@ import lombok.RequiredArgsConstructor;
 public class ProductService implements ProductServicePort {
 
     private final ProductRepositoryPort productRepositoryPort;
-    private final ImageStoragePort imageStoragePort;
+    private final ImageServicePort imageServicePort;
 
     @Override
-    public Optional<Product> createProduct(Product product, List<ImageFile> productImages) {
-        product.setImagesUrl(imageStoragePort.saveImagesList(productImages)
+    public Optional<Product> createProduct(Product product, List<ImageFile> productImages) throws ProductException, ImageFileException {
+        product.setImagesUrl(imageServicePort.saveImagesList(productImages)
                 .stream()
                 .map(imageFile -> imageFile.getImageUrl())
                 .toList());
@@ -63,7 +64,7 @@ public class ProductService implements ProductServicePort {
     }
 
     @Override
-    public Optional<Product> updateProduct(Product product, List<ImageFile> productsImages) throws ProductException {
+    public Optional<Product> updateProduct(Product product, List<ImageFile> productsImages) throws ProductException, ImageFileException {
         if (product.getId() == null) throw new ProductException("Product ID must not be null");
         Product existingProduct = findProductById(product.getId())
                 .orElseThrow(() -> new ProductException("Product not found"));
@@ -74,13 +75,13 @@ public class ProductService implements ProductServicePort {
         existingProduct.setCategories(product.getCategories());
 
         List<String> finalImages = new ArrayList<>(product.getImagesUrl());
-        imageStoragePort.deleteImageListByUrl(
+        imageServicePort.deleteImageListByUrl(
                 existingProduct.getImagesUrl().stream()
                         .filter(img -> !finalImages.contains(img))
                         .toList());
         if (productsImages != null && !productsImages.isEmpty()) {
             finalImages.addAll(
-                    imageStoragePort.saveImagesList(productsImages).stream()
+                    imageServicePort.saveImagesList(productsImages).stream()
                             .map(ImageFile::getImageUrl)
                             .toList());
         }
@@ -110,11 +111,11 @@ public class ProductService implements ProductServicePort {
     }
 
     @Override
-    public void deleteProductById(Long id) throws ProductException {
+    public void deleteProductById(Long id) throws ProductException, ImageFileException {
         if (id == null) throw new ProductException("Product ID must not be null");
         Product existingProduct = findProductById(id)
                 .orElseThrow(() -> new ProductException("Product not found"));
-        imageStoragePort.deleteImageListByUrl(existingProduct.getImagesUrl());
+        imageServicePort.deleteImageListByUrl(existingProduct.getImagesUrl());
         productRepositoryPort.deleteProductById(id);
     }
 
