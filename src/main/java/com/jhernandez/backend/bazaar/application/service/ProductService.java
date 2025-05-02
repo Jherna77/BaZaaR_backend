@@ -15,7 +15,6 @@ import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 import com.jhernandez.backend.bazaar.domain.model.Product;
-import com.jhernandez.backend.bazaar.domain.model.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,15 +35,19 @@ public class ProductService implements ProductServicePort {
 
     private final ProductRepositoryPort productRepositoryPort;
     private final ImageServicePort imageServicePort;
-    private final UserServicePort userServicePort;
     private final CategoryServicePort categoryServicePort;
+    private final UserServicePort userServicePort;
 
     @Override
-    public Optional<Product> createProduct(Product product, List<ImageFile> productImages) throws ProductException, ImageFileException {
+    public Optional<Product> createProduct(Product product, List<ImageFile> productImages) throws ProductException, ImageFileException, UserException {
         product.setImagesUrl(imageServicePort.saveImagesList(productImages)
                 .stream()
                 .map(imageFile -> imageFile.getImageUrl())
                 .toList());
+                
+        product.setUser(userServicePort.findUserById(product.getUser().getId())
+        .orElseThrow(() -> new UserException("User not found")));
+
         return productRepositoryPort.saveProduct(product);
     }
 
@@ -55,20 +58,20 @@ public class ProductService implements ProductServicePort {
 
     @Override
     public Optional<Product> findProductById(Long id) throws ProductException {
+        if (id == null) throw new ProductException("Product ID must not be null");
         return productRepositoryPort.findProductById(id);
     }
 
     @Override
-    public List<Product> findProductsByCategoryId(Long categoryId) throws ProductException, CategoryException {
+    public List<Product> findProductsByCategoryId(Long categoryId) throws CategoryException {
+        if (categoryId == null) throw new CategoryException("Category ID must not be null");
         return productRepositoryPort.findProductsByCategoryId(categoryId);
     }
 
     @Override
     public List<Product> findProductsByUserId(Long userId) throws UserException {
         if (userId == null) throw new UserException("User ID must not be null");
-        User user = userServicePort.findUserById(userId)
-                .orElseThrow(() -> new UserException("User not found"));
-        return user.getProductsSafe();
+        return productRepositoryPort.findProductsByUserId(userId);
     }
 
     @Override

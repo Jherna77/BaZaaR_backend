@@ -17,7 +17,7 @@ public interface UserDtoMapper {
     UserResponseDto toResponseDto(User user);
 
     @Mapping(target = "enabled", ignore = true)
-    @Mapping(target = "products", ignore = true)
+    // @Mapping(target = "products", ignore = true)
     User toDomain(UserRequestDto userRequestDto);
 
     // default String mapRoleToString(UserRole role) {

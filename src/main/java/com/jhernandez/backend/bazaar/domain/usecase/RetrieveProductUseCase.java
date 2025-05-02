@@ -12,9 +12,9 @@ public interface RetrieveProductUseCase {
 
     List<Product> findAllProducts();
 
-    List<Product> findProductsByCategoryId(Long categoryId) throws ProductException, CategoryException;
+    List<Product> findProductsByCategoryId(Long categoryId) throws CategoryException;
 
-    List<Product> findProductsByUserId(Long userId) throws ProductException, UserException;
+    List<Product> findProductsByUserId(Long userId) throws UserException;
 
     Optional<Product> findProductById(Long id) throws ProductException;
 

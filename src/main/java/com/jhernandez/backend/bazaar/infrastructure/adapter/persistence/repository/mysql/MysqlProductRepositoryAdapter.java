@@ -51,13 +51,14 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
                 .collect(Collectors.toList());
     }
 
-    // @Transactional(readOnly = true)
-    // @Override
-    // public List<Product> findProductsByUserId(Long userId) {
-    //     log.info("Finding all products by user with ID {}", userId);
-
-    //     throw new UnsupportedOperationException("Unimplemented method 'findProductsByUserId'");
-    // }
+    @Transactional(readOnly = true)
+    @Override
+    public List<Product> findProductsByUserId(Long userId) {
+        log.info("Finding all products by user with ID {}", userId);
+        return productRepository.findByUserId(userId).stream()
+                .map(productEntityMapper::toDomain)
+                .collect(Collectors.toList());
+    }
 
     @Transactional(readOnly = true)
     @Override
