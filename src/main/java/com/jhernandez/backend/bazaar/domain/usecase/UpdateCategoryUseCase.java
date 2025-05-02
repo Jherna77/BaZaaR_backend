@@ -11,6 +11,8 @@ public interface UpdateCategoryUseCase {
 
     Optional<Category> updateCategory(Category category, ImageFile imageFile) throws CategoryException, ImageFileException;
 
+    // void updateCategoryImage(Long id, ImageFile imageFile) throws CategoryException, ImageFileException;
+
     Optional<Category> enableCategoryById(Long id) throws CategoryException;
 
     Optional<Category> disableCategoryById(Long id) throws CategoryException;

@@ -16,6 +16,8 @@ public class ProductDto {
     
     private Long id;
 
+    private Long userId;
+
     @RequiredField
     private String name;
 

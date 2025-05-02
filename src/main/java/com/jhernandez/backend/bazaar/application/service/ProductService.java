@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
 import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.ProductServicePort;
@@ -36,6 +37,7 @@ public class ProductService implements ProductServicePort {
     private final ProductRepositoryPort productRepositoryPort;
     private final ImageServicePort imageServicePort;
     private final UserServicePort userServicePort;
+    private final CategoryServicePort categoryServicePort;
 
     @Override
     public Optional<Product> createProduct(Product product, List<ImageFile> productImages) throws ProductException, ImageFileException {
@@ -96,6 +98,19 @@ public class ProductService implements ProductServicePort {
         existingProduct.setImagesUrl(finalImages);
 
         return productRepositoryPort.saveProduct(existingProduct);
+    }
+
+    @Override
+    public void removeProductCategoryList(List<Product> products, Long categoryId) throws ProductException, CategoryException {
+        if (categoryId == null) throw new ProductException("Category ID must not be null");
+        for (Product product : products) {
+            product.getCategories()
+                    .removeIf(category -> category.getId().equals(categoryId));
+            if (product.getCategories().isEmpty()) {
+                product.addCategory(categoryServicePort.findCategoryById(1L).orElseThrow(() -> new ProductException("Default category not found")));
+            }
+            productRepositoryPort.saveProduct(product);
+        }
     }
 
     @Override

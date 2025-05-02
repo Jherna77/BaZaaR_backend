@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 public class Product {
 
     private Long id;
+    private User user;
     private String name;
     private String description;
     private Double price;
@@ -28,4 +29,8 @@ public class Product {
     // private Long soldQuantity;
     // private Long createdAt;
     // private Long updatedAt;
+
+    public void addCategory(Category category) {
+        this.categories.add(category);
+    }
 }
