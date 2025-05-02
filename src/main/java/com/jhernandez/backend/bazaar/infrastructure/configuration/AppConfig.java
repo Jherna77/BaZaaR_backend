@@ -24,15 +24,15 @@ public class AppConfig {
     @Bean
     ProductServicePort productServicePort(
         ProductRepositoryPort productRepositoryPort, ImageServicePort imageServicePort,
-        CategoryServicePort categoryServicePort, UserServicePort userServicePort) {
-        return new ProductService(productRepositoryPort, imageServicePort, categoryServicePort, userServicePort);
+        UserServicePort userServicePort) {
+        return new ProductService(productRepositoryPort, imageServicePort, userServicePort);
     }
 
     @Bean
     CategoryServicePort categoryServicePort(
-        CategoryRepositoryPort categoryRepositoryPort, ImageServicePort imageServicePort) {//},
-        // ProductServicePort productServicePort) {
-        return new CategoryService(categoryRepositoryPort, imageServicePort);//, productServicePort);
+        CategoryRepositoryPort categoryRepositoryPort, ImageServicePort imageServicePort,
+        ProductServicePort productServicePort) {
+        return new CategoryService(categoryRepositoryPort, imageServicePort, productServicePort);
     }
 
     @Bean

@@ -6,11 +6,13 @@ import java.util.Optional;
 import com.jhernandez.backend.bazaar.application.port.CategoryRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
 import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
+import com.jhernandez.backend.bazaar.application.port.ProductServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.model.Category;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
+import com.jhernandez.backend.bazaar.domain.model.Product;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +28,7 @@ public class CategoryService implements CategoryServicePort{
 
     private final CategoryRepositoryPort categoryRepositoryPort;
     private final ImageServicePort imageServicePort;
+    private final ProductServicePort productServicePort;
 
     @Override
     public Optional<Category> createCategory(Category category, ImageFile categoryImage) throws CategoryException, ImageFileException {
@@ -72,12 +75,13 @@ public class CategoryService implements CategoryServicePort{
     @Override
     public Optional<Category> disableCategoryById(Long id) throws CategoryException {
         if (id == null) throw new CategoryException("Category ID must not be null");
+        if (id == 1L) throw new CategoryException("This category cannot be disabled");
         Category existingCategory = findCategoryById(id)
                 .orElseThrow(() -> new CategoryException("Category not found"));
         if (!existingCategory.isEnabled()) throw new CategoryException("Category is already disabled");
         existingCategory.setEnabled(false);
         return categoryRepositoryPort.saveCategory(existingCategory);
-        }
+    }
 
     @Override
     public void deleteCategoryById(Long id) throws CategoryException, ImageFileException, ProductException {
@@ -85,8 +89,18 @@ public class CategoryService implements CategoryServicePort{
         if (id == 1L) throw new CategoryException("This category cannot be deleted");
         Category existingCategory = findCategoryById(id)
                 .orElseThrow(() -> new CategoryException("Category not found"));
-        // List<Product> categoryProducts = productServicePort.findProductsByCategoryId(id);
-        // productServicePort.removeProductCategoryList(categoryProducts, id);
+
+        List<Product> categoryProducts = productServicePort.findProductsByCategoryId(id);
+
+        for (Product product : categoryProducts) {
+            product.getCategories()
+                    .removeIf(category -> category.getId().equals(id));
+            if (product.getCategories().isEmpty()) {
+                product.addCategory(findCategoryById(1L).orElseThrow(() -> new CategoryException("Default category not found")));
+            }
+            productServicePort.saveProduct(product);
+        }
+
         if (existingCategory.getImageUrl() != null) imageServicePort.deleteImageByUrl(existingCategory.getImageUrl());
         categoryRepositoryPort.deleteCategoryById(id);
     }    
