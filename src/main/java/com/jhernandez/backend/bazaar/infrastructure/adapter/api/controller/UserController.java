@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jhernandez.backend.bazaar.application.port.UserServicePort;
+import com.jhernandez.backend.bazaar.domain.exception.DomainException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserRequestDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserResponseDto;
@@ -150,7 +151,7 @@ public class UserController {
             userService.deleteUserById(id);
             // return ResponseEntity.ok("User deleted successfully");
             return ResponseEntity.noContent().build();
-        } catch (UserException e) {
+        } catch (DomainException e) {
             log.error("Error deleting user with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }

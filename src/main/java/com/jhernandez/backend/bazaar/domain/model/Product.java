@@ -33,4 +33,8 @@ public class Product {
     public void addCategory(Category category) {
         this.categories.add(category);
     }
+
+    public List<Category> getEnabledCategories() {
+        return this.categories.stream().filter(Category::isEnabled).toList();
+    }
 }

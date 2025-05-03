@@ -17,22 +17,24 @@ import com.jhernandez.backend.bazaar.application.service.*;
 public class AppConfig {
 
     @Bean
-    UserServicePort userServicePort(UserRepositoryPort userRepositoryPort, PasswordEncoder passwordEncoder) {
-        return new UserService(userRepositoryPort, passwordEncoder);
+    UserServicePort userServicePort(
+        UserRepositoryPort userRepositoryPort, ProductServicePort productServicePort,
+        PasswordEncoder passwordEncoder) {
+        return new UserService(userRepositoryPort, productServicePort, passwordEncoder);
     }
 
     @Bean
     ProductServicePort productServicePort(
-        ProductRepositoryPort productRepositoryPort, ImageServicePort imageServicePort,
-        UserServicePort userServicePort) {
-        return new ProductService(productRepositoryPort, imageServicePort, userServicePort);
+        ProductRepositoryPort productRepositoryPort, UserRepositoryPort userRepositoryPort,
+        ImageServicePort imageServicePort) {
+        return new ProductService(productRepositoryPort, userRepositoryPort, imageServicePort);
     }
 
     @Bean
     CategoryServicePort categoryServicePort(
-        CategoryRepositoryPort categoryRepositoryPort, ImageServicePort imageServicePort,
-        ProductServicePort productServicePort) {
-        return new CategoryService(categoryRepositoryPort, imageServicePort, productServicePort);
+        CategoryRepositoryPort categoryRepositoryPort, ProductRepositoryPort productRepositoryPort,
+        ImageServicePort imageServicePort) {
+        return new CategoryService(categoryRepositoryPort, productRepositoryPort, imageServicePort);
     }
 
     @Bean

@@ -44,6 +44,15 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
 
     @Transactional(readOnly = true)
     @Override
+    public List<Product> findAllEnabledProducts() {
+        log.info("Finding all enabled products {}");
+        return productRepository.findAllEnabled().stream()
+                .map(productEntityMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public List<Product> findProductsByCategoryId(Long categoryId) {
         log.info("Finding all products by category with ID {}", categoryId);
         return productRepository.findByCategoryId(categoryId).stream()
@@ -69,9 +78,33 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
 
     @Transactional
     @Override
+    public void enableProductsByUserId(Long userId) {
+        log.info("Enabling products with user ID {}", userId);
+        productRepository.enableProductsByUserId(userId);
+    }
+
+    @Transactional
+    @Override
+    public void disableProductsByUserId(Long userId){ 
+        log.info("Disabling products with user ID {}", userId);
+        productRepository.disableProductsByUserId(userId);
+    }
+
+    @Transactional
+    @Override
     public void deleteProductById(Long id) {
         log.info("Deleting product with ID {}", id);
         productRepository.deleteById(id);
     }
+
+    @Transactional
+    @Override
+    public void deleteProductsByUserId(Long userId) {
+        log.info("Deleting products with user ID {}", userId);
+
+        productRepository.deleteProductsByUserId(userId);
+    }
+
+
 
 }

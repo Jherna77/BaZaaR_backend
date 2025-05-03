@@ -16,6 +16,8 @@ public interface CategoryRepositoryPort {
 
     List<Category> findAllCategories();
 
+    List<Category> findAllEnabledCategories();
+
     Optional<Category> findCategoryById(Long id);
 
     void deleteCategoryById(Long id);

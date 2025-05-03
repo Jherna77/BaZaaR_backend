@@ -43,6 +43,16 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
                 .map(categoryEntityMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Category> findAllEnabledCategories() {
+        log.info("Finding all enabled categories {}");
+        return categoryRepository.findAllEnabled().stream()
+                .map(categoryEntityMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
     
     @Transactional(readOnly = true)
     @Override

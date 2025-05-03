@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.jhernandez.backend.bazaar.application.port.ProductServicePort;
 import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.UserServicePort;
+import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.User;
 
@@ -27,7 +29,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService implements UserServicePort {
 
+    private static final Long MASTER_ADMIN_ID = 1L;
+
     private final UserRepositoryPort userRepositoryPort;
+    private final ProductServicePort productServicePort;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -58,10 +63,8 @@ public class UserService implements UserServicePort {
 
     @Override
     public Optional<User> updateUser(User user) throws UserException {
-        if (user.getId() == null)
-            throw new UserException("User ID must not be null");
-        if (user.getId() == 1L)
-            throw new UserException("Cannot update the master admin user");
+        if (user.getId() == null) throw new UserException("User ID must not be null");
+        if (user.getId() == MASTER_ADMIN_ID) throw new UserException("Cannot update the master admin user");
         User existingUser = findUserById(user.getId())
                 .orElseThrow(() -> new UserException("User not found"));
         existingUser.setRole(user.getRole());
@@ -83,6 +86,7 @@ public class UserService implements UserServicePort {
         User existingUser = findUserById(id)
                 .orElseThrow(() -> new UserException("User not found"));
         if (existingUser.isEnabled()) throw new UserException("User is already enabled");
+        productServicePort.enableProductsByUserId(id);
         existingUser.setEnabled(true);
         return userRepositoryPort.saveUser(existingUser);
         }
@@ -90,18 +94,20 @@ public class UserService implements UserServicePort {
     @Override
     public Optional<User> disableUserById(Long id) throws UserException {
         if (id == null) throw new UserException("User ID must not be null");
-        if (id == 1L) throw new UserException("Cannot disable the master admin user");
+        if (id == MASTER_ADMIN_ID) throw new UserException("Cannot disable the master admin user");
         User existingUser = findUserById(id)
                 .orElseThrow(() -> new UserException("User not found"));
         if (!existingUser.isEnabled()) throw new UserException("User is already disabled");
+        productServicePort.disableProductsByUserId(id);
         existingUser.setEnabled(false);
         return userRepositoryPort.saveUser(existingUser);
     }
 
     @Override
-    public void deleteUserById(Long id) throws UserException {
+    public void deleteUserById(Long id) throws UserException, ImageFileException {
         if (id == null) throw new UserException("User ID must not be null");
-        if (id == 1L) throw new UserException("Cannot delete the master admin user");
+        if (id == MASTER_ADMIN_ID) throw new UserException("Cannot delete the master admin user");
+        productServicePort.deleteProductsByUserId(id);
         userRepositoryPort.deleteUserById(id);
     }
 

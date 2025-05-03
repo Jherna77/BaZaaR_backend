@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.jhernandez.backend.bazaar.application.port.CategoryRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
 import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
-import com.jhernandez.backend.bazaar.application.port.ProductServicePort;
+import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
@@ -26,9 +26,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CategoryService implements CategoryServicePort{
 
+    private static final Long DEFAULT_CATEGORY_ID = 1L;
+
     private final CategoryRepositoryPort categoryRepositoryPort;
+    private final ProductRepositoryPort productRepositoryPort;
     private final ImageServicePort imageServicePort;
-    private final ProductServicePort productServicePort;
 
     @Override
     public Optional<Category> createCategory(Category category, ImageFile categoryImage) throws CategoryException, ImageFileException {
@@ -40,6 +42,13 @@ public class CategoryService implements CategoryServicePort{
     @Override
     public List<Category> findAllCategories() {
         return categoryRepositoryPort.findAllCategories();
+    }
+
+    @Override
+    public List<Category> findAllEnabledCategories() {
+        return categoryRepositoryPort.findAllCategories().stream()
+                .filter(Category::isEnabled)
+                .toList();
     }
 
     @Override
@@ -90,15 +99,17 @@ public class CategoryService implements CategoryServicePort{
         Category existingCategory = findCategoryById(id)
                 .orElseThrow(() -> new CategoryException("Category not found"));
 
-        List<Product> categoryProducts = productServicePort.findProductsByCategoryId(id);
+        List<Product> categoryProducts = productRepositoryPort.findProductsByCategoryId(id);
 
         for (Product product : categoryProducts) {
             product.getCategories()
                     .removeIf(category -> category.getId().equals(id));
             if (product.getCategories().isEmpty()) {
-                product.addCategory(findCategoryById(1L).orElseThrow(() -> new CategoryException("Default category not found")));
+                product.addCategory(findCategoryById(DEFAULT_CATEGORY_ID)
+                    .orElseThrow(() ->
+                        new CategoryException("Default category not found")));
             }
-            productServicePort.saveProduct(product);
+            productRepositoryPort.saveProduct(product);
         }
 
         if (existingCategory.getImageUrl() != null) imageServicePort.deleteImageByUrl(existingCategory.getImageUrl());

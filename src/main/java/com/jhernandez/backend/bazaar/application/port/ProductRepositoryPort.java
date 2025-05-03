@@ -15,12 +15,20 @@ public interface ProductRepositoryPort {
 
     List<Product> findAllProducts();
 
+    List<Product> findAllEnabledProducts();
+
     List<Product> findProductsByCategoryId(Long categoryId);
 
     List<Product> findProductsByUserId(Long userId);
 
     Optional<Product> findProductById(Long id);
+
+    void enableProductsByUserId(Long userId);
+
+    void disableProductsByUserId(Long userId);
     
     void deleteProductById(Long id);
+
+    void deleteProductsByUserId(Long userId);
 
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
+import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 import com.jhernandez.backend.bazaar.domain.model.Product;
 
@@ -18,6 +19,10 @@ public interface UpdateProductUseCase {
         
     Optional<Product> enableProductById(Long id) throws ProductException;
 
+    void enableProductsByUserId(Long userId) throws UserException;
+
     Optional<Product> disableProductById(Long id) throws ProductException;
+
+    void disableProductsByUserId(Long userId) throws UserException;
 
 }

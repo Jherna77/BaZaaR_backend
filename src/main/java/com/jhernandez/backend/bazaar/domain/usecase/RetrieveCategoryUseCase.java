@@ -10,6 +10,8 @@ public interface RetrieveCategoryUseCase {
 
     List<Category> findAllCategories();
 
+    List<Category> findAllEnabledCategories();
+
     Optional<Category> findCategoryById(Long id) throws CategoryException;
 
 }

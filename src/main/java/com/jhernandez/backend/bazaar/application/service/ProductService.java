@@ -7,7 +7,7 @@ import java.util.Optional;
 import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.ProductServicePort;
-import com.jhernandez.backend.bazaar.application.port.UserServicePort;
+import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
@@ -33,8 +33,8 @@ import lombok.RequiredArgsConstructor;
 public class ProductService implements ProductServicePort {
 
     private final ProductRepositoryPort productRepositoryPort;
+    private final UserRepositoryPort userRepositoryPort;
     private final ImageServicePort imageServicePort;
-    private final UserServicePort userServicePort;
 
     @Override
     public Optional<Product> createProduct(Product product, List<ImageFile> productImages) throws ProductException, ImageFileException, UserException {
@@ -43,7 +43,7 @@ public class ProductService implements ProductServicePort {
                 .map(imageFile -> imageFile.getImageUrl())
                 .toList());
                 
-        product.setUser(userServicePort.findUserById(product.getUser().getId())
+        product.setUser(userRepositoryPort.findUserById(product.getUser().getId())
         .orElseThrow(() -> new UserException("User not found")));
 
         return productRepositoryPort.saveProduct(product);
@@ -57,6 +57,14 @@ public class ProductService implements ProductServicePort {
     @Override
     public List<Product> findAllProducts() {
         return productRepositoryPort.findAllProducts();
+    }
+
+    @Override
+    public List<Product> findAllEnabledProducts() {
+        return productRepositoryPort.findAllEnabledProducts();
+        // return productRepositoryPort.findAllProducts().stream()
+        //     .filter(Product::isEnabled)
+        //     .toList();
     }
 
     @Override
@@ -117,6 +125,13 @@ public class ProductService implements ProductServicePort {
     }
 
     @Override
+    public void enableProductsByUserId(Long userId) throws UserException {
+        if (userId == null) throw new UserException("User ID must not be null");
+        productRepositoryPort.enableProductsByUserId(userId);
+    }
+
+
+    @Override
     public Optional<Product> disableProductById(Long id) throws ProductException {
         if (id == null) throw new ProductException("Product ID must not be null");
         Product existingProduct = findProductById(id)
@@ -127,12 +142,31 @@ public class ProductService implements ProductServicePort {
     }
 
     @Override
+    public void disableProductsByUserId(Long userId) throws UserException {
+        if (userId == null) throw new UserException("User ID must not be null");
+        productRepositoryPort.disableProductsByUserId(userId);
+    }
+
+    @Override
     public void deleteProductById(Long id) throws ProductException, ImageFileException {
         if (id == null) throw new ProductException("Product ID must not be null");
         Product existingProduct = findProductById(id)
                 .orElseThrow(() -> new ProductException("Product not found"));
         imageServicePort.deleteImageListByUrl(existingProduct.getImagesUrl());
         productRepositoryPort.deleteProductById(id);
+    }
+
+    @Override
+    public void deleteProductsByUserId(Long userId) throws UserException, ImageFileException {
+        if (userId == null) throw new UserException("User ID must not be null");
+        List<Product> productsToDelete = productRepositoryPort.findProductsByUserId(userId);
+        if (productsToDelete != null && !productsToDelete.isEmpty()) {
+            for (Product product : productsToDelete) {
+                imageServicePort.deleteImageListByUrl(product.getImagesUrl());
+            }
+        }
+        productRepositoryPort.deleteProductsByUserId(userId);
+
     }
 
 }
