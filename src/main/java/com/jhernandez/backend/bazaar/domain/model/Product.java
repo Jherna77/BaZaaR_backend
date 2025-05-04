@@ -34,7 +34,7 @@ public class Product {
         this.categories.add(category);
     }
 
-    public List<Category> getEnabledCategories() {
-        return this.categories.stream().filter(Category::isEnabled).toList();
-    }
+    // public List<Category> getEnabledCategories() {
+    //     return this.categories.stream().filter(Category::isEnabled).toList();
+    // }
 }

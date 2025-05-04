@@ -17,7 +17,7 @@ public interface UpdateProductUseCase {
     
     // Optional<Product> updateProductImages(Product product, List<ImageFile> productImages) throws ProductException, ImageFileException;
         
-    Optional<Product> enableProductById(Long id) throws ProductException;
+    Optional<Product> enableProductById(Long id) throws ProductException, UserException;
 
     void enableProductsByUserId(Long userId) throws UserException;
 

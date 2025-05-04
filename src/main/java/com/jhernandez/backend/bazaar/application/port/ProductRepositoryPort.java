@@ -18,6 +18,8 @@ public interface ProductRepositoryPort {
     List<Product> findAllEnabledProducts();
 
     List<Product> findProductsByCategoryId(Long categoryId);
+    
+    List<Product> findEnabledProductsByCategoryId(Long categoryId);
 
     List<Product> findProductsByUserId(Long userId);
 

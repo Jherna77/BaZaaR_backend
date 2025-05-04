@@ -20,9 +20,11 @@ public class Values {
     public static final String ROLES = "/api/roles";
 
     public static final String CATEGORIES = "/api/categories";
+    public static final String CATEGORIES_ENABLED = CATEGORIES + "/enabled";
     public static final String CATEGORY_ID = CATEGORIES + "/{id}";
 
     public static final String PRODUCTS = "/api/products";
+    public static final String PRODUCTS_ENABLED = PRODUCTS + "/enabled";
     public static final String PRODUCT_ID = PRODUCTS + "/{id}";
     public static final String PRODUCTS_USER_ID = PRODUCTS + "/user/{userId}";
     public static final String PRODUCTS_CATEGORY_ID = PRODUCTS + "/category/{categoryId}";

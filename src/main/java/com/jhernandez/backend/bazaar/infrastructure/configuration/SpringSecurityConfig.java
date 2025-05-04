@@ -74,7 +74,7 @@ public class SpringSecurityConfig {
      * SecurityFilterChain bean that configures the security filter chain for the application.
      * It specifies the authorization rules for different endpoints and adds JWT filters for authentication and validation.
      * Public endpoints:
-     *      - GET /api/categories
+     *      - GET /api/categories/enabled
      *      - GET /api/products
      *      - GET /api/roles
      *      - GET /api/categories/{id}
@@ -90,10 +90,10 @@ public class SpringSecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
             .requestMatchers(HttpMethod.GET,
-                CATEGORIES,
                 ROLES,
-                PRODUCTS,
+                CATEGORIES_ENABLED,
                 CATEGORY_ID,
+                PRODUCTS_ENABLED,
                 PRODUCT_ID,
                 PRODUCTS_USER_ID,
                 PRODUCTS_CATEGORY_ID,

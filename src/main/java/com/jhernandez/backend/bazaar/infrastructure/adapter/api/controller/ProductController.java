@@ -66,9 +66,18 @@ public class ProductController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<ProductDto> findAllPoducts() {
         log.info("Finding all products");
         return productService.findAllProducts().stream()
+            .map(productDtoMapper::toDto)
+            .collect(Collectors.toList());
+    }
+
+    @GetMapping("/enabled")
+    public List<ProductDto> findAllEnabledPoducts() {
+        log.info("Finding all enabled products");
+        return productService.findAllEnabledProducts().stream()
             .map(productDtoMapper::toDto)
             .collect(Collectors.toList());
     }
@@ -99,11 +108,24 @@ public class ProductController {
         }
     }
 
+    // @GetMapping("/category/{categoryId}")
+    // public ResponseEntity<?> findProductsByCategoryId(@PathVariable Long categoryId) {
+    //     log.info("Finding products by category with ID {}", categoryId);
+    //     try {
+    //         return ResponseEntity.ok(productService.findProductsByCategoryId(categoryId).stream()
+    //                 .map(productDtoMapper::toDto)
+    //                 .collect(Collectors.toList()));
+    //     } catch (DomainException e) {
+    //         log.error("Error getting products by category with ID {}", categoryId);
+    //         return ResponseEntity.badRequest().body(e.getMessage());
+    //     }
+    // }
+
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<?> findProductsByCategoryId(@PathVariable Long categoryId) {
         log.info("Finding products by category with ID {}", categoryId);
         try {
-            return ResponseEntity.ok(productService.findProductsByCategoryId(categoryId).stream()
+            return ResponseEntity.ok(productService.findEnabledProductsByCategoryId(categoryId).stream()
                     .map(productDtoMapper::toDto)
                     .collect(Collectors.toList()));
         } catch (DomainException e) {

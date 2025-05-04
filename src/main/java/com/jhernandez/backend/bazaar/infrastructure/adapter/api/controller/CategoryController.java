@@ -74,9 +74,18 @@ public class CategoryController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<CategoryDto> findAllCategories() {
         log.info("Finding all categories");
         return categoryService.findAllCategories().stream()
+            .map(categoryDtoMapper::toDto)
+            .collect(Collectors.toList());
+    }
+
+    @GetMapping("/enabled")
+    public List<CategoryDto> findAllEnabledCategories() {
+        log.info("Finding all enabled categories");
+        return categoryService.findAllEnabledCategories().stream()
             .map(categoryDtoMapper::toDto)
             .collect(Collectors.toList());
     }

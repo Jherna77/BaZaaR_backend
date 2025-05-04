@@ -16,6 +16,9 @@ public interface JpaProductRepository extends JpaRepository<ProductEntity, Long>
     @Query("SELECT p FROM ProductEntity p JOIN p.categories c WHERE c.id = ?1")
     List<ProductEntity> findByCategoryId(Long categoryId);
     
+    @Query("SELECT p FROM ProductEntity p JOIN p.categories c WHERE c.id = ?1 AND p.enabled = true")    
+    List<ProductEntity> findEnabledByCategoryId(Long categoryId);
+    
     @Query("SELECT p FROM ProductEntity p JOIN p.user u WHERE u.id = ?1")
     List<ProductEntity> findByUserId(Long userId);
 

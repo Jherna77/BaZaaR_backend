@@ -14,6 +14,7 @@ import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 import com.jhernandez.backend.bazaar.domain.model.Product;
+import com.jhernandez.backend.bazaar.domain.model.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -80,6 +81,12 @@ public class ProductService implements ProductServicePort {
     }
 
     @Override
+    public List<Product> findEnabledProductsByCategoryId(Long categoryId) throws CategoryException {
+        if (categoryId == null) throw new CategoryException("Category ID must not be null");
+        return productRepositoryPort.findEnabledProductsByCategoryId(categoryId);
+    }
+
+    @Override
     public List<Product> findProductsByUserId(Long userId) throws UserException {
         if (userId == null) throw new UserException("User ID must not be null");
         return productRepositoryPort.findProductsByUserId(userId);
@@ -115,11 +122,14 @@ public class ProductService implements ProductServicePort {
     }
 
     @Override
-    public Optional<Product> enableProductById(Long id) throws ProductException {
+    public Optional<Product> enableProductById(Long id) throws ProductException, UserException {
         if (id == null) throw new ProductException("Product ID must not be null");
         Product existingProduct = findProductById(id)
                 .orElseThrow(() -> new ProductException("Product not found"));
         if (existingProduct.isEnabled()) throw new ProductException("Product is already enabled");
+        User productOwner = userRepositoryPort.findUserById(existingProduct.getUser().getId())
+                .orElseThrow(() -> new UserException("User not found"));
+        if (!productOwner.isEnabled()) throw new UserException("Product owner user is not enabled");
         existingProduct.setEnabled(true);
         return productRepositoryPort.saveProduct(existingProduct);
     }
