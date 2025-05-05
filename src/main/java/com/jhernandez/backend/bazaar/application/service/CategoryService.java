@@ -1,5 +1,6 @@
 package com.jhernandez.backend.bazaar.application.service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,9 +47,13 @@ public class CategoryService implements CategoryServicePort{
 
     @Override
     public List<Category> findAllEnabledCategories() {
-        return categoryRepositoryPort.findAllCategories().stream()
-                .filter(Category::isEnabled)
-                .toList();
+        return categoryRepositoryPort.findAllEnabledCategories()
+            .stream()
+            .sorted(Comparator.comparing(category -> category.getName().toLowerCase()))
+            .toList();
+        // return categoryRepositoryPort.findAllCategories().stream()
+        //         .filter(Category::isEnabled)
+        //         .toList();
     }
 
     @Override
