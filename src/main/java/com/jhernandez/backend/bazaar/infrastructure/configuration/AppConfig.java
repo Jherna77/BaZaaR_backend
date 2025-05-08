@@ -47,4 +47,9 @@ public class AppConfig {
         return new ImageService(imageStoragePort);
     }
 
+    @Bean
+    OrderServicePort orderServicePort(OrderRepositoryPort orderRepositoryPort) {
+        return new OrderService(orderRepositoryPort);
+    }
+
 }
