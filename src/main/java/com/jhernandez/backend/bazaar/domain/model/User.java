@@ -1,5 +1,7 @@
 package com.jhernandez.backend.bazaar.domain.model;
 
+import java.util.List;
+
 // import java.util.Collections;
 // import java.util.List;
 
@@ -22,6 +24,12 @@ public class User {
     private String city;
     private String province;
     private String zipCode;
-    private boolean enabled;    
+    private boolean enabled;
+
+    List<CartItem> cart;
+
+    public void addItemToCart(CartItem item) {
+        this.cart.add(item);
+    }
     
 }

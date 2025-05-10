@@ -32,4 +32,8 @@ public class Values {
     public static final String IMAGES = "/api/images";
     public static final String IMAGE_ID = IMAGES + "/{filename:.+}";
 
+    public static final String ORDERS = "/api/orders";
+
+    public static final String CART = "/api/cart";
+
 }

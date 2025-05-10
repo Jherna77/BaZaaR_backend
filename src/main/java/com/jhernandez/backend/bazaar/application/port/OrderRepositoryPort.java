@@ -13,4 +13,8 @@ public interface OrderRepositoryPort {
 
     Optional<Order> findOrderById(Long id);
 
+    Boolean existsById(Long id);
+
+    void deleteOrderById(Long id);
+
 }

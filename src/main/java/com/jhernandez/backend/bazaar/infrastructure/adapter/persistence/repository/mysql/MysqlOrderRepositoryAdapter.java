@@ -45,4 +45,16 @@ public class MysqlOrderRepositoryAdapter implements OrderRepositoryPort {
         return orderRepository.findById(id).map(orderEntityMapper::toDomain);
     }
 
+    @Override
+    public Boolean existsById(Long id) {
+        log.info("Checking if order with ID {} exists", id);
+        return orderRepository.existsById(id);
+    }
+
+    @Override
+    public void deleteOrderById(Long id) {
+        log.info("Deleting order with ID {}", id);
+        orderRepository.deleteById(id);
+    }
+
 }
