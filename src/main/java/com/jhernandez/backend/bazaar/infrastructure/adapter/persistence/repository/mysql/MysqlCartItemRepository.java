@@ -39,4 +39,11 @@ public class MysqlCartItemRepository implements CartItemRepositoryPort{
                 .map(mapper::toDomain);
     }
 
+    @Transactional
+    @Override
+    public void deleteCartItemById(Long id) {
+        log.info("Deleting cartItem with ID {}", id);
+        repository.deleteById(id);
+    }
+
 }

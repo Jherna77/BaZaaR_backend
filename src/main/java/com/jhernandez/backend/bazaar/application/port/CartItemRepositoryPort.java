@@ -10,4 +10,6 @@ public interface CartItemRepositoryPort {
 
     Optional<CartItem> findCartItemById(Long id);
 
+    void deleteCartItemById(Long id);
+
 }

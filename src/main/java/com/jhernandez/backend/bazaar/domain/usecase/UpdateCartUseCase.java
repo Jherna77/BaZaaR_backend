@@ -1,5 +1,7 @@
 package com.jhernandez.backend.bazaar.domain.usecase;
 
+import java.util.List;
+
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.CartItem;
 
@@ -7,10 +9,10 @@ public interface UpdateCartUseCase {
 
     void addItemToCart(Long userId, CartItem item) throws UserException;
 
-    // void removeItemFromCart(Long userId, Long productId);
+    List<CartItem> removeItemFromCart(Long userId, Long itemId) throws UserException;
 
-    // void updateItemQuantity(Long userId, Long productId, int quantity);
+    List<CartItem> updateItemQuantity(Long userId, Long itemId, int quantity) throws UserException;;
 
-    // void clearCart(Long userId);
+    List<CartItem> clearCart(Long userId) throws UserException;;
 
 }

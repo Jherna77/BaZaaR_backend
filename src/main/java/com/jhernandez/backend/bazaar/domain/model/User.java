@@ -2,8 +2,7 @@ package com.jhernandez.backend.bazaar.domain.model;
 
 import java.util.List;
 
-// import java.util.Collections;
-// import java.util.List;
+import com.jhernandez.backend.bazaar.domain.exception.UserException;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,11 +24,19 @@ public class User {
     private String province;
     private String zipCode;
     private boolean enabled;
-
-    List<CartItem> cart;
+    private List<CartItem> cart;
 
     public void addItemToCart(CartItem item) {
         this.cart.add(item);
     }
-    
+
+    public void removeItemFromCart(Long itemId) throws UserException {
+        for (CartItem item : this.cart) {
+            if (item.getId().equals(itemId)) {
+                this.cart.remove(item);
+                return;
+            }
+        }
+        throw new UserException("Item not found in User cart");
+    }       
 }

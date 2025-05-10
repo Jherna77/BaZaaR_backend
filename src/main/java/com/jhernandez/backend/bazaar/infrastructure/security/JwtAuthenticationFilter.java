@@ -14,8 +14,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.UserEntity;
 
@@ -26,12 +24,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /*
  * Filter for JWT authentication.
  * This filter is responsible for authenticating the user and generating a JWT token.
  */
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
@@ -48,12 +48,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             user = new ObjectMapper().readValue(request.getInputStream(), UserEntity.class);
             email = user.getEmail();
             password = user.getPassword();
-        } catch (StreamReadException e) {
-            e.printStackTrace();
-        } catch (DatabindException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error reading JSON from request", e);
         }
 
         UsernamePasswordAuthenticationToken authToken =
@@ -74,6 +70,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
 
         Claims claims = Jwts.claims()
+            // .add("userId", userId)
             .add("authorities", new ObjectMapper().writeValueAsString(authorities))
             .build();
         
