@@ -17,7 +17,6 @@ public class ProductDto {
     private Long id;
 
     private UserResponseDto user;
-    // private Long userId;
 
     @RequiredField
     private String name;

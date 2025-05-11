@@ -8,7 +8,8 @@ import org.mapstruct.MappingConstants;
 import com.jhernandez.backend.bazaar.domain.model.Item;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ItemDto;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
+        uses = { UserDtoMapper.class })
 public interface ItemDtoMapper {
 
     ItemDto toDto(Item item);

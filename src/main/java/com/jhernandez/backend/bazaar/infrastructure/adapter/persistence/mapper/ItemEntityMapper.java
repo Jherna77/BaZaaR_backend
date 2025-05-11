@@ -12,7 +12,7 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.I
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ItemEntityMapper {
 
-    @Mapping(target ="id", ignore = true)
+    @Mapping(target = "id", ignore = true)
     ItemEntity toEntity(Item item);
 
     Item toDomain(ItemEntity itemEntity);
