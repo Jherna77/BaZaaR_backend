@@ -27,6 +27,10 @@ public class ProductDto {
     @NotNull (message = "{validation.field.required.message}")
     @Min(value = 0, message = "{validation.product.invalid.price.message}")
     private Double price;
+
+    @NotNull (message = "{validation.field.required.message}")
+    @Min(value = 0, message = "{validation.product.invalid.price.message}")
+    private Double shipping;
     
     private List<CategoryDto> categories;
     private List<String> imagesUrl;

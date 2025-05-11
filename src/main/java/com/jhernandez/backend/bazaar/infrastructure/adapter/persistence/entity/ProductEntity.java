@@ -43,6 +43,8 @@ public class ProductEntity {
 
     private Double price;
 
+    private Double shipping;
+
     @ManyToMany
     @JoinTable(name="products_categories",
         joinColumns = @JoinColumn(name = "product_id"),

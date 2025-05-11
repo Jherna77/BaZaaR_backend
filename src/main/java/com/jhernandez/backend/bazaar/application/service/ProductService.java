@@ -101,6 +101,7 @@ public class ProductService implements ProductServicePort {
         existingProduct.setName(product.getName());
         existingProduct.setDescription(product.getDescription());
         existingProduct.setPrice(product.getPrice());
+        existingProduct.setShipping(product.getShipping());
         existingProduct.setCategories(product.getCategories());
 
         List<String> finalImages = new ArrayList<>(product.getImagesUrl());
