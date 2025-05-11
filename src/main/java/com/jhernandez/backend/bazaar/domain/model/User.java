@@ -26,7 +26,12 @@ public class User {
     private boolean enabled;
     private List<CartItem> cart;
 
-    public void addItemToCart(CartItem item) {
+    public void addItemToCart(CartItem item) throws UserException {
+        for (CartItem cartItem : this.cart) {
+            if (cartItem.getProduct().getId().equals(item.getProduct().getId())) {
+                throw new UserException("Item already exists in User cart");
+            }
+        }
         this.cart.add(item);
     }
 

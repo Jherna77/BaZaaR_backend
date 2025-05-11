@@ -2,7 +2,6 @@ package com.jhernandez.backend.bazaar.application.service;
 
 import java.util.List;
 
-// import com.jhernandez.backend.bazaar.application.port.CartItemRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.CartServicePort;
 import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
@@ -12,11 +11,9 @@ import com.jhernandez.backend.bazaar.domain.model.User;
 public class CartService implements CartServicePort{
 
     private final UserRepositoryPort userRepository;
-    // private final CartItemRepositoryPort cartItemRepository;
 
     public CartService(UserRepositoryPort userRepository) {//, CartItemRepositoryPort cartItemRepository) {
         this.userRepository = userRepository;
-        // this.cartItemRepository = cartItemRepository;
     }
 
     @Override
@@ -30,10 +27,6 @@ public class CartService implements CartServicePort{
     public void addItemToCart(Long userId, CartItem item) throws UserException {
         User user = userRepository.findUserById(userId)
                 .orElseThrow(() -> new UserException("User not found"));
-        if (user.getCart().contains(item)) {
-            throw new UserException("Item already in cart");
-        }
-        // cartItemRepository.saveCartItem(item);
         user.addItemToCart(item);
         userRepository.saveUser(user);
     }
@@ -43,8 +36,6 @@ public class CartService implements CartServicePort{
         User user = userRepository.findUserById(userId)
                 .orElseThrow(() -> new UserException("User not found"));
         user.removeItemFromCart(itemId);
-        // cartItemRepository.deleteCartItemById(itemId);
-        // userRepository.saveUser(user);
         return userRepository.saveUser(user)
                 .orElseThrow(() -> new UserException("Could not save user"))
                 .getCart();
@@ -57,7 +48,6 @@ public class CartService implements CartServicePort{
         for (CartItem item : user.getCart()) {
             if (item.getId().equals(itemId)) {
                 item.setQuantity(quantity);
-                // cartItemRepository.saveCartItem(item);
                 return userRepository.saveUser(user)
                 .orElseThrow(() -> new UserException("Could not save user"))
                 .getCart();
