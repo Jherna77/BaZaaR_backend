@@ -3,16 +3,20 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper;
 import java.util.List;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 import com.jhernandez.backend.bazaar.domain.model.CartItem;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.CartItemEntity;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
+        uses = {ProductEntityMapper.class})
 public interface CartItemEntityMapper {
 
+    @Mapping(target = "product.user", ignore = true)
     CartItemEntity toEntity(CartItem cartItem);
 
+    @Mapping(target = "product.user", ignore = true)
     CartItem toDomain(CartItemEntity cartItemEntity);
 
     List<CartItemEntity> toEntityList(List<CartItem> cartItemList);

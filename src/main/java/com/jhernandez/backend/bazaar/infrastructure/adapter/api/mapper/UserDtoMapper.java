@@ -12,7 +12,6 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserResponse
 public interface UserDtoMapper {
 
     @Mapping(target = "name", expression = "java(NameDisabler.adjust(user.getName(), user.isEnabled()))")
-    @Mapping(target = "cart", ignore = true)
     UserResponseDto toResponseDto(User user);
 
     @Mapping(target = "enabled", ignore = true)
@@ -20,6 +19,7 @@ public interface UserDtoMapper {
     User toDomain(UserRequestDto userRequestDto);
 
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "cart", ignore = true) 
     User toDomain(UserResponseDto userResponseDto);
 
 }

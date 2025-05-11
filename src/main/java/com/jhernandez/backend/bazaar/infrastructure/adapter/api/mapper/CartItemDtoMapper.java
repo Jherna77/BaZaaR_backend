@@ -9,7 +9,7 @@ import com.jhernandez.backend.bazaar.domain.model.CartItem;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.CartItemDto;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = { UserDtoMapper.class })
+        uses = { UserDtoMapper.class, ProductDtoMapper.class })
 public interface CartItemDtoMapper {
 
     CartItemDto toDto(CartItem cartItem);
