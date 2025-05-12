@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.application.port.OrderRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.model.Order;
@@ -23,6 +24,7 @@ public class MysqlOrderRepositoryAdapter implements OrderRepositoryPort {
     private final JpaOrderRepository orderRepository;
     private final OrderEntityMapper orderEntityMapper;
 
+    @Transactional
     @Override
     public Optional<Order> saveOrder(Order order) {
         log.info("Saving order {}", order.getId());
@@ -31,6 +33,7 @@ public class MysqlOrderRepositoryAdapter implements OrderRepositoryPort {
                 orderRepository.save(orderEntity)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Order> findAllOrders() {
         log.info("Finding all orders");
@@ -39,18 +42,21 @@ public class MysqlOrderRepositoryAdapter implements OrderRepositoryPort {
             .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Order> findOrderById(Long id) {
         log.info("Finding user with ID {}", id);
         return orderRepository.findById(id).map(orderEntityMapper::toDomain);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Boolean existsById(Long id) {
         log.info("Checking if order with ID {} exists", id);
         return orderRepository.existsById(id);
     }
 
+    @Transactional
     @Override
     public void deleteOrderById(Long id) {
         log.info("Deleting order with ID {}", id);
