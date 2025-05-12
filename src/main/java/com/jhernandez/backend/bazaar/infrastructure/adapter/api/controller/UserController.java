@@ -98,7 +98,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UserRequestDto user, BindingResult result, @PathVariable Long id) {
         log.info("Updating user with id {}", id);
-        user.setId(id);
+        // user.setId(id);
         try {
             return (result.hasErrors())
             ? fieldValidation(result)

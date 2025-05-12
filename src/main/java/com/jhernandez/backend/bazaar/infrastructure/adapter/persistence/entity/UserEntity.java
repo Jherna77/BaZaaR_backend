@@ -59,4 +59,8 @@ public class UserEntity {
     @JoinColumn(name = "user_id")
     private List<ItemEntity> cart;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<OrderEntity> orders;
+
 }

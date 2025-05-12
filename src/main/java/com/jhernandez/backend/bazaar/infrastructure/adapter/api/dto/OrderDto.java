@@ -12,7 +12,7 @@ import lombok.Setter;
 public class OrderDto {
 
     private Long id;
-    private UserResponseDto user;
+    private Long userId;
     private List<ItemDto> items;
 
 }

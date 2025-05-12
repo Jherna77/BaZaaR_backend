@@ -25,6 +25,8 @@ public class User {
     private String zipCode;
     private boolean enabled;
     private List<Item> cart;
+    private List<Order> orders;
+
 
     public void addItemToCart(Item item) throws UserException {
         for (Item cartItem : this.cart) {
@@ -43,5 +45,15 @@ public class User {
             }
         }
         throw new UserException("Item not found in User cart");
-    }       
+    }
+    
+    public void createOrderFromCart() {    
+        this.orders.add(new Order(
+            null,
+            this.cart.stream()
+            .map(item -> new Item(null, item.getProduct(), item.getQuantity()))
+            .toList()));
+        this.cart.clear();
+    }
+
 }

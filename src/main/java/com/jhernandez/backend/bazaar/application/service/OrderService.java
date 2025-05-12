@@ -5,30 +5,49 @@ import java.util.Optional;
 
 import com.jhernandez.backend.bazaar.application.port.OrderRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.OrderServicePort;
-import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
+import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.exception.OrderException;
+import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.Order;
-import com.jhernandez.backend.bazaar.domain.model.Product;
+import com.jhernandez.backend.bazaar.domain.model.User;
 
 public class OrderService implements OrderServicePort {
 
+    private final UserRepositoryPort userRepository;
     private final OrderRepositoryPort orderRepository;
-    private final ProductRepositoryPort productRepository;
 
-    public OrderService (OrderRepositoryPort orderRepository, ProductRepositoryPort productRepository) {
+    public OrderService (UserRepositoryPort userRepository, OrderRepositoryPort orderRepository) {
+        this.userRepository = userRepository;
         this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
     }
 
     @Override
-    public Optional<Order> createOrder(Order order) throws OrderException {
-        return orderRepository.saveOrder(order);
+    public void createOrderFromCart(Long userId) throws UserException {
+        if (userId == null) {
+            throw new UserException("User ID cannot be null");
+        }
+        User existingUser = userRepository.findUserById(userId)
+            .orElseThrow(() -> new UserException("User not found"));
+        
+        existingUser.createOrderFromCart();
+        userRepository.saveUser(existingUser);
     }
 
     @Override
     public List<Order> findAllOrders() {
         return orderRepository.findAllOrders();
     }
+
+    @Override
+    public List<Order> findOrdersByUserId(Long userId) throws UserException {
+        if (userId == null) {
+            throw new UserException("User ID cannot be null");
+        }
+        return userRepository.findUserById(userId)
+                .orElseThrow(() -> new UserException("User not found"))
+                .getOrders();
+    }
+
 
     @Override
     public Optional<Order> findOrderById(Long id) throws OrderException {
@@ -42,35 +61,6 @@ public class OrderService implements OrderServicePort {
     }
 
     @Override
-    public Optional<Order> addItemToOrder(Long orderId, Long productId) throws OrderException {
-        Order existingOrder = orderRepository.findOrderById(orderId)
-                .orElseThrow(() -> new OrderException("Order not found"));
-        if (existingOrder.getItems().stream().anyMatch(item -> item.getProduct().getId().equals(productId))) {
-            throw new OrderException("Item already exists in the order");
-        }
-        Product product = productRepository.findProductById(productId)
-                .orElseThrow(() -> new OrderException("Product not found"));
-        // existingOrder.addItem(product);
-        return orderRepository.saveOrder(existingOrder);
-    }
-
-    @Override
-    public Optional<Order> removeItemFromOrder(Long orderId, Long productId) throws OrderException {
-        Order existingOrder = orderRepository.findOrderById(orderId)
-                .orElseThrow(() -> new OrderException("Order not found"));
-        existingOrder.removeItem(productId);
-        return orderRepository.saveOrder(existingOrder);
-    }
-
-    @Override
-    public Optional<Order> updateItemQuantity(Long orderId, Long productId, Integer newQuantity) throws OrderException {
-        Order existingOrder = orderRepository.findOrderById(orderId)
-                .orElseThrow(() -> new OrderException("Order not found"));
-        existingOrder.updateItemQuantity(productId, newQuantity);
-        return orderRepository.saveOrder(existingOrder);
-    }
-
-    @Override
     public void deleteOrderById(Long orderId) throws OrderException {
         if (orderId == null) {
             throw new OrderException("Order ID cannot be null");
@@ -80,5 +70,6 @@ public class OrderService implements OrderServicePort {
         }
         orderRepository.deleteOrderById(orderId);
     }
+
 
 }

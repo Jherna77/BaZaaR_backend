@@ -9,10 +9,4 @@ public interface UpdateOrderUseCase {
 
     Optional<Order> updateOrder(Order order) throws OrderException;
 
-    Optional<Order> addItemToOrder(Long orderId, Long productId) throws OrderException;
-
-    Optional<Order> removeItemFromOrder(Long orderId, Long productId) throws OrderException;
-
-    Optional<Order> updateItemQuantity(Long orderId, Long productId, Integer newQuantity) throws OrderException;
-
 }
