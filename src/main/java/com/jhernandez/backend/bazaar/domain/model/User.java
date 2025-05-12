@@ -24,10 +24,10 @@ public class User {
     private String province;
     private String zipCode;
     private boolean enabled;
-    private List<CartItem> cart;
+    private List<Item> cart;
 
-    public void addItemToCart(CartItem item) throws UserException {
-        for (CartItem cartItem : this.cart) {
+    public void addItemToCart(Item item) throws UserException {
+        for (Item cartItem : this.cart) {
             if (cartItem.getProduct().getId().equals(item.getProduct().getId())) {
                 throw new UserException("Item already exists in User cart");
             }
@@ -36,7 +36,7 @@ public class User {
     }
 
     public void removeItemFromCart(Long itemId) throws UserException {
-        for (CartItem item : this.cart) {
+        for (Item item : this.cart) {
             if (item.getId().equals(itemId)) {
                 this.cart.remove(item);
                 return;

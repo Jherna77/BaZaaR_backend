@@ -50,7 +50,7 @@ public class OrderService implements OrderServicePort {
         }
         Product product = productRepository.findProductById(productId)
                 .orElseThrow(() -> new OrderException("Product not found"));
-        existingOrder.addItem(product);
+        // existingOrder.addItem(product);
         return orderRepository.saveOrder(existingOrder);
     }
 

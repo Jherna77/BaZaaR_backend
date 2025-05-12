@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jhernandez.backend.bazaar.application.port.CartServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.DomainException;
-import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.CartItemDto;
-import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.CartItemDtoMapper;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ItemDto;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ItemDtoMapper;
 
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.CART;
 
@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CartController {
 
     private final CartServicePort cartService;
-    private final CartItemDtoMapper mapper;
+    private final ItemDtoMapper mapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserCart(@PathVariable Long id) {
@@ -45,7 +45,7 @@ public class CartController {
     }
 
     @PostMapping("/{userId}")
-    public ResponseEntity<?> addItemToCart(@PathVariable Long userId, @RequestBody CartItemDto item) {
+    public ResponseEntity<?> addItemToCart(@PathVariable Long userId, @RequestBody ItemDto item) {
         log.info("Adding item {} to cart for the user with ID {}", item.getProduct().getName(), userId);
         try {
             cartService.addItemToCart(userId, mapper.toDomain(item));

@@ -56,7 +56,7 @@ public class UserEntity {
     }
     
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id") // Esto agrega una foreign key en cart_items
-    private List<CartItemEntity> cart;
+    @JoinColumn(name = "user_id")
+    private List<ItemEntity> cart;
 
 }

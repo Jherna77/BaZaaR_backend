@@ -9,16 +9,18 @@ import org.mapstruct.MappingConstants;
 import com.jhernandez.backend.bazaar.domain.model.Item;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.ItemEntity;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
+        uses = {ProductEntityMapper.class})
 public interface ItemEntityMapper {
 
-    @Mapping(target = "id", ignore = true)
-    ItemEntity toEntity(Item item);
+    @Mapping(target = "product.user", ignore = true)
+    ItemEntity toEntity(Item cartItem);
 
-    Item toDomain(ItemEntity itemEntity);
+    @Mapping(target = "product.user", ignore = true)
+    Item toDomain(ItemEntity cartItemEntity);
 
-    List<ItemEntity> toEntityList(List<Item> itemList);
+    List<ItemEntity> toEntityList(List<Item> cartItemList);
 
-    List<Item> toDomainList(List<ItemEntity> itemEntityList);
+    List<Item> toDomainList(List<ItemEntity> cartItemEntityList);
 
 }

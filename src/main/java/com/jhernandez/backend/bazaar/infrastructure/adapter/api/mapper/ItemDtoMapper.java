@@ -14,7 +14,7 @@ public interface ItemDtoMapper {
 
     ItemDto toDto(Item item);
 
-    Item toDomain(ItemDto itemDto);
+    Item toDomain(ItemDto itemdto);
 
     List<ItemDto> toDtoList(List<Item> itemList);
 

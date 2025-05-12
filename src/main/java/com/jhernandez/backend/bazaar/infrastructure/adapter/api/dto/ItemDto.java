@@ -9,8 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ItemDto {
 
-    private OrderDto order;
+    private Long id;
     private ProductDto product;
-    private Integer quantity;
+    private int quantity;
 
 }

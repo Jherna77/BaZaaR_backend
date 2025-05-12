@@ -2,37 +2,37 @@ package com.jhernandez.backend.bazaar.domain.model;
 
 public class Item {
 
-    private Order order;
+    private Long id;
     private Product product;
-    private Integer quantity;
-    
-    public Item(Order order, Product product, Integer quantity) {
-        this.order = order;
+    private int quantity;
+
+    public Item(Long id, Product product, int quantity) {
+        this.id = id;
         this.product = product;
         this.quantity = quantity;
     }
 
-    public Order getOrder() {
-        return order;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Product getProduct() {
         return product;
     }
 
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
     public void setProduct(Product product) {
         this.product = product;
     }
 
-    public void setQuantity(Integer quantity) {
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 

@@ -40,9 +40,9 @@ public class Order {
         this.items = items;
     }
 
-    public void addItem(Product product) {
-        this.items.add(new Item(this, product, 1));
-    }
+    // public void addItem(Product product) {
+    //     this.items.add(new Item(this, product, 1));
+    // }
     
     public void removeItem(Long productId) throws OrderException {
         for (Item item : this.items) {
