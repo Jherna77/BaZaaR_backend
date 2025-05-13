@@ -14,12 +14,13 @@ public interface UserDtoMapper {
     @Mapping(target = "name", expression = "java(NameDisabler.adjust(user.getName(), user.isEnabled()))")
     UserResponseDto toResponseDto(User user);
 
-    @Mapping(target = "enabled", ignore = true)
+    @Mapping(target = "shop", ignore = true)
     @Mapping(target = "cart", ignore = true)
     @Mapping(target = "orders", ignore = true)
     User toDomain(UserRequestDto userRequestDto);
 
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "shop", ignore = true)
     @Mapping(target = "cart", ignore = true)
     @Mapping(target = "orders", ignore = true)
     User toDomain(UserResponseDto userResponseDto);

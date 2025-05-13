@@ -15,8 +15,6 @@ import com.jhernandez.backend.bazaar.domain.model.Category;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 import com.jhernandez.backend.bazaar.domain.model.Product;
 
-import lombok.RequiredArgsConstructor;
-
 /*
  * This class implements the CategoryServicePort interface, which defines the contract for category-related operations.
  * It can include methods for creating, retrieving, updating, and deleting categories.
@@ -24,7 +22,6 @@ import lombok.RequiredArgsConstructor;
  * The CategoryService class is responsible for implementing the business logic related to categories and returns the results to the controller.
  * It interacts with the data layer to perform CRUD operations on categories and handles any exceptions that may occur.
 */
-@RequiredArgsConstructor
 public class CategoryService implements CategoryServicePort{
 
     private static final Long DEFAULT_CATEGORY_ID = 1L;
@@ -32,6 +29,12 @@ public class CategoryService implements CategoryServicePort{
     private final CategoryRepositoryPort categoryRepositoryPort;
     private final ProductRepositoryPort productRepositoryPort;
     private final ImageServicePort imageServicePort;
+
+    public CategoryService(CategoryRepositoryPort categoryRepositoryPort, ProductRepositoryPort productRepositoryPort, ImageServicePort imageServicePort) {
+        this.categoryRepositoryPort = categoryRepositoryPort;
+        this.productRepositoryPort = productRepositoryPort;
+        this.imageServicePort = imageServicePort;
+    }
 
     @Override
     public Optional<Category> createCategory(Category category, ImageFile categoryImage) throws CategoryException, ImageFileException {
@@ -51,9 +54,6 @@ public class CategoryService implements CategoryServicePort{
             .stream()
             .sorted(Comparator.comparing(category -> category.getName().toLowerCase()))
             .toList();
-        // return categoryRepositoryPort.findAllCategories().stream()
-        //         .filter(Category::isEnabled)
-        //         .toList();
     }
 
     @Override

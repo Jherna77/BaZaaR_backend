@@ -6,4 +6,8 @@ public class UserException extends DomainException {
         super(message);
     }
 
+    // public UserException(Integer code) {
+    //     obtener de messages.properties el mensaje de error correspondiente al código
+    // }
+
 }

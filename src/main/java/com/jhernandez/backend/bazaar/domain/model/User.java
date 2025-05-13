@@ -24,14 +24,44 @@ public class User {
     private String province;
     private String zipCode;
     private boolean enabled;
+    private List<Product> shop;
     private List<Item> cart;
     private List<Order> orders;
 
+    public void addProductToShop(Product product) throws UserException {
+        for (Product shopProduct : this.shop) {
+            if (shopProduct.getId().equals(product.getId())) {
+                throw new UserException("Product already exists in User shop");
+            }
+        }
+        this.shop.add(product);
+    }
+
+    public void removeProductFromShop(Long productId) throws UserException {
+        for (Product product : this.shop) {
+            if (product.getId().equals(productId)) {
+                this.shop.remove(product);
+                return;
+            }
+        }
+        throw new UserException("Product not found in user shop");
+    }
+
+    public void updateProductInShop(Product product) throws UserException {
+        for (Product shopProduct : this.shop) {
+            if (shopProduct.getId().equals(product.getId())) {
+                this.shop.remove(shopProduct);
+                this.shop.add(product);
+                return;
+            }
+        }
+        throw new UserException("Product not found in user shop");
+    }
 
     public void addItemToCart(Item item) throws UserException {
         for (Item cartItem : this.cart) {
             if (cartItem.getProduct().getId().equals(item.getProduct().getId())) {
-                throw new UserException("Item already exists in User cart");
+                throw new UserException("Item already exists in user cart");
             }
         }
         this.cart.add(item);
@@ -44,7 +74,7 @@ public class User {
                 return;
             }
         }
-        throw new UserException("Item not found in User cart");
+        throw new UserException("Item not found in user cart");
     }
     
     public void createOrderFromCart() {    

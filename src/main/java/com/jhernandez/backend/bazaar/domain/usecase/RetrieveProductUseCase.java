@@ -1,7 +1,6 @@
 package com.jhernandez.backend.bazaar.domain.usecase;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
@@ -20,6 +19,6 @@ public interface RetrieveProductUseCase {
 
     List<Product> findProductsByUserId(Long userId) throws UserException;
 
-    Optional<Product> findProductById(Long id) throws ProductException;
+    Product findProductById(Long id) throws ProductException;
 
 }

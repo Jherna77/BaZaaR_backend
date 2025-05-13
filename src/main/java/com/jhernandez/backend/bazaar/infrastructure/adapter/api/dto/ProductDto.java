@@ -5,36 +5,19 @@ import lombok.Setter;
 
 import java.util.List;
 
-import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.RequiredField;
-
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-
 @Getter
 @Setter
 public class ProductDto {
     
     private Long id;
-
+    private Boolean enabled;
     private Long userId;
-
-    @RequiredField
     private String name;
-
-    @RequiredField
     private String description;
-
-    @NotNull (message = "{validation.field.required.message}")
-    @Min(value = 0, message = "{validation.product.invalid.price.message}")
     private Double price;
-
-    @NotNull (message = "{validation.field.required.message}")
-    @Min(value = 0, message = "{validation.product.invalid.price.message}")
-    private Double shipping;
-    
+    private Double shipping;    
     private List<CategoryDto> categories;
     private List<String> imagesUrl;
-    private boolean enabled;
 
 }
 

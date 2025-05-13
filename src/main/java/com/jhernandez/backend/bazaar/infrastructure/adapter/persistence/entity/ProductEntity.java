@@ -12,20 +12,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-// import jakarta.validation.constraints.Size;
-import lombok.EqualsAndHashCode;
-// import jakarta.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@EqualsAndHashCode
 @Table(name = "products")
 public class ProductEntity {
 
@@ -33,16 +28,10 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
-
+    private Boolean enabled;
     private String name;
-
     private String description;
-
     private Double price;
-
     private Double shipping;
 
     @ManyToMany
@@ -55,20 +44,6 @@ public class ProductEntity {
     @ElementCollection
     @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "image_url")
-    // @Size(max = 4, message = "Max 4 images per product")
-    // @Pattern(regexp = "^(http|https)?://.*|/api/images/.*", message = "URL inválida")
     private List<String> imagesUrl;
 
-    // @Column(name = "discount_price")
-    // private Double discountPrice;
-
-    // @Column(name = "discount_rate")
-    // private Double discountRate;
-
-    private boolean enabled;
-
-    @PrePersist
-    public void prePersist() {
-        this.enabled = true;
-    }
 }

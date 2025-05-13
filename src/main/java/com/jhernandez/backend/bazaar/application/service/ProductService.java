@@ -2,7 +2,6 @@ package com.jhernandez.backend.bazaar.application.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
@@ -16,8 +15,6 @@ import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.domain.model.User;
 
-import lombok.RequiredArgsConstructor;
-
 /**
  * This class implements the ProductServicePort interface, which defines the
  * contract for product-related operations.
@@ -30,29 +27,30 @@ import lombok.RequiredArgsConstructor;
  * It interacts with the data layer to perform CRUD operations on products and
  * handles any exceptions that may occur.
  */
-@RequiredArgsConstructor
 public class ProductService implements ProductServicePort {
 
     private final ProductRepositoryPort productRepositoryPort;
     private final UserRepositoryPort userRepositoryPort;
     private final ImageServicePort imageServicePort;
 
+    public ProductService(ProductRepositoryPort productRepositoryPort, UserRepositoryPort userRepositoryPort,
+            ImageServicePort imageServicePort) {
+        this.productRepositoryPort = productRepositoryPort;
+        this.userRepositoryPort = userRepositoryPort;
+        this.imageServicePort = imageServicePort;
+    }
+
     @Override
-    public Optional<Product> createProduct(Product product, List<ImageFile> productImages) throws ProductException, ImageFileException, UserException {
+    public void createProduct(Product product, Long userId, List<ImageFile> productImages) throws ImageFileException, UserException {
         product.setImagesUrl(imageServicePort.saveImagesList(productImages)
                 .stream()
                 .map(imageFile -> imageFile.getImageUrl())
                 .toList());
-                
-        product.setUser(userRepositoryPort.findUserById(product.getUser().getId())
-        .orElseThrow(() -> new UserException("User not found")));
-
-        return productRepositoryPort.saveProduct(product);
-    }
-
-    @Override
-    public void saveProduct(Product product) {
-        productRepositoryPort.saveProduct(product);
+        User productOwner = userRepositoryPort.findUserById(userId)
+                .orElseThrow(() -> new UserException("User not found"));            
+        if (!productOwner.isEnabled()) throw new UserException("Product owner user is not enabled");
+        productOwner.addProductToShop(product);
+        userRepositoryPort.saveUser(productOwner);
     }
 
     @Override
@@ -63,15 +61,6 @@ public class ProductService implements ProductServicePort {
     @Override
     public List<Product> findAllEnabledProducts() {
         return productRepositoryPort.findAllEnabledProducts();
-        // return productRepositoryPort.findAllProducts().stream()
-        //     .filter(Product::isEnabled)
-        //     .toList();
-    }
-
-    @Override
-    public Optional<Product> findProductById(Long id) throws ProductException {
-        if (id == null) throw new ProductException("Product ID must not be null");
-        return productRepositoryPort.findProductById(id);
     }
 
     @Override
@@ -93,11 +82,16 @@ public class ProductService implements ProductServicePort {
     }
 
     @Override
-    public Optional<Product> updateProduct(Product product, List<ImageFile> productsImages) throws ProductException, ImageFileException {
-        if (product.getId() == null) throw new ProductException("Product ID must not be null");
-        Product existingProduct = findProductById(product.getId())
+    public Product findProductById(Long id) throws ProductException {
+        if (id == null) throw new ProductException("Product ID must not be null");
+        return productRepositoryPort.findProductById(id)
                 .orElseThrow(() -> new ProductException("Product not found"));
+    }
 
+    @Override
+    public void updateProduct(Product product, List<ImageFile> productsImages) throws ProductException, ImageFileException {
+        if (product.getId() == null) throw new ProductException("Product ID must not be null");
+        Product existingProduct = findProductById(product.getId());
         existingProduct.setName(product.getName());
         existingProduct.setDescription(product.getDescription());
         existingProduct.setPrice(product.getPrice());
@@ -119,20 +113,19 @@ public class ProductService implements ProductServicePort {
         }
         existingProduct.setImagesUrl(finalImages);
 
-        return productRepositoryPort.saveProduct(existingProduct);
+        productRepositoryPort.saveProduct(existingProduct);
     }
 
     @Override
-    public Optional<Product> enableProductById(Long id) throws ProductException, UserException {
+    public void enableProductById(Long id) throws ProductException, UserException {
         if (id == null) throw new ProductException("Product ID must not be null");
-        Product existingProduct = findProductById(id)
-                .orElseThrow(() -> new ProductException("Product not found"));
-        if (existingProduct.isEnabled()) throw new ProductException("Product is already enabled");
-        User productOwner = userRepositoryPort.findUserById(existingProduct.getUser().getId())
-                .orElseThrow(() -> new UserException("User not found"));
-        if (!productOwner.isEnabled()) throw new UserException("Product owner user is not enabled");
+        Product existingProduct = findProductById(id);
+        if (existingProduct.getEnabled()) throw new ProductException("Product is already enabled");
+        // User productOwner = userRepositoryPort.findUserById(existingProduct.getUser().getId())
+        //         .orElseThrow(() -> new UserException("User not found"));
+        // if (!productOwner.isEnabled()) throw new UserException("Product owner user is not enabled");
         existingProduct.setEnabled(true);
-        return productRepositoryPort.saveProduct(existingProduct);
+        productRepositoryPort.saveProduct(existingProduct);
     }
 
     @Override
@@ -141,15 +134,13 @@ public class ProductService implements ProductServicePort {
         productRepositoryPort.enableProductsByUserId(userId);
     }
 
-
     @Override
-    public Optional<Product> disableProductById(Long id) throws ProductException {
+    public void disableProductById(Long id) throws ProductException {
         if (id == null) throw new ProductException("Product ID must not be null");
-        Product existingProduct = findProductById(id)
-                .orElseThrow(() -> new ProductException("Product not found"));
-        if (!existingProduct.isEnabled()) throw new ProductException("Product is already disabled");
+        Product existingProduct = findProductById(id);
+        if (!existingProduct.getEnabled()) throw new ProductException("Product is already disabled");
         existingProduct.setEnabled(false);
-        return productRepositoryPort.saveProduct(existingProduct);
+        productRepositoryPort.saveProduct(existingProduct);
     }
 
     @Override
@@ -161,8 +152,7 @@ public class ProductService implements ProductServicePort {
     @Override
     public void deleteProductById(Long id) throws ProductException, ImageFileException {
         if (id == null) throw new ProductException("Product ID must not be null");
-        Product existingProduct = findProductById(id)
-                .orElseThrow(() -> new ProductException("Product not found"));
+        Product existingProduct = findProductById(id);
         imageServicePort.deleteImageListByUrl(existingProduct.getImagesUrl());
         productRepositoryPort.deleteProductById(id);
     }

@@ -10,6 +10,7 @@ import lombok.Setter;
 public class UserResponseDto {
 
     private Long id;
+    private Boolean enabled;
     private UserRoleDto role;
     private String email;
     private String name;
@@ -18,6 +19,5 @@ public class UserResponseDto {
     private String city;
     private String province;
     private String zipCode;
-    private boolean enabled;
 
 }

@@ -17,6 +17,7 @@ import lombok.Setter;
 public class UserRequestDto {
 
     private Long id;
+    private Boolean enabled;
 
     @UserRole
     private UserRoleDto role;
