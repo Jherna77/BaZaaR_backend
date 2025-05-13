@@ -7,13 +7,11 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.UserR
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ZipCode;
 
 import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class UserRequestDto {
 
     private Long id;

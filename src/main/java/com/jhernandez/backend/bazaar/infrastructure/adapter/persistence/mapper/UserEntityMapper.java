@@ -7,7 +7,10 @@ import com.jhernandez.backend.bazaar.domain.model.User;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.UserEntity;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {ItemEntityMapper.class})
+        uses = {UserRoleEntityMapper.class, 
+                ProductEntityMapper.class,
+                ItemEntityMapper.class,
+                OrderEntityMapper.class})
 public interface UserEntityMapper {
 
     UserEntity toEntity(User user);

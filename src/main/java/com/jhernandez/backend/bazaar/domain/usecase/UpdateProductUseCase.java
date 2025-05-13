@@ -14,10 +14,6 @@ public interface UpdateProductUseCase {
 
     void enableProductById(Long id) throws ProductException, UserException;
 
-    void enableProductsByUserId(Long userId) throws UserException;
-
     void disableProductById(Long id) throws ProductException;
-
-    void disableProductsByUserId(Long userId) throws UserException;
 
 }

@@ -9,7 +9,7 @@ import com.jhernandez.backend.bazaar.domain.model.Item;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ItemDto;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = { UserDtoMapper.class, ProductDtoMapper.class })
+        uses = { ProductDtoMapper.class })
 public interface ItemDtoMapper {
 
     ItemDto toDto(Item item);

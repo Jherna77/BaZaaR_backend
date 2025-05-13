@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.application.port.CategoryRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.model.Category;
-import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.CategoryEntity;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.CategoryEntityMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaCategoryRepository;
 
@@ -28,11 +27,9 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
 
     @Transactional
     @Override
-    public Optional<Category> saveCategory(Category category) {
+    public void saveCategory(Category category) {
         log.info("Saving category {}", category.getName());
-        CategoryEntity categoryEntity = categoryEntityMapper.toEntity(category);
-        return Optional.of(categoryEntityMapper.toDomain(
-                categoryRepository.save(categoryEntity)));
+        categoryRepository.save(categoryEntityMapper.toEntity(category));
     }
 
     @Transactional(readOnly = true)
@@ -53,7 +50,6 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
                 .collect(Collectors.toList());
     }
 
-    
     @Transactional(readOnly = true)
     @Override
     public Optional<Category> findCategoryById(Long id) {

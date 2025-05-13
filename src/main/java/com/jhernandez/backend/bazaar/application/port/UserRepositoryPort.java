@@ -19,7 +19,7 @@ public interface UserRepositoryPort {
 
     Optional<User> findUserByEmail(String email);
 
-    boolean existsByEmail(String email);
+    Boolean existsByEmail(String email);
 
     void deleteUserById(Long id);
 

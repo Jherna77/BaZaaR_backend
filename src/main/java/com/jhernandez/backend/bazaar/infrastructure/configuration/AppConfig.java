@@ -18,9 +18,8 @@ public class AppConfig {
 
     @Bean
     UserServicePort userServicePort(
-        UserRepositoryPort userRepositoryPort, ProductServicePort productServicePort,
-        PasswordEncoder passwordEncoder) {
-        return new UserService(userRepositoryPort, productServicePort, passwordEncoder);
+        UserRepositoryPort userRepositoryPort, PasswordEncoder passwordEncoder, ImageServicePort imageServicePort) {
+        return new UserService(userRepositoryPort, passwordEncoder, imageServicePort);
     }
 
     @Bean

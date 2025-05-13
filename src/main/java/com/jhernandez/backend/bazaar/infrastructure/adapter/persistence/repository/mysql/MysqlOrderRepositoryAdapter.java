@@ -1,15 +1,12 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.mysql;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.application.port.OrderRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.model.Order;
-import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.OrderEntity;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.OrderEntityMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaOrderRepository;
 
@@ -24,43 +21,43 @@ public class MysqlOrderRepositoryAdapter implements OrderRepositoryPort {
     private final JpaOrderRepository orderRepository;
     private final OrderEntityMapper orderEntityMapper;
 
-    @Transactional
-    @Override
-    public Optional<Order> saveOrder(Order order) {
-        log.info("Saving order {}", order.getId());
-        OrderEntity orderEntity = orderEntityMapper.toEntity(order);
-        return Optional.of(orderEntityMapper.toDomain(
-                orderRepository.save(orderEntity)));
-    }
+    // @Transactional
+    // @Override
+    // public Optional<Order> saveOrder(Order order) {
+    //     log.info("Saving order {}", order.getId());
+    //     OrderEntity orderEntity = orderEntityMapper.toEntity(order);
+    //     return Optional.of(orderEntityMapper.toDomain(
+    //             orderRepository.save(orderEntity)));
+    // }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<Order> findAllOrders() {
-        log.info("Finding all orders");
-        return orderRepository.findAll().stream()
-            .map(orderEntityMapper::toDomain)
-            .collect(Collectors.toList());
-    }
+    // @Transactional(readOnly = true)
+    // @Override
+    // public List<Order> findAllOrders() {
+    //     log.info("Finding all orders");
+    //     return orderRepository.findAll().stream()
+    //         .map(orderEntityMapper::toDomain)
+    //         .collect(Collectors.toList());
+    // }
 
     @Transactional(readOnly = true)
     @Override
     public Optional<Order> findOrderById(Long id) {
-        log.info("Finding user with ID {}", id);
+        log.info("Finding order with ID {}", id);
         return orderRepository.findById(id).map(orderEntityMapper::toDomain);
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public Boolean existsById(Long id) {
-        log.info("Checking if order with ID {} exists", id);
-        return orderRepository.existsById(id);
-    }
+    // @Transactional(readOnly = true)
+    // @Override
+    // public Boolean existsById(Long id) {
+    //     log.info("Checking if order with ID {} exists", id);
+    //     return orderRepository.existsById(id);
+    // }
 
-    @Transactional
-    @Override
-    public void deleteOrderById(Long id) {
-        log.info("Deleting order with ID {}", id);
-        orderRepository.deleteById(id);
-    }
+    // @Transactional
+    // @Override
+    // public void deleteOrderById(Long id) {
+    //     log.info("Deleting order with ID {}", id);
+    //     orderRepository.deleteById(id);
+    // }
 
 }

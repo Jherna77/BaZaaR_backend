@@ -53,21 +53,17 @@ public class CategoryController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createCategory(
-            @RequestPart(ARG_CATEGORY) @Valid CategoryDto category,
-            BindingResult result,
-            @RequestPart(ARG_IMAGE) MultipartFile imageFile) {
-
+        @RequestPart(ARG_CATEGORY) @Valid CategoryDto category,
+        BindingResult result,
+        @RequestPart(ARG_IMAGE) MultipartFile imageFile) {
         log.info("Creating category: {}", category.getName());
-
         try {
             if (result.hasErrors()) return fieldValidation(result);
             log.debug("No errors found in field validation");
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(categoryService.createCategory(
+            categoryService.createCategory(
                         categoryDtoMapper.toDomain(category),
-                        imageFileDtoMapper.toDomain(imageFile))
-                    .map(categoryDtoMapper::toDto));
-
+                        imageFileDtoMapper.toDomain(imageFile));
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (DomainException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -94,9 +90,7 @@ public class CategoryController {
     public ResponseEntity<?> findCategoryById(@PathVariable Long id) {
         log.info("Finding category with ID {}", id);
         try {
-            return categoryService.findCategoryById(id).map(categoryDtoMapper::toDto)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
+            return ResponseEntity.ok(categoryDtoMapper.toDto(categoryService.findCategoryById(id)));
         } catch (CategoryException e) {
             log.error("Error getting category with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -109,20 +103,15 @@ public class CategoryController {
         @RequestPart(ARG_CATEGORY) @Valid CategoryDto category,
         BindingResult result,
         @RequestPart(value = ARG_IMAGE, required = false) MultipartFile imageFile,
-        @PathVariable Long id) {
-            
+        @PathVariable Long id) {   
         log.info("Updating category {}", category.getName());
-        
         try {
             if (result.hasErrors()) return fieldValidation(result);
             log.debug("No errors found in field validation");
-            return categoryService.updateCategory(
+            categoryService.updateCategory(
                             categoryDtoMapper.toDomain(category),
-                            imageFileDtoMapper.toDomain(imageFile))
-                        .map(categoryDtoMapper::toDto)
-                        .map(ResponseEntity::ok)
-                        .orElse(ResponseEntity.notFound().build());
-                
+                            imageFileDtoMapper.toDomain(imageFile));
+            return ResponseEntity.ok().build();                
         } catch (DomainException e) {
             log.error("Error updating category with ID {}", category.getName());
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -134,9 +123,8 @@ public class CategoryController {
     public ResponseEntity<?> enableCategory(@PathVariable Long id) {
         log.info("Enabling category with ID {}", id);
         try {
-            return categoryService.enableCategoryById(id).map(categoryDtoMapper::toDto)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
+            categoryService.enableCategoryById(id);
+            return ResponseEntity.ok().build();
         } catch (CategoryException e) {
             log.error("Error enabling category with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -148,9 +136,8 @@ public class CategoryController {
     public ResponseEntity<?> disableCategory(@PathVariable Long id) {
         log.info("Disabling category with ID {}", id);
         try {
-            return categoryService.disableCategoryById(id).map(categoryDtoMapper::toDto)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
+            categoryService.disableCategoryById(id);
+            return ResponseEntity.ok().build();
         } catch (CategoryException e) {
             log.error("Error disabling category with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -163,7 +150,7 @@ public class CategoryController {
         log.info("Deleting category with ID {}", id);
         try {
             categoryService.deleteCategoryById(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         } catch (DomainException e) {
             log.error("Error deleting category with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());

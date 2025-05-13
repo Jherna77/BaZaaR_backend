@@ -24,6 +24,6 @@ public class ItemEntity {
     @JoinColumn(name = "product_id", nullable = false)
     private ProductEntity product;
     
-    private int quantity;
+    private Integer quantity;
 
 }

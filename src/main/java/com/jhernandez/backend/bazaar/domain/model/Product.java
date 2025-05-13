@@ -2,13 +2,6 @@ package com.jhernandez.backend.bazaar.domain.model;
 
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.AllArgsConstructor;
-
-@Getter
-@Setter
-@AllArgsConstructor
 public class Product {
 
     private Long id;
@@ -19,6 +12,82 @@ public class Product {
     private Double shipping;
     private List<Category> categories;
     private List<String> imagesUrl;
+
+    public Product(Long id, Boolean enabled, String name, String description, Double price, Double shipping,
+            List<Category> categories, List<String> imagesUrl) {
+        this.id = id;
+        this.enabled = enabled;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.shipping = shipping;
+        this.categories = categories;
+        this.imagesUrl = imagesUrl;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public Double getShipping() {
+        return shipping;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public List<String> getImagesUrl() {
+        return imagesUrl;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setShipping(Double shipping) {
+        this.shipping = shipping;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public void setImagesUrl(List<String> imagesUrl) {
+        this.imagesUrl = imagesUrl;
+    }
 
     public void addCategory(Category category) {
         this.categories.add(category);
@@ -48,10 +117,6 @@ public class Product {
         this.imagesUrl.remove(imageUrl);
     }
 
-
-    // public List<Category> getEnabledCategories() {
-    //     return this.categories.stream().filter(Category::isEnabled).toList();
-    // }
 }
 
     // private BigDecimal discountPrice;
@@ -63,4 +128,3 @@ public class Product {
     // private Long soldQuantity;
     // private Long createdAt;
     // private Long updatedAt;
-

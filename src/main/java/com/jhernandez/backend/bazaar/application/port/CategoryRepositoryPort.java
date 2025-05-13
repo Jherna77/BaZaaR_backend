@@ -12,7 +12,7 @@ import com.jhernandez.backend.bazaar.domain.model.Category;
  */
 public interface CategoryRepositoryPort {
 
-    Optional<Category> saveCategory(Category category);
+    void saveCategory(Category category);
 
     List<Category> findAllCategories();
 

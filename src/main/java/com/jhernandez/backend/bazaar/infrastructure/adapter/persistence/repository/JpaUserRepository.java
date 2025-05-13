@@ -8,7 +8,7 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.U
 
 public interface JpaUserRepository extends JpaRepository<UserEntity, Long> {
 
-    boolean existsByEmail(String email);
+    Boolean existsByEmail(String email);
 
     Optional<UserEntity> findByEmail(String email);
 

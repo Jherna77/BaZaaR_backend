@@ -1,18 +1,16 @@
 package com.jhernandez.backend.bazaar.application.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.jhernandez.backend.bazaar.application.port.ProductServicePort;
+import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.UserServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
+import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.domain.model.User;
-
-import lombok.RequiredArgsConstructor;
 
 /**
  * This class implements the UserServicePort interface, which defines the
@@ -26,19 +24,24 @@ import lombok.RequiredArgsConstructor;
  * It interacts with the data layer to perform CRUD operations on users and
  * handles any exceptions that may occur.
  */
-@RequiredArgsConstructor
 public class UserService implements UserServicePort {
 
     private static final Long MASTER_ADMIN_ID = 1L;
 
     private final UserRepositoryPort userRepositoryPort;
-    private final ProductServicePort productServicePort;
     private final PasswordEncoder passwordEncoder;
+    private final ImageServicePort imageServicePort;
+
+    public UserService(UserRepositoryPort userRepositoryPort, PasswordEncoder passwordEncoder, ImageServicePort imageServicePort) {
+        this.userRepositoryPort = userRepositoryPort;
+        this.passwordEncoder = passwordEncoder;
+        this.imageServicePort = imageServicePort;
+    }
 
     @Override
-    public Optional<User> createUser(User user) throws UserException {
+    public void createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepositoryPort.saveUser(user);
+        userRepositoryPort.saveUser(user);
     }
 
     @Override
@@ -47,26 +50,27 @@ public class UserService implements UserServicePort {
     }
 
     @Override
-    public Optional<User> findUserById(Long id) throws UserException {
-        return userRepositoryPort.findUserById(id);
+    public User findUserById(Long id) throws UserException {
+        return userRepositoryPort.findUserById(id)
+                .orElseThrow(() -> new UserException("User not found"));
     }
 
     @Override
-    public Optional<User> findUserByEmail(String email) throws UserException {
-        return userRepositoryPort.findUserByEmail(email);
+    public User findUserByEmail(String email) throws UserException {
+        return userRepositoryPort.findUserByEmail(email)
+                .orElseThrow(() -> new UserException("User not found"));
     }
 
     @Override
-    public boolean existsByEmail(String email) {
+    public Boolean existsByEmail(String email) {
         return userRepositoryPort.existsByEmail(email);
     }
 
     @Override
-    public Optional<User> updateUser(User user) throws UserException {
+    public void updateUser(User user) throws UserException {
         if (user.getId() == null) throw new UserException("User ID must not be null");
         if (user.getId() == MASTER_ADMIN_ID) throw new UserException("Cannot update the master admin user");
-        User existingUser = findUserById(user.getId())
-                .orElseThrow(() -> new UserException("User not found"));
+        User existingUser = findUserById(user.getId());
         existingUser.setRole(user.getRole());
         existingUser.setEmail(user.getEmail());
         // existingUser.setPassword(existingUser.getPassword()); 
@@ -77,37 +81,40 @@ public class UserService implements UserServicePort {
         existingUser.setCity(user.getCity());
         existingUser.setProvince(user.getProvince());
         existingUser.setZipCode(user.getZipCode());
-        return userRepositoryPort.saveUser(existingUser);
+        userRepositoryPort.saveUser(existingUser);
     }
 
     @Override
-    public Optional<User> enableUserById(Long id) throws UserException {
-        if (id == null) throw new UserException("User ID must not be null");
-        User existingUser = findUserById(id)
-                .orElseThrow(() -> new UserException("User not found"));
-        if (existingUser.isEnabled()) throw new UserException("User is already enabled");
-        productServicePort.enableProductsByUserId(id);
+    public void enableUserById(Long id) throws UserException {
+        if (id == null)
+            throw new UserException("User ID must not be null");
+        User existingUser = findUserById(id);
+        if (existingUser.getEnabled()) throw new UserException("User is already enabled");
         existingUser.setEnabled(true);
-        return userRepositoryPort.saveUser(existingUser);
-        }
+        userRepositoryPort.saveUser(existingUser);
+    }
 
     @Override
-    public Optional<User> disableUserById(Long id) throws UserException {
-        if (id == null) throw new UserException("User ID must not be null");
-        if (id == MASTER_ADMIN_ID) throw new UserException("Cannot disable the master admin user");
-        User existingUser = findUserById(id)
-                .orElseThrow(() -> new UserException("User not found"));
-        if (!existingUser.isEnabled()) throw new UserException("User is already disabled");
-        productServicePort.disableProductsByUserId(id);
+    public void disableUserById(Long id) throws UserException {
+        if (id == null)
+            throw new UserException("User ID must not be null");
+        if (id == MASTER_ADMIN_ID)
+            throw new UserException("Cannot disable the master admin user");
+        User existingUser = findUserById(id);
+        if (!existingUser.getEnabled()) throw new UserException("User is already disabled");
         existingUser.setEnabled(false);
-        return userRepositoryPort.saveUser(existingUser);
+        userRepositoryPort.saveUser(existingUser);
     }
 
     @Override
     public void deleteUserById(Long id) throws UserException, ImageFileException {
-        if (id == null) throw new UserException("User ID must not be null");
-        if (id == MASTER_ADMIN_ID) throw new UserException("Cannot delete the master admin user");
-        productServicePort.deleteProductsByUserId(id);
+        if (id == null)
+            throw new UserException("User ID must not be null");
+        if (id == MASTER_ADMIN_ID)
+            throw new UserException("Cannot delete the master admin user");
+        for (Product product : findUserById(id).getShop()) {
+            imageServicePort.deleteImageListByUrl(product.getImagesUrl());
+        }
         userRepositoryPort.deleteUserById(id);
     }
 

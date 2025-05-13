@@ -3,12 +3,9 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.api.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,28 +45,13 @@ public class OrderController {
         }
     }
 
-    // @PostMapping
-    // public ResponseEntity<?> createOrder(@RequestBody OrderDto order) {
-    //     log.info("Creating order");
-    //     try {
-    //         orderService.createOrder(order.getUserId(), orderDtoMapper.toDomain(order));
-    //         return ResponseEntity.status(HttpStatus.CREATED).build();
-    //         // return ResponseEntity.status(HttpStatus.CREATED)
-    //         //     .body(orderService.createOrder(order.getUserId(), orderDtoMapper.toDomain(order))
-    //         //     .map(orderDtoMapper::toDto));
-    //     } catch (DomainException e) {
-    //         log.error("Error creating order");
-    //         return ResponseEntity.badRequest().body(e.getMessage());
-    //     }
+    // @GetMapping
+    // public List<OrderDto> findAllOrders() {
+    //     log.info("Finding all orders");
+    //     return orderService.findAllOrders().stream()
+    //         .map(orderDtoMapper::toDto)
+    //         .collect(Collectors.toList());
     // }
-
-    @GetMapping
-    public List<OrderDto> findAllOrders() {
-        log.info("Finding all orders");
-        return orderService.findAllOrders().stream()
-            .map(orderDtoMapper::toDto)
-            .collect(Collectors.toList());
-    }
 
     @GetMapping("/user/{userId}")
     public List<OrderDto> findOrdersByUserId(@PathVariable Long userId) {
@@ -88,39 +70,35 @@ public class OrderController {
     public ResponseEntity<?> findOrderById(@PathVariable Long id) {
         log.info("Finding order with ID {}", id);
         try {
-            return orderService.findOrderById(id).map(orderDtoMapper::toDto)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
+            return ResponseEntity.ok(orderDtoMapper.toDto(orderService.findOrderById(id)));
         } catch (DomainException e) {
             log.error("Error getting order with ID {}", id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateOrder(@PathVariable Long id, @RequestBody OrderDto order) {
-        log.info("Updating order with ID {}", id);
-        try {
-            return orderService.updateOrder(orderDtoMapper.toDomain(order))
-                .map(orderDtoMapper::toDto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-        } catch (DomainException e) {
-            log.error("Error updating order with ID {}", id);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+    // @PutMapping("/{id}")
+    // public ResponseEntity<?> updateOrder(@PathVariable Long id, @RequestBody OrderDto order) {
+    //     log.info("Updating order with ID {}", id);
+    //     try {
+    //         orderService.updateOrder(orderDtoMapper.toDomain(order));
+    //         return ResponseEntity.ok().build();
+    //     } catch (DomainException e) {
+    //         log.error("Error updating order with ID {}", id);
+    //         return ResponseEntity.badRequest().body(e.getMessage());
+    //     }
+    // }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteOrderById(@PathVariable Long id) {
-        log.info("Deleting order with ID {}", id);
-        try {
-            orderService.deleteOrderById(id);
-            return ResponseEntity.noContent().build();
-        } catch (DomainException e) {
-            log.error("Error deleting order with ID {}", id);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<?> deleteOrderById(@PathVariable Long id) {
+    //     log.info("Deleting order with ID {}", id);
+    //     try {
+    //         orderService.deleteOrderById(id);
+    //         return ResponseEntity.ok().build();
+    //     } catch (DomainException e) {
+    //         log.error("Error deleting order with ID {}", id);
+    //         return ResponseEntity.badRequest().body(e.getMessage());
+    //     }
+    // }
 
 }

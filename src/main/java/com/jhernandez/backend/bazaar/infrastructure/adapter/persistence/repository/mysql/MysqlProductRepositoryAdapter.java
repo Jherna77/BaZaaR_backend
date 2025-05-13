@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.model.Product;
-import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.ProductEntity;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.ProductEntityMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaProductRepository;
 
@@ -26,11 +25,9 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
     
     @Transactional
     @Override
-    public Optional<Product> saveProduct(Product product) {
+    public void saveProduct(Product product) {
         log.info("Saving product {}", product.getName());
-        ProductEntity productEntity = productEntityMapper.toEntity(product);
-        return Optional.of(productEntityMapper.toDomain(
-                productRepository.save(productEntity)));
+        productRepository.save(productEntityMapper.toEntity(product));
     }
 
     @Transactional(readOnly = true)
@@ -71,32 +68,9 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Product> findProductsByUserId(Long userId) {
-        log.info("Finding all products by user with ID {}", userId);
-        return productRepository.findByUserId(userId).stream()
-                .map(productEntityMapper::toDomain)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public Optional<Product> findProductById(Long id) {
         log.info("Finding product with ID {}", id);
         return productRepository.findById(id).map(productEntityMapper::toDomain);
-    }
-
-    @Transactional
-    @Override
-    public void enableProductsByUserId(Long userId) {
-        log.info("Enabling products with user ID {}", userId);
-        productRepository.enableProductsByUserId(userId);
-    }
-
-    @Transactional
-    @Override
-    public void disableProductsByUserId(Long userId){ 
-        log.info("Disabling products with user ID {}", userId);
-        productRepository.disableProductsByUserId(userId);
     }
 
     @Transactional
@@ -105,15 +79,5 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         log.info("Deleting product with ID {}", id);
         productRepository.deleteById(id);
     }
-
-    @Transactional
-    @Override
-    public void deleteProductsByUserId(Long userId) {
-        log.info("Deleting products with user ID {}", userId);
-
-        productRepository.deleteProductsByUserId(userId);
-    }
-
-
 
 }

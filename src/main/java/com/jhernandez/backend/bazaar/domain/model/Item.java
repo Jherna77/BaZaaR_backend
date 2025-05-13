@@ -4,7 +4,7 @@ public class Item {
 
     private Long id;
     private Product product;
-    private int quantity;
+    private Integer quantity;
 
     public Item(Long id, Product product, int quantity) {
         this.id = id;
@@ -28,11 +28,11 @@ public class Item {
         this.product = product;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

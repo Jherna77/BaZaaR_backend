@@ -22,8 +22,4 @@ public class UserRoleEntity {
     @Column(unique = true)
     private String name;
 
-    // Relación inversa con UserEntity
-    // @ManyToMany(mappedBy = "roles") 
-    // @JsonIgnoreProperties({"roles", "handler", "hibernateLazyInitializer"})
-    // private List<UserEntity> users; // Lista de usuarios que tienen este rol (opcional, si se necesita la relación inversa)
 }

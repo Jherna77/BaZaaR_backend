@@ -2,7 +2,6 @@ package com.jhernandez.backend.bazaar.application.service;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 import com.jhernandez.backend.bazaar.application.port.CategoryRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
@@ -37,10 +36,10 @@ public class CategoryService implements CategoryServicePort{
     }
 
     @Override
-    public Optional<Category> createCategory(Category category, ImageFile categoryImage) throws CategoryException, ImageFileException {
+    public void createCategory(Category category, ImageFile categoryImage) throws ImageFileException {
         // Save image in storage and update URL
         category.setImageUrl(imageServicePort.saveImage(categoryImage).getImageUrl());
-        return categoryRepositoryPort.saveCategory(category);
+        categoryRepositoryPort.saveCategory(category);
     }
 
     @Override
@@ -57,15 +56,18 @@ public class CategoryService implements CategoryServicePort{
     }
 
     @Override
-    public Optional<Category> findCategoryById(Long id) throws CategoryException {
-        return categoryRepositoryPort.findCategoryById(id);
+    public Category findCategoryById(Long id) throws CategoryException {
+        return categoryRepositoryPort.findCategoryById(id)
+            .orElseThrow(() -> new CategoryException("Category not found"));
     }
 
     @Override
-    public Optional<Category> updateCategory(Category category, ImageFile categoryImage) throws CategoryException, ImageFileException {
-        if (category.getId() == null) throw new CategoryException("Category ID must not be null");
-        Category existingCategory = findCategoryById(category.getId())
-                .orElseThrow(() -> new CategoryException("Category not found"));
+    public void updateCategory(Category category, ImageFile categoryImage) throws CategoryException, ImageFileException {
+        if (category.getId() == null)
+            throw new CategoryException("Category ID must not be null");
+        if (category.getId() == 1L)
+            throw new CategoryException("This category cannot be updated");
+        Category existingCategory = findCategoryById(category.getId());
         existingCategory.setName(category.getName());
         
         // Check if image is provided and save image /update URL
@@ -73,36 +75,38 @@ public class CategoryService implements CategoryServicePort{
             imageServicePort.deleteImageByUrl(existingCategory.getImageUrl());
             existingCategory.setImageUrl(imageServicePort.saveImage(categoryImage).getImageUrl());
         }
-        return categoryRepositoryPort.saveCategory(existingCategory);
+        categoryRepositoryPort.saveCategory(existingCategory);
     }
 
     @Override
-    public Optional<Category> enableCategoryById(Long id) throws CategoryException {
-        if (id == null) throw new CategoryException("Category ID must not be null");
-        Category existingCategory = findCategoryById(id)
-                .orElseThrow(() -> new CategoryException("Category not found"));
-        if (existingCategory.isEnabled()) throw new CategoryException("Category is already enabled");
+    public void enableCategoryById(Long id) throws CategoryException {
+        if (id == null)
+            throw new CategoryException("Category ID must not be null");
+        Category existingCategory = findCategoryById(id);
+        if (existingCategory.getEnabled()) throw new CategoryException("Category is already enabled");
         existingCategory.setEnabled(true);
-        return categoryRepositoryPort.saveCategory(existingCategory);
+        categoryRepositoryPort.saveCategory(existingCategory);
     }
 
     @Override
-    public Optional<Category> disableCategoryById(Long id) throws CategoryException {
-        if (id == null) throw new CategoryException("Category ID must not be null");
-        if (id == 1L) throw new CategoryException("This category cannot be disabled");
-        Category existingCategory = findCategoryById(id)
-                .orElseThrow(() -> new CategoryException("Category not found"));
-        if (!existingCategory.isEnabled()) throw new CategoryException("Category is already disabled");
+    public void disableCategoryById(Long id) throws CategoryException {
+        if (id == null)
+            throw new CategoryException("Category ID must not be null");
+        if (id == 1L)
+            throw new CategoryException("This category cannot be disabled");
+        Category existingCategory = findCategoryById(id);
+        if (!existingCategory.getEnabled()) throw new CategoryException("Category is already disabled");
         existingCategory.setEnabled(false);
-        return categoryRepositoryPort.saveCategory(existingCategory);
+        categoryRepositoryPort.saveCategory(existingCategory);
     }
 
     @Override
     public void deleteCategoryById(Long id) throws CategoryException, ImageFileException, ProductException {
-        if (id == null) throw new CategoryException("Category ID must not be null");
-        if (id == 1L) throw new CategoryException("This category cannot be deleted");
-        Category existingCategory = findCategoryById(id)
-                .orElseThrow(() -> new CategoryException("Category not found"));
+        if (id == null)
+            throw new CategoryException("Category ID must not be null");
+        if (id == 1L)
+            throw new CategoryException("This category cannot be deleted");
+        Category existingCategory = findCategoryById(id);
 
         List<Product> categoryProducts = productRepositoryPort.findProductsByCategoryId(id);
 
@@ -110,13 +114,10 @@ public class CategoryService implements CategoryServicePort{
             product.getCategories()
                     .removeIf(category -> category.getId().equals(id));
             if (product.getCategories().isEmpty()) {
-                product.addCategory(findCategoryById(DEFAULT_CATEGORY_ID)
-                    .orElseThrow(() ->
-                        new CategoryException("Default category not found")));
+                product.addCategory(findCategoryById(DEFAULT_CATEGORY_ID));
             }
             productRepositoryPort.saveProduct(product);
         }
-
         if (existingCategory.getImageUrl() != null) imageServicePort.deleteImageByUrl(existingCategory.getImageUrl());
         categoryRepositoryPort.deleteCategoryById(id);
     }    

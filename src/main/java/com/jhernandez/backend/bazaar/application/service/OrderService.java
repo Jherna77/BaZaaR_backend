@@ -1,7 +1,6 @@
 package com.jhernandez.backend.bazaar.application.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.jhernandez.backend.bazaar.application.port.OrderRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.OrderServicePort;
@@ -33,10 +32,10 @@ public class OrderService implements OrderServicePort {
         userRepository.saveUser(existingUser);
     }
 
-    @Override
-    public List<Order> findAllOrders() {
-        return orderRepository.findAllOrders();
-    }
+    // @Override
+    // public List<Order> findAllOrders() {
+    //     return orderRepository.findAllOrders();
+    // }
 
     @Override
     public List<Order> findOrdersByUserId(Long userId) throws UserException {
@@ -48,28 +47,28 @@ public class OrderService implements OrderServicePort {
                 .getOrders();
     }
 
-
     @Override
-    public Optional<Order> findOrderById(Long id) throws OrderException {
-        return orderRepository.findOrderById(id);
+    public Order findOrderById(Long id) throws OrderException {
+        return orderRepository.findOrderById(id)
+            .orElseThrow(() -> new OrderException("Order not found"));
     }
 
-    @Override
-    public Optional<Order> updateOrder(Order order) throws OrderException {
-        // TODO
-        return orderRepository.saveOrder(order);
-    }
+    // @Override
+    // public void updateOrder(Order order) throws OrderException {
+    //     // TODO
+    //     orderRepository.saveOrder(order);
+    // }
 
-    @Override
-    public void deleteOrderById(Long orderId) throws OrderException {
-        if (orderId == null) {
-            throw new OrderException("Order ID cannot be null");
-        }
-        if (!orderRepository.existsById(orderId)) {
-            throw new OrderException("Order not found");
-        }
-        orderRepository.deleteOrderById(orderId);
-    }
+    // @Override
+    // public void deleteOrderById(Long orderId) throws OrderException {
+    //     if (orderId == null) {
+    //         throw new OrderException("Order ID cannot be null");
+    //     }
+    //     if (!orderRepository.existsById(orderId)) {
+    //         throw new OrderException("Order not found");
+    //     }
+    //     orderRepository.deleteOrderById(orderId);
+    // }
 
 
 }

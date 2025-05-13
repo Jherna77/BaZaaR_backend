@@ -8,7 +8,7 @@ import com.jhernandez.backend.bazaar.domain.model.Order;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.OrderDto;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = { /*UserDtoMapper.class,*/ ProductDtoMapper.class })
+        uses = { ItemDtoMapper.class })
 public interface OrderDtoMapper {
 
     @Mapping(target = "userId", ignore = true)

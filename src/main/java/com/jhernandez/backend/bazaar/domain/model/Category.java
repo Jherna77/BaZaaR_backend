@@ -3,11 +3,11 @@ package com.jhernandez.backend.bazaar.domain.model;
 public class Category {
 
     private Long id;
+    private Boolean enabled;
     private String name;
     private String imageUrl;
-    private boolean enabled;
 
-    public Category(Long id, String name, String imageUrl, boolean enabled) {
+    public Category(Long id, String name, String imageUrl, Boolean enabled) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -26,7 +26,7 @@ public class Category {
         return imageUrl;
     }
 
-    public boolean isEnabled() {
+    public Boolean getEnabled() {
         return enabled;
     }
 
@@ -42,7 +42,7 @@ public class Category {
         this.imageUrl = imageUrl;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 

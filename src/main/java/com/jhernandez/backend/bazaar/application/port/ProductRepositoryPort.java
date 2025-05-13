@@ -11,7 +11,8 @@ import com.jhernandez.backend.bazaar.domain.model.Product;
  */
 public interface ProductRepositoryPort {
 
-    Optional<Product> saveProduct(Product product);
+    void saveProduct(Product product);
+    // Optional<Product> saveProduct(Product product);
 
     List<Product> findAllProducts();
 
@@ -21,16 +22,16 @@ public interface ProductRepositoryPort {
     
     List<Product> findEnabledProductsByCategoryId(Long categoryId);
 
-    List<Product> findProductsByUserId(Long userId);
+    // List<Product> findProductsByUserId(Long userId);
 
     Optional<Product> findProductById(Long id);
 
-    void enableProductsByUserId(Long userId);
+    // void enableProductsByUserId(Long userId);
 
-    void disableProductsByUserId(Long userId);
+    // void disableProductsByUserId(Long userId);
     
     void deleteProductById(Long id);
 
-    void deleteProductsByUserId(Long userId);
+    // void deleteProductsByUserId(Long userId);
 
 }

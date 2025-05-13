@@ -12,7 +12,7 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.CategoryDto;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CategoryDtoMapper {
 
-    @Mapping(target = "name", expression = "java(NameDisabler.adjust(category.getName(), category.isEnabled()))")
+    @Mapping(target = "name", expression = "java(NameDisabler.adjust(category.getName(), category.getEnabled()))")
     CategoryDto toDto(Category category);
 
     Category toDomain(CategoryDto categoryDto);

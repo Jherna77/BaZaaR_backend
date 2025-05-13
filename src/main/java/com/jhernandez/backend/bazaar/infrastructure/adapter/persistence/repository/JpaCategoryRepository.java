@@ -9,7 +9,7 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.C
 
 public interface JpaCategoryRepository extends JpaRepository<CategoryEntity, Long> {
 
-    boolean existsByName(String name);
+    Boolean existsByName(String name);
 
     @Query("SELECT c FROM CategoryEntity c WHERE c.enabled = true")
     List<CategoryEntity> findAllEnabled();
