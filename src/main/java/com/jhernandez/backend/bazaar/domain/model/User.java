@@ -102,7 +102,8 @@ public class User {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
-        this.shop.forEach(product -> product.setEnabled(enabled));
+        if (this.shop != null)
+            this.shop.forEach(product -> product.setEnabled(enabled));
     }
 
     public void setRole(UserRole role) {

@@ -8,4 +8,6 @@ public interface RetrieveUserRoleUseCase {
     
     List<UserRole> findAllUserRoles();
 
+    UserRole findUserRoleById(Long id);
+
 }

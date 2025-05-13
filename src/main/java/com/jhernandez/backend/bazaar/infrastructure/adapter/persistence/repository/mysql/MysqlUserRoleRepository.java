@@ -29,4 +29,12 @@ public class MysqlUserRoleRepository implements UserRoleRepositoryPort {
                 .toList();
     }
 
+    @Override
+    public UserRole findUserRoleById(Long id) {
+        log.info("Finding user role by id: {}", id);
+        return userRoleRepository.findById(id)
+                .map(userRoleEntityMapper::toDomain)
+                .orElse(null);
+    }
+
 }

@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +24,6 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserResponse
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.UserDtoMapper;
 
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.USERS;
-import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.fieldValidation;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,10 +43,9 @@ public class UserController {
     private final UserDtoMapper userDtoMapper;
 
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserRequestDto user, BindingResult result) {
+    public ResponseEntity<?> createUser(@RequestBody UserRequestDto user) {
         log.info("Registering user with email {}", user.getEmail());
         try {
-            if (result.hasErrors()) return fieldValidation(result);
             log.debug("No errors found in field validation");
             userService.createUser(userDtoMapper.toDomain(user));
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -91,10 +87,9 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UserRequestDto user, BindingResult result, @PathVariable Long id) {
+    public ResponseEntity<?> updateUser(@RequestBody UserRequestDto user, @PathVariable Long id) {
         log.info("Updating user with id {}", id);
         try {
-            if (result.hasErrors()) return fieldValidation(result);
             log.debug("No errors found in field validation");
             userService.updateUser(userDtoMapper.toDomain(user));
             return ResponseEntity.ok().build();

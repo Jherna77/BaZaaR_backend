@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +28,6 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.CategoryD
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ImageFileDtoMapper;
 
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.CATEGORIES;
-import static com.jhernandez.backend.bazaar.infrastructure.adapter.api.validation.ValidationUtils.fieldValidation;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,12 +50,10 @@ public class CategoryController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createCategory(
-        @RequestPart(ARG_CATEGORY) @Valid CategoryDto category,
-        BindingResult result,
+        @RequestPart(ARG_CATEGORY) CategoryDto category,
         @RequestPart(ARG_IMAGE) MultipartFile imageFile) {
         log.info("Creating category: {}", category.getName());
         try {
-            if (result.hasErrors()) return fieldValidation(result);
             log.debug("No errors found in field validation");
             categoryService.createCategory(
                         categoryDtoMapper.toDomain(category),
@@ -100,13 +95,11 @@ public class CategoryController {
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateCategory(
-        @RequestPart(ARG_CATEGORY) @Valid CategoryDto category,
-        BindingResult result,
+        @RequestPart(ARG_CATEGORY) CategoryDto category,
         @RequestPart(value = ARG_IMAGE, required = false) MultipartFile imageFile,
         @PathVariable Long id) {   
         log.info("Updating category {}", category.getName());
         try {
-            if (result.hasErrors()) return fieldValidation(result);
             log.debug("No errors found in field validation");
             categoryService.updateCategory(
                             categoryDtoMapper.toDomain(category),

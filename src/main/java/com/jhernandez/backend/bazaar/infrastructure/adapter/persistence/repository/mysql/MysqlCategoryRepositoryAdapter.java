@@ -57,6 +57,12 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
         return categoryRepository.findById(id).map(categoryEntityMapper::toDomain);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Boolean existsByName(String name) {
+        return categoryRepository.existsByName(name);
+    }
+
     @Transactional
     @Override
     public void deleteCategoryById(Long id) {

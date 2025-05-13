@@ -12,4 +12,6 @@ public interface UserRoleRepositoryPort {
 
     List<UserRole> findAllUserRoles();
 
+    UserRole findUserRoleById(Long id);
+
 }

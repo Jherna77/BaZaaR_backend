@@ -50,6 +50,7 @@ public class ProductService implements ProductServicePort {
                 .orElseThrow(() -> new UserException("User not found"));            
         if (!productOwner.getEnabled()) throw new UserException("Product owner user is not enabled");
         productOwner.addProductToShop(product);
+        product.setEnabled(true);
         userRepositoryPort.saveUser(productOwner);
     }
 

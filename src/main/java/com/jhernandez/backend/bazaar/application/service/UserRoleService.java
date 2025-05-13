@@ -18,4 +18,9 @@ public class UserRoleService implements UserRoleServicePort{
         return userRoleRepositoryPort.findAllUserRoles();
     }
 
+    @Override
+    public UserRole findUserRoleById(Long id) {
+        return userRoleRepositoryPort.findUserRoleById(id);
+    }
+
 }

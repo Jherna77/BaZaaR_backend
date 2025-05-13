@@ -36,9 +36,11 @@ public class CategoryService implements CategoryServicePort{
     }
 
     @Override
-    public void createCategory(Category category, ImageFile categoryImage) throws ImageFileException {
+    public void createCategory(Category category, ImageFile categoryImage) throws CategoryException, ImageFileException {
+        validateCategoryForCreate(category);
         // Save image in storage and update URL
         category.setImageUrl(imageServicePort.saveImage(categoryImage).getImageUrl());
+        category.setEnabled(true);
         categoryRepositoryPort.saveCategory(category);
     }
 
@@ -63,10 +65,7 @@ public class CategoryService implements CategoryServicePort{
 
     @Override
     public void updateCategory(Category category, ImageFile categoryImage) throws CategoryException, ImageFileException {
-        if (category.getId() == null)
-            throw new CategoryException("Category ID must not be null");
-        if (category.getId() == 1L)
-            throw new CategoryException("This category cannot be updated");
+        validateCategoryForUpdate(category);
         Category existingCategory = findCategoryById(category.getId());
         existingCategory.setName(category.getName());
         
@@ -92,7 +91,7 @@ public class CategoryService implements CategoryServicePort{
     public void disableCategoryById(Long id) throws CategoryException {
         if (id == null)
             throw new CategoryException("Category ID must not be null");
-        if (id == 1L)
+        if (id == DEFAULT_CATEGORY_ID)
             throw new CategoryException("This category cannot be disabled");
         Category existingCategory = findCategoryById(id);
         if (!existingCategory.getEnabled()) throw new CategoryException("Category is already disabled");
@@ -104,7 +103,7 @@ public class CategoryService implements CategoryServicePort{
     public void deleteCategoryById(Long id) throws CategoryException, ImageFileException, ProductException {
         if (id == null)
             throw new CategoryException("Category ID must not be null");
-        if (id == 1L)
+        if (id == DEFAULT_CATEGORY_ID)
             throw new CategoryException("This category cannot be deleted");
         Category existingCategory = findCategoryById(id);
 
@@ -120,6 +119,29 @@ public class CategoryService implements CategoryServicePort{
         }
         if (existingCategory.getImageUrl() != null) imageServicePort.deleteImageByUrl(existingCategory.getImageUrl());
         categoryRepositoryPort.deleteCategoryById(id);
-    }    
+    }
+
+    private void validateCategoryForCreate(Category category) throws CategoryException {
+        if (category.getName() == null || category.getName().isEmpty())
+            throw new CategoryException("Category name is required");
+        if (category.getImageUrl() == null || category.getImageUrl().isEmpty())
+            throw new CategoryException("Category image URL is required");
+        if (categoryRepositoryPort.existsByName(category.getName()))
+            throw new CategoryException("Category with this name already exists");
+    }
+
+    private void validateCategoryForUpdate(Category category) throws CategoryException {
+        if (category.getId() == null)
+            throw new CategoryException("Category ID must not be null");
+        if (category.getId() == DEFAULT_CATEGORY_ID)
+            throw new CategoryException("This category cannot be updated");
+        if (category.getName() == null || category.getName().isEmpty())
+            throw new CategoryException("Category name is required");
+
+        String existingName = findCategoryById(category.getId()).getName();
+
+        if (categoryRepositoryPort.existsByName(category.getName()) && !category.getName().equals(existingName))
+            throw new CategoryException("Category with this name already exists");
+    }
 
 }

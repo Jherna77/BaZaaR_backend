@@ -20,6 +20,8 @@ public interface CategoryRepositoryPort {
 
     Optional<Category> findCategoryById(Long id);
 
+    Boolean existsByName(String name);
+
     void deleteCategoryById(Long id);
 
 }
