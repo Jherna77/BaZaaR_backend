@@ -83,8 +83,12 @@ public class UserService implements UserServicePort {
 
     @Override
     public void updateUser(User user) throws UserException {
-        if (user.getId() == null) throw new UserException(ErrorCode.USER_ID_NOT_NULL);
-        if (user.getId() == MASTER_ADMIN_ID) throw new UserException(ErrorCode.MASTER_ADMIN_UPDATE);
+        if (user.getId() == null)
+            throw new UserException(ErrorCode.USER_ID_NOT_NULL);
+        if (user.getId() == MASTER_ADMIN_ID)
+            throw new UserException(ErrorCode.MASTER_ADMIN_UPDATE);
+        if (!user.getEnabled())
+            throw new UserException(ErrorCode.USER_DISABLED);
         validateUserRole(user.getRole());
         validateUser(user);
         User existingUser = findUserById(user.getId());

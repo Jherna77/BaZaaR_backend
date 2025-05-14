@@ -140,6 +140,8 @@ public class CategoryService implements CategoryServicePort{
             throw new CategoryException(ErrorCode.CATEGORY_ID_NOT_NULL);
         if (category.getId() == DEFAULT_CATEGORY_ID)
             throw new CategoryException(ErrorCode.CATEGORY_DEFAULT_UPDATE);
+        if (!category.getEnabled())
+            throw new CategoryException(ErrorCode.CATEGORY_DISABLED);
         if (category.getName() == null || category.getName().isEmpty())
             throw new CategoryException(ErrorCode.CATEGORY_NAME_REQUIRED);
         String existingName = findCategoryById(category.getId()).getName();

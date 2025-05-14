@@ -96,7 +96,10 @@ public class ProductService implements ProductServicePort {
 
     @Override
     public void updateProduct(Product product, List<ImageFile> productsImages) throws ProductException, ImageFileException {
-        if (product.getId() == null) throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
+        if (product.getId() == null)
+            throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
+        if (!product.getEnabled())
+            throw new ProductException(ErrorCode.PRODUCT_DISABLED);
         validateProduct(product);
         Product existingProduct = findProductById(product.getId());
         existingProduct.setName(product.getName());
