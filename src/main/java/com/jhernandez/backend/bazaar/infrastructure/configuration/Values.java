@@ -9,12 +9,6 @@ public class Values {
     public static final String ARG_PRODUCT = "product";
     public static final String ARG_CATEGORY = "category";
     public static final String ARG_IMAGE = "image";
-
-    // Validation patterns
-    // public static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@(.+)$";
-    public static final String EMAIL_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-    public static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-    public static final String ZIP_CODE_PATTERN = "^[0-9]{5}$";
     
     // API Endpoints
     public static final String AUTH = "/api/auth";

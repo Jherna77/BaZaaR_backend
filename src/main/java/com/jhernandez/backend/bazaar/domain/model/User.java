@@ -2,6 +2,7 @@ package com.jhernandez.backend.bazaar.domain.model;
 
 import java.util.List;
 
+import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 
 public class User {
@@ -157,7 +158,7 @@ public class User {
     public void addProductToShop(Product product) throws UserException {
         for (Product shopProduct : this.shop) {
             if (shopProduct.getId().equals(product.getId())) {
-                throw new UserException("Product already exists in User shop");
+                throw new UserException(ErrorCode.SHOP_PRODUCT_ALREADY_EXISTS);
             }
         }
         this.shop.add(product);
@@ -170,7 +171,7 @@ public class User {
                 return;
             }
         }
-        throw new UserException("Product not found in user shop");
+        throw new UserException(ErrorCode.SHOP_PRODUCT_NOT_FOUND);
     }
 
     public void updateProductInShop(Product product) throws UserException {
@@ -181,13 +182,13 @@ public class User {
                 return;
             }
         }
-        throw new UserException("Product not found in user shop");
+        throw new UserException(ErrorCode.SHOP_PRODUCT_NOT_FOUND);
     }
 
     public void addItemToCart(Item item) throws UserException {
         for (Item cartItem : this.cart) {
             if (cartItem.getProduct().getId().equals(item.getProduct().getId())) {
-                throw new UserException("Item already exists in user cart");
+                throw new UserException(ErrorCode.CART_ITEM_ALREADY_EXISTS);
             }
         }
         this.cart.add(item);
@@ -200,7 +201,7 @@ public class User {
                 return;
             }
         }
-        throw new UserException("Item not found in user cart");
+        throw new UserException(ErrorCode.CART_ITEM_NOT_FOUND);
     }
     
     public void createOrderFromCart() {    

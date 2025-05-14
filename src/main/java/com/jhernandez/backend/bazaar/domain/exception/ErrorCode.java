@@ -1,0 +1,72 @@
+package com.jhernandez.backend.bazaar.domain.exception;
+
+public enum ErrorCode {
+    USER_EMAIL_REQUIRED("user.email.required"),
+    USER_EMAIL_INVALID("user.email.invalid"),
+    USER_EMAIL_EXISTS("user.email.duplicate"),
+    USER_PASSWORD_REQUIRED("user.password.required"),
+    USER_PASSWORD_INVALID("user.password.invalid"),
+    USER_ROLE_REQUIRED("user.role.required"),
+    USER_ROLE_INVALID("user.role.invalid"),
+    USER_NAME_REQUIRED("user.names.required"),
+    USER_SURNAMES_REQUIRED("user.surnames.required"),
+    USER_ADDRESS_REQUIRED("user.address.required"),
+    USER_CITY_REQUIRED("user.city.required"),
+    USER_PROVINCE_REQUIRED("user.province.required"),
+    USER_ZIPCODE_REQUIRED("user.zipcode.required"),
+    USER_ZIPCODE_INVALID("user.zipcode.invalid"),
+    USER_NOT_FOUND("user.not.found"),
+    USER_SAVE_ERROR("user.save.error"),
+    USER_ID_NOT_NULL("user.id.not.null"),
+    USER_ALREADY_ENABLED("user.already.enabled"),
+    USER_ALREADY_DISABLED("user.already.disabled"),
+    MASTER_ADMIN_UPDATE("master.admin.update"),
+    MASTER_ADMIN_DISABLE("master.admin.disable"),
+    MASTER_ADMIN_DELETE("master.admin.delete"),
+    CART_ITEM_NOT_FOUND("cart.product.not.found"),
+    CART_ITEM_ALREADY_EXISTS("cart.product.already.exists"),
+    SHOP_PRODUCT_ALREADY_EXISTS("shop.product.already.exists"),
+    SHOP_PRODUCT_NOT_FOUND("shop.product.not.found"),
+    ORDER_NOT_FOUND("order.not.found"),        
+    PRODUCT_NAME_REQUIRED("product.name.required"),
+    PRODUCT_DESCRIPTION_REQUIRED("product.description.required"),
+    PRODUCT_INVALID_PRICE("product.invalid.price"),
+    PRODUCT_INVALID_SHIPPING("product.invalid.shipping"),
+    PRODUCT_IMAGE_REQUIRED("product.image.required"),
+    PRODUCT_NO_CATEGORY("product.no.category"),
+    PRODUCT_ID_NOT_NULL("product.id.not.null"),
+    PRODUCT_NOT_FOUND("product.not.found"),
+    PRODUCT_OWNER_DISABLED("product.owner.disabled"),
+    PRODUCT_ALREADY_ENABLED("product.already.enabled"),
+    PRODUCT_ALREADY_DISABLED("product.already.disabled"),
+    CATEGORY_NAME_REQUIRED("category.name.required"),
+    CATEGORY_IMAGE_REQUIRED("category.image.required"),
+    CATEGORY_NAME_EXISTS("category.name.duplicate"),
+    CATEGORY_NOT_FOUND("category.not.found"),
+    CATEGORY_ID_NOT_NULL("category.id.not.null"),
+    CATEGORY_ALREADY_ENABLED("category.already.enabled"),
+    CATEGORY_ALREADY_DISABLED("category.already.disabled"),
+    CATEGORY_DEFAULT_UPDATE("category.default.update"),
+    CATEGORY_DEFAULT_DISABLE("category.default.disable"),
+    CATEGORY_DEFAULT_DELETE("category.default.delete"),
+    IMAGE_NULL("image.null"),
+    IMAGE_LIST_EMPTY("image.list.empty"),
+    IMAGE_FILENAME_EMPTY("image.filename.empty"),
+    IMAGE_URL_EMPTY("image.url.empty"),
+    IMAGE_ERROR("image.error"),
+    IMAGE_NOT_FOUND("image.not.found"),
+    IMAGE_NOT_READABLE("image.not.readable"),
+    IMAGE_DELETE_ERROR("image.delete.error");
+
+
+    private final String code;
+
+    ErrorCode(String code) {
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+}
+

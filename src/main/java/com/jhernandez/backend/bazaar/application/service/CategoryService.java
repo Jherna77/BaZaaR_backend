@@ -8,6 +8,7 @@ import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
 import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
+import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.model.Category;
@@ -60,7 +61,7 @@ public class CategoryService implements CategoryServicePort{
     @Override
     public Category findCategoryById(Long id) throws CategoryException {
         return categoryRepositoryPort.findCategoryById(id)
-            .orElseThrow(() -> new CategoryException("Category not found"));
+            .orElseThrow(() -> new CategoryException(ErrorCode.CATEGORY_NOT_FOUND));
     }
 
     @Override
@@ -80,9 +81,9 @@ public class CategoryService implements CategoryServicePort{
     @Override
     public void enableCategoryById(Long id) throws CategoryException {
         if (id == null)
-            throw new CategoryException("Category ID must not be null");
+            throw new CategoryException(ErrorCode.CATEGORY_ID_NOT_NULL);
         Category existingCategory = findCategoryById(id);
-        if (existingCategory.getEnabled()) throw new CategoryException("Category is already enabled");
+        if (existingCategory.getEnabled()) throw new CategoryException(ErrorCode.CATEGORY_ALREADY_ENABLED);
         existingCategory.setEnabled(true);
         categoryRepositoryPort.saveCategory(existingCategory);
     }
@@ -90,11 +91,11 @@ public class CategoryService implements CategoryServicePort{
     @Override
     public void disableCategoryById(Long id) throws CategoryException {
         if (id == null)
-            throw new CategoryException("Category ID must not be null");
+            throw new CategoryException(ErrorCode.CATEGORY_ID_NOT_NULL);
         if (id == DEFAULT_CATEGORY_ID)
-            throw new CategoryException("This category cannot be disabled");
+            throw new CategoryException(ErrorCode.CATEGORY_DEFAULT_DISABLE);
         Category existingCategory = findCategoryById(id);
-        if (!existingCategory.getEnabled()) throw new CategoryException("Category is already disabled");
+        if (!existingCategory.getEnabled()) throw new CategoryException(ErrorCode.CATEGORY_ALREADY_DISABLED);
         existingCategory.setEnabled(false);
         categoryRepositoryPort.saveCategory(existingCategory);
     }
@@ -102,9 +103,9 @@ public class CategoryService implements CategoryServicePort{
     @Override
     public void deleteCategoryById(Long id) throws CategoryException, ImageFileException, ProductException {
         if (id == null)
-            throw new CategoryException("Category ID must not be null");
+            throw new CategoryException(ErrorCode.CATEGORY_ID_NOT_NULL);
         if (id == DEFAULT_CATEGORY_ID)
-            throw new CategoryException("This category cannot be deleted");
+            throw new CategoryException(ErrorCode.CATEGORY_DEFAULT_DELETE);
         Category existingCategory = findCategoryById(id);
 
         List<Product> categoryProducts = productRepositoryPort.findProductsByCategoryId(id);
@@ -123,25 +124,23 @@ public class CategoryService implements CategoryServicePort{
 
     private void validateCategoryForCreate(Category category) throws CategoryException {
         if (category.getName() == null || category.getName().isEmpty())
-            throw new CategoryException("Category name is required");
+            throw new CategoryException(ErrorCode.CATEGORY_NAME_REQUIRED);
         if (category.getImageUrl() == null || category.getImageUrl().isEmpty())
-            throw new CategoryException("Category image URL is required");
+            throw new CategoryException(ErrorCode.CATEGORY_IMAGE_REQUIRED);
         if (categoryRepositoryPort.existsByName(category.getName()))
-            throw new CategoryException("Category with this name already exists");
+            throw new CategoryException(ErrorCode.CATEGORY_NAME_EXISTS);
     }
 
     private void validateCategoryForUpdate(Category category) throws CategoryException {
         if (category.getId() == null)
-            throw new CategoryException("Category ID must not be null");
+            throw new CategoryException(ErrorCode.CATEGORY_ID_NOT_NULL);
         if (category.getId() == DEFAULT_CATEGORY_ID)
-            throw new CategoryException("This category cannot be updated");
+            throw new CategoryException(ErrorCode.CATEGORY_DEFAULT_UPDATE);
         if (category.getName() == null || category.getName().isEmpty())
-            throw new CategoryException("Category name is required");
-
+            throw new CategoryException(ErrorCode.CATEGORY_NAME_REQUIRED);
         String existingName = findCategoryById(category.getId()).getName();
-
         if (categoryRepositoryPort.existsByName(category.getName()) && !category.getName().equals(existingName))
-            throw new CategoryException("Category with this name already exists");
+            throw new CategoryException(ErrorCode.CATEGORY_NAME_EXISTS);
     }
 
 }

@@ -1,9 +1,5 @@
 package com.jhernandez.backend.bazaar.application.service;
 
-import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.EMAIL_PATTERN;
-import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.PASSWORD_PATTERN;
-import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ZIP_CODE_PATTERN;
-
 import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +8,7 @@ import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.UserRoleRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.UserServicePort;
+import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.Product;
@@ -32,8 +29,12 @@ import com.jhernandez.backend.bazaar.domain.model.UserRole;
  */
 public class UserService implements UserServicePort {
 
+    // public static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@(.+)$";
+    private static final String EMAIL_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+    private static final String ZIP_CODE_PATTERN = "^[0-9]{5}$";
     private static final Long MASTER_ADMIN_ID = 1L;
-
+   
     private final UserRepositoryPort userRepositoryPort;
     private final PasswordEncoder passwordEncoder;
     private final ImageServicePort imageServicePort;
@@ -66,13 +67,13 @@ public class UserService implements UserServicePort {
     @Override
     public User findUserById(Long id) throws UserException {
         return userRepositoryPort.findUserById(id)
-                .orElseThrow(() -> new UserException("User not found"));
+                .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Override
     public User findUserByEmail(String email) throws UserException {
         return userRepositoryPort.findUserByEmail(email)
-                .orElseThrow(() -> new UserException("User not found"));
+                .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Override
@@ -82,8 +83,8 @@ public class UserService implements UserServicePort {
 
     @Override
     public void updateUser(User user) throws UserException {
-        if (user.getId() == null) throw new UserException("User ID must not be null");
-        if (user.getId() == MASTER_ADMIN_ID) throw new UserException("Cannot update the master admin user");
+        if (user.getId() == null) throw new UserException(ErrorCode.USER_ID_NOT_NULL);
+        if (user.getId() == MASTER_ADMIN_ID) throw new UserException(ErrorCode.MASTER_ADMIN_UPDATE);
         validateUserRole(user.getRole());
         validateUser(user);
         User existingUser = findUserById(user.getId());
@@ -103,9 +104,9 @@ public class UserService implements UserServicePort {
     @Override
     public void enableUserById(Long id) throws UserException {
         if (id == null)
-            throw new UserException("User ID must not be null");
+            throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         User existingUser = findUserById(id);
-        if (existingUser.getEnabled()) throw new UserException("User is already enabled");
+        if (existingUser.getEnabled()) throw new UserException(ErrorCode.USER_ALREADY_ENABLED);
         existingUser.setEnabled(true);
         userRepositoryPort.saveUser(existingUser);
     }
@@ -113,11 +114,11 @@ public class UserService implements UserServicePort {
     @Override
     public void disableUserById(Long id) throws UserException {
         if (id == null)
-            throw new UserException("User ID must not be null");
+            throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         if (id == MASTER_ADMIN_ID)
-            throw new UserException("Cannot disable the master admin user");
+            throw new UserException(ErrorCode.MASTER_ADMIN_DISABLE);
         User existingUser = findUserById(id);
-        if (!existingUser.getEnabled()) throw new UserException("User is already disabled");
+        if (!existingUser.getEnabled()) throw new UserException(ErrorCode.USER_ALREADY_DISABLED);
         existingUser.setEnabled(false);
         userRepositoryPort.saveUser(existingUser);
     }
@@ -125,9 +126,9 @@ public class UserService implements UserServicePort {
     @Override
     public void deleteUserById(Long id) throws UserException, ImageFileException {
         if (id == null)
-            throw new UserException("User ID must not be null");
+            throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         if (id == MASTER_ADMIN_ID)
-            throw new UserException("Cannot delete the master admin user");
+            throw new UserException(ErrorCode.MASTER_ADMIN_DELETE);
         for (Product product : findUserById(id).getShop()) {
             imageServicePort.deleteImageListByUrl(product.getImagesUrl());
         }
@@ -136,42 +137,42 @@ public class UserService implements UserServicePort {
 
     private void validateEmail(String email) throws UserException {
         if (email == null || email.isEmpty())
-            throw new UserException("User email is required");
+            throw new UserException(ErrorCode.USER_EMAIL_REQUIRED);
         if (!email.matches(EMAIL_PATTERN))
-            throw new UserException("User email must be a valid email address");
+            throw new UserException(ErrorCode.USER_EMAIL_INVALID);
         if (existsByEmail(email))
-            throw new UserException("User with this email already exists");
+            throw new UserException(ErrorCode.USER_EMAIL_EXISTS);
     }
 
     private void validatePassword(String password) throws UserException {
         if (password == null || password.isEmpty())
-            throw new UserException("User password is required");
+            throw new UserException(ErrorCode.USER_PASSWORD_REQUIRED);
         if (!password.matches(PASSWORD_PATTERN))
-            throw new UserException("User password must have at least 8 characters, one uppercase letter,one lowercase letter, one digit, one special character");
+            throw new UserException(ErrorCode.USER_PASSWORD_INVALID);
     }
 
     private void validateUserRole(UserRole userRole) throws UserException {
         if (userRole == null)
-            throw new UserException("User role name is required");
+            throw new UserException(ErrorCode.USER_ROLE_REQUIRED);
         if (!userRole.getName().equals(userRoleRepositoryPort.findUserRoleById(userRole.getId()).getName()))
-            throw new UserException("User role is not valid");
+            throw new UserException(ErrorCode.USER_ROLE_INVALID);
     }
 
     private void validateUser(User user) throws UserException {
         if (user.getName() == null || user.getName().isEmpty())
-            throw new UserException("User name is required");
+            throw new UserException(ErrorCode.USER_NAME_REQUIRED);
         if (user.getSurnames() == null || user.getSurnames().isEmpty())
-            throw new UserException("User surnames is required");
+            throw new UserException(ErrorCode.USER_SURNAMES_REQUIRED);
         if (user.getAddress() == null || user.getAddress().isEmpty())
-            throw new UserException("User address is required");
+            throw new UserException(ErrorCode.USER_ADDRESS_REQUIRED);
         if (user.getCity() == null || user.getCity().isEmpty())
-            throw new UserException("User city is required");
+            throw new UserException(ErrorCode.USER_CITY_REQUIRED);
         if (user.getProvince() == null || user.getProvince().isEmpty())
-            throw new UserException("User province is required");
+            throw new UserException(ErrorCode.USER_PROVINCE_REQUIRED);
         if (user.getZipCode() == null || user.getZipCode().isEmpty())
-            throw new UserException("User zipcode is required");
+            throw new UserException(ErrorCode.USER_ZIPCODE_REQUIRED);
         if (!user.getZipCode().matches(ZIP_CODE_PATTERN))
-            throw new UserException("User zipcode must be a valid zipcode");
+            throw new UserException(ErrorCode.USER_ZIPCODE_INVALID);
     }
 
 

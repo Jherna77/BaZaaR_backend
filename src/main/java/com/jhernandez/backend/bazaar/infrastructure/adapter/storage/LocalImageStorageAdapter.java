@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import org.springframework.stereotype.Service;
 
 import com.jhernandez.backend.bazaar.application.port.ImageStoragePort;
+import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 
@@ -33,7 +34,7 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
             return image;
         } catch (IOException e) {
             log.error("Error saving image: {}", e.getMessage());
-            throw new ImageFileException("Error saving image: ");
+            throw new ImageFileException(ErrorCode.IMAGE_ERROR);
         }
     }
 
@@ -45,12 +46,12 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
 
         if (!Files.exists(filePath)) {
             log.error("Image not found: {}", fileName);
-            throw new ImageFileException("Image not found");
+            throw new ImageFileException(ErrorCode.IMAGE_NOT_FOUND);
         }
 
         if (!Files.isReadable(filePath)) {
             log.error("Image not readable: {}", fileName);
-            throw new ImageFileException("Image not readable");
+            throw new ImageFileException(ErrorCode.IMAGE_NOT_READABLE);
         }
         
         try {
@@ -62,7 +63,7 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
                 ,null);
         } catch (IOException e) {
             log.error("Error reading image: {}", e.getMessage());
-            throw new ImageFileException("Error reading image");
+            throw new ImageFileException(ErrorCode.IMAGE_ERROR);
         }
     }
 
@@ -76,7 +77,7 @@ public class LocalImageStorageAdapter implements ImageStoragePort {
             Files.deleteIfExists(filePath);
         } catch (IOException e) {
             log.error("Error deleting image: {}", e.getMessage());
-            throw new ImageFileException("Error deleting image");
+            throw new ImageFileException(ErrorCode.IMAGE_DELETE_ERROR);
         }
     }
 

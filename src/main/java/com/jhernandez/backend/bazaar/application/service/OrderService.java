@@ -5,6 +5,7 @@ import java.util.List;
 import com.jhernandez.backend.bazaar.application.port.OrderRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.OrderServicePort;
 import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
+import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.OrderException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.Order;
@@ -23,10 +24,10 @@ public class OrderService implements OrderServicePort {
     @Override
     public void createOrderFromCart(Long userId) throws UserException {
         if (userId == null) {
-            throw new UserException("User ID cannot be null");
+            throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         }
         User existingUser = userRepository.findUserById(userId)
-            .orElseThrow(() -> new UserException("User not found"));
+            .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
         
         existingUser.createOrderFromCart();
         userRepository.saveUser(existingUser);
@@ -40,17 +41,17 @@ public class OrderService implements OrderServicePort {
     @Override
     public List<Order> findOrdersByUserId(Long userId) throws UserException {
         if (userId == null) {
-            throw new UserException("User ID cannot be null");
+            throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         }
         return userRepository.findUserById(userId)
-                .orElseThrow(() -> new UserException("User not found"))
+                .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND))
                 .getOrders();
     }
 
     @Override
     public Order findOrderById(Long id) throws OrderException {
         return orderRepository.findOrderById(id)
-            .orElseThrow(() -> new OrderException("Order not found"));
+            .orElseThrow(() -> new OrderException(ErrorCode.ORDER_NOT_FOUND));
     }
 
     // @Override

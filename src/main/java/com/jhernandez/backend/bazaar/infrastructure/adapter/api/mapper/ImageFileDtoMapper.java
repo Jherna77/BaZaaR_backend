@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ImageFileDto;
@@ -29,7 +30,7 @@ public class ImageFileDtoMapper {
                             null)
                     : null;
         } catch (IOException e) {
-            throw new ImageFileException("Error converting MultipartFile to ImageFile");
+            throw new ImageFileException(ErrorCode.IMAGE_ERROR);
         }
     }
 
