@@ -110,15 +110,20 @@ public class CategoryService implements CategoryServicePort{
         Category existingCategory = findCategoryById(id);
 
         List<Product> categoryProducts = productRepositoryPort.findProductsByCategoryId(id);
+        Category defaultCategory = findCategoryById(DEFAULT_CATEGORY_ID);
 
         for (Product product : categoryProducts) {
-            product.getCategories()
-                    .removeIf(category -> category.getId().equals(id));
-            if (product.getCategories().isEmpty()) {
-                product.addCategory(findCategoryById(DEFAULT_CATEGORY_ID));
-            }
+            product.removeCategory(id, defaultCategory);
             productRepositoryPort.saveProduct(product);
         }
+        // for (Product product : categoryProducts) {
+        //     product.getCategories()
+        //             .removeIf(category -> category.getId().equals(id));
+        //     if (product.getCategories().isEmpty()) {
+        //         product.addCategory(findCategoryById(DEFAULT_CATEGORY_ID));
+        //     }
+        //     productRepositoryPort.saveProduct(product);
+        // }
         if (existingCategory.getImageUrl() != null) imageServicePort.deleteImageByUrl(existingCategory.getImageUrl());
         categoryRepositoryPort.deleteCategoryById(id);
     }

@@ -165,13 +165,14 @@ public class User {
     }
 
     public void removeProductFromShop(Long productId) throws UserException {
-        for (Product product : this.shop) {
-            if (product.getId().equals(productId)) {
-                this.shop.remove(product);
-                return;
-            }
-        }
-        throw new UserException(ErrorCode.SHOP_PRODUCT_NOT_FOUND);
+        this.shop.removeIf(product -> product.getId().equals(productId));
+        // for (Product product : this.shop) {
+        //     if (product.getId().equals(productId)) {
+        //         this.shop.remove(product);
+        //         return;
+        //     }
+        // }
+        // throw new UserException(ErrorCode.SHOP_PRODUCT_NOT_FOUND);
     }
 
     public void updateProductInShop(Product product) throws UserException {
@@ -195,13 +196,14 @@ public class User {
     }
 
     public void removeItemFromCart(Long itemId) throws UserException {
-        for (Item item : this.cart) {
-            if (item.getId().equals(itemId)) {
-                this.cart.remove(item);
-                return;
-            }
-        }
-        throw new UserException(ErrorCode.CART_ITEM_NOT_FOUND);
+        this.cart.removeIf(item -> item.getId().equals(itemId));
+        // for (Item item : this.cart) {
+        //     if (item.getId().equals(itemId)) {
+        //         this.cart.remove(item);
+        //         return;
+        //     }
+        // }
+        // throw new UserException(ErrorCode.CART_ITEM_NOT_FOUND);
     }
     
     public void createOrderFromCart() {    

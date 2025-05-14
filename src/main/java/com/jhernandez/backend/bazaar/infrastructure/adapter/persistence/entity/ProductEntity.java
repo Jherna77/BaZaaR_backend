@@ -46,4 +46,9 @@ public class ProductEntity {
     @Column(name = "image_url")
     private List<String> imagesUrl;
 
+    private Long userId;
+    // @ManyToOne
+    // @JoinColumn(name = "user_id", nullable = false)
+    // private UserEntity user;
+
 }

@@ -49,7 +49,7 @@ public class ProductController {
         log.info("Creating product: {}", product.getName());
         productService.createProduct(
                 productDtoMapper.toDomain(product),
-                product.getUserId(),
+                // product.getUserId(),
                 imageFileDtoMapper.toDomainList(imageFileList));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

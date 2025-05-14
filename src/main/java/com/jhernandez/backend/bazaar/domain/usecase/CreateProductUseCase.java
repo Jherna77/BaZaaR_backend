@@ -10,6 +10,6 @@ import com.jhernandez.backend.bazaar.domain.model.Product;
 
 public interface CreateProductUseCase {
 
-    void createProduct(Product product, Long userId, List<ImageFile> productImages) throws ProductException, UserException, ImageFileException;
+    void createProduct(Product product, List<ImageFile> productImages) throws ProductException, UserException, ImageFileException;
 
 }

@@ -42,15 +42,17 @@ public class ProductService implements ProductServicePort {
     }
 
     @Override
-    public void createProduct(Product product, Long userId, List<ImageFile> productImages) throws ProductException, UserException, ImageFileException {
+    public void createProduct(Product product, List<ImageFile> productImages) throws ProductException, UserException, ImageFileException {
         validateProduct(product);
         validateImages(productImages);
         product.setImagesUrl(imageServicePort.saveImagesList(productImages)
                 .stream()
                 .map(imageFile -> imageFile.getImageUrl())
                 .toList());
-        User productOwner = userRepositoryPort.findUserById(userId)
+        User productOwner = userRepositoryPort.findUserById(product.getUserId())
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));            
+        // User productOwner = userRepositoryPort.findUserById(userId)
+        //         .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));            
         if (!productOwner.getEnabled()) throw new UserException(ErrorCode.PRODUCT_OWNER_DISABLED);
         productOwner.addProductToShop(product);
         product.setEnabled(true);
@@ -131,9 +133,9 @@ public class ProductService implements ProductServicePort {
         if (id == null) throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
         Product existingProduct = findProductById(id);
         if (existingProduct.getEnabled()) throw new ProductException(ErrorCode.PRODUCT_ALREADY_ENABLED);
-        // User productOwner = userRepositoryPort.findUserById(existingProduct.getUser().getId())
-        //         .orElseThrow(() -> new UserException("User not found"));
-        // if (!productOwner.isEnabled()) throw new UserException("Product owner user is not enabled");
+        User productOwner = userRepositoryPort.findUserById(existingProduct.getUserId())
+                .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
+        if (!productOwner.getEnabled()) throw new UserException(ErrorCode.PRODUCT_OWNER_DISABLED);
         existingProduct.setEnabled(true);
         productRepositoryPort.saveProduct(existingProduct);
     }

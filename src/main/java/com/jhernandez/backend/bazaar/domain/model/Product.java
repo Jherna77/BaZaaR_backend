@@ -12,9 +12,10 @@ public class Product {
     private Double shipping;
     private List<Category> categories;
     private List<String> imagesUrl;
+    private Long userId;
 
     public Product(Long id, Boolean enabled, String name, String description, Double price, Double shipping,
-            List<Category> categories, List<String> imagesUrl) {
+            List<Category> categories, List<String> imagesUrl, Long userId) {
         this.id = id;
         this.enabled = enabled;
         this.name = name;
@@ -23,6 +24,7 @@ public class Product {
         this.shipping = shipping;
         this.categories = categories;
         this.imagesUrl = imagesUrl;
+        this.userId = userId;
     }
 
     public Long getId() {
@@ -57,6 +59,10 @@ public class Product {
         return imagesUrl;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -89,24 +95,19 @@ public class Product {
         this.imagesUrl = imagesUrl;
     }
 
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public void addCategory(Category category) {
         this.categories.add(category);
     }
 
-    public void removeCategory(Long categoryId) {
-        for (Category category : this.categories) {
-            if (category.getId().equals(categoryId)) {
-                this.categories.remove(category);
-                return;
-            }
-        }
-        //Añadir categoria "Otros" si la lista de categorias está vacía
-        // if (this.categories.isEmpty()) {
-        //     Category otherCategory = new Category();
-        //     otherCategory.setId(0L);
-        //     otherCategory.setName("Otros");
-        //     this.categories.add(otherCategory);
-        // }
+    public void removeCategory(Long categoryId, Category defaultCategory) {
+        this.categories
+                .removeIf(category -> category.getId().equals(id));
+        if (this.categories.isEmpty())
+            addCategory(defaultCategory);
     }
 
     public void addImageUrl(String imageUrl) {

@@ -12,7 +12,7 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ProductDto;
 public interface ProductDtoMapper {
 
     @Mapping(target = "name", expression = "java(NameDisabler.adjust(product.getName(), product.getEnabled()))")
-    @Mapping(target = "userId", ignore = true)
+    // @Mapping(target = "userId", ignore = true)
     ProductDto toDto(Product product);
 
     Product toDomain(ProductDto productDto);
