@@ -49,14 +49,14 @@ public class ProductService implements ProductServicePort {
                 .stream()
                 .map(imageFile -> imageFile.getImageUrl())
                 .toList());
-        User productOwner = userRepositoryPort.findUserById(product.getUserId())
+        User owner = userRepositoryPort.findUserById(product.getOwner().getId())
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));            
-        // User productOwner = userRepositoryPort.findUserById(userId)
-        //         .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));            
-        if (!productOwner.getEnabled()) throw new UserException(ErrorCode.PRODUCT_OWNER_DISABLED);
-        productOwner.addProductToShop(product);
+        if (!owner.getEnabled())
+            throw new UserException(ErrorCode.PRODUCT_OWNER_DISABLED);
+        product.setOwner(owner);
+        owner.addProductToShop(product);
         product.setEnabled(true);
-        userRepositoryPort.saveUser(productOwner);
+        productRepositoryPort.saveProduct(product);
     }
 
     @Override
@@ -71,19 +71,22 @@ public class ProductService implements ProductServicePort {
 
     @Override
     public List<Product> findProductsByCategoryId(Long categoryId) throws CategoryException {
-        if (categoryId == null) throw new CategoryException(ErrorCode.CATEGORY_ID_NOT_NULL);
+        if (categoryId == null)
+            throw new CategoryException(ErrorCode.CATEGORY_ID_NOT_NULL);
         return productRepositoryPort.findProductsByCategoryId(categoryId);
     }
 
     @Override
     public List<Product> findEnabledProductsByCategoryId(Long categoryId) throws CategoryException {
-        if (categoryId == null) throw new CategoryException(ErrorCode.CATEGORY_ID_NOT_NULL);
+        if (categoryId == null)
+            throw new CategoryException(ErrorCode.CATEGORY_ID_NOT_NULL);
         return productRepositoryPort.findEnabledProductsByCategoryId(categoryId);
     }
 
     @Override
     public List<Product> findProductsByUserId(Long userId) throws UserException {
-        if (userId == null) throw new UserException(ErrorCode.USER_ID_NOT_NULL);
+        if (userId == null)
+            throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         return userRepositoryPort.findUserById(userId)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND))
                 .getShop();
@@ -91,7 +94,8 @@ public class ProductService implements ProductServicePort {
 
     @Override
     public Product findProductById(Long id) throws ProductException {
-        if (id == null) throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
+        if (id == null)
+            throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
         return productRepositoryPort.findProductById(id)
                 .orElseThrow(() -> new ProductException(ErrorCode.PRODUCT_NOT_FOUND));
     }
@@ -109,14 +113,14 @@ public class ProductService implements ProductServicePort {
         existingProduct.setPrice(product.getPrice());
         existingProduct.setShipping(product.getShipping());
         existingProduct.setCategories(product.getCategories());
-
         List<String> finalImages = new ArrayList<>(product.getImagesUrl());
         List<String> imagesToDelete = new ArrayList<>(existingProduct.getImagesUrl()
             .stream()
             .filter(img -> !finalImages.contains(img))
             .toList());
         
-        if (imagesToDelete != null && !imagesToDelete.isEmpty()) imageServicePort.deleteImageListByUrl(imagesToDelete);
+        if (imagesToDelete != null && !imagesToDelete.isEmpty())
+            imageServicePort.deleteImageListByUrl(imagesToDelete);
         if (productsImages != null && !productsImages.isEmpty()) {
             finalImages.addAll(
                     imageServicePort.saveImagesList(productsImages).stream()
@@ -124,34 +128,40 @@ public class ProductService implements ProductServicePort {
                             .toList());
         }
         existingProduct.setImagesUrl(finalImages);
-
         productRepositoryPort.saveProduct(existingProduct);
     }
 
     @Override
     public void enableProductById(Long id) throws ProductException, UserException {
-        if (id == null) throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
+        if (id == null)
+            throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
         Product existingProduct = findProductById(id);
-        if (existingProduct.getEnabled()) throw new ProductException(ErrorCode.PRODUCT_ALREADY_ENABLED);
-        User productOwner = userRepositoryPort.findUserById(existingProduct.getUserId())
-                .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
-        if (!productOwner.getEnabled()) throw new UserException(ErrorCode.PRODUCT_OWNER_DISABLED);
+        if (existingProduct.getEnabled())
+            throw new ProductException(ErrorCode.PRODUCT_ALREADY_ENABLED);
+        // User owner = userRepositoryPort.findUserById(existingProduct.getOwner().getId())
+        //         .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
+        // if (!owner.getEnabled()) throw new UserException(ErrorCode.PRODUCT_OWNER_DISABLED);
+        if (!existingProduct.getOwner().getEnabled())
+            throw new UserException(ErrorCode.PRODUCT_OWNER_DISABLED);
         existingProduct.setEnabled(true);
         productRepositoryPort.saveProduct(existingProduct);
     }
 
     @Override
     public void disableProductById(Long id) throws ProductException {
-        if (id == null) throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
+        if (id == null)
+            throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
         Product existingProduct = findProductById(id);
-        if (!existingProduct.getEnabled()) throw new ProductException(ErrorCode.PRODUCT_ALREADY_DISABLED);
+        if (!existingProduct.getEnabled())
+            throw new ProductException(ErrorCode.PRODUCT_ALREADY_DISABLED);
         existingProduct.setEnabled(false);
         productRepositoryPort.saveProduct(existingProduct);
     }
 
     @Override
     public void deleteProductById(Long id) throws ProductException, ImageFileException {
-        if (id == null) throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
+        if (id == null)
+            throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
         Product existingProduct = findProductById(id);
         imageServicePort.deleteImageListByUrl(existingProduct.getImagesUrl());
         productRepositoryPort.deleteProductById(id);
@@ -160,16 +170,12 @@ public class ProductService implements ProductServicePort {
     private void validateProduct(Product product) throws ProductException {
         if (product.getName() == null || product.getName().isEmpty()) 
             throw new ProductException(ErrorCode.PRODUCT_NAME_REQUIRED);
-        
         if (product.getDescription() == null || product.getDescription().isEmpty()) 
             throw new ProductException(ErrorCode.PRODUCT_DESCRIPTION_REQUIRED);
-        
         if (product.getPrice() == null || product.getPrice() < 0) 
             throw new ProductException(ErrorCode.PRODUCT_INVALID_PRICE);
-
         if (product.getShipping() == null || product.getShipping() < 0)
-            throw new ProductException(ErrorCode.PRODUCT_INVALID_SHIPPING);
-        
+            throw new ProductException(ErrorCode.PRODUCT_INVALID_SHIPPING);   
         if (product.getCategories() == null || product.getCategories().isEmpty()) 
             throw new ProductException(ErrorCode.PRODUCT_NO_CATEGORY);        
     }

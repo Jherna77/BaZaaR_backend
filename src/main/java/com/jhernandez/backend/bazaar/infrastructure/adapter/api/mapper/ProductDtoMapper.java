@@ -8,13 +8,14 @@ import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ProductDto;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = { CategoryDtoMapper.class })
+        uses = { CategoryDtoMapper.class, UserDtoMapper.class })
 public interface ProductDtoMapper {
 
     @Mapping(target = "name", expression = "java(NameDisabler.adjust(product.getName(), product.getEnabled()))")
-    // @Mapping(target = "userId", ignore = true)
+    @Mapping(source = "owner.id", target = "ownerId")
     ProductDto toDto(Product product);
 
+    @Mapping(target = "owner", expression = "java(new User(productDto.getOwnerId()))")
     Product toDomain(ProductDto productDto);
 
 }

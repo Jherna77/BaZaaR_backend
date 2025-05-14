@@ -21,3 +21,18 @@ public interface ItemEntityMapper {
     List<Item> toDomainList(List<ItemEntity> cartItemEntityList);
 
 }
+
+// @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
+//         uses = {ProductEntityMapper.class})
+// public interface ItemEntityMapper {
+
+//     @Mapping(target = "product.owner", ignore = true)
+//     Item toDomain(ItemEntity cartItemEntity);
+
+//     @Mapping(target = "product.owner", ignore = true)
+//     ItemEntity toEntity(Item cartItem);
+
+//     List<ItemEntity> toEntityList(List<Item> cartItemList);
+
+//     List<Item> toDomainList(List<ItemEntity> cartItemEntityList);
+// }

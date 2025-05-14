@@ -15,3 +15,14 @@ public interface OrderEntityMapper {
     Order toDomain(OrderEntity orderEntity);
 
 }
+
+// @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
+//         uses = {ItemEntityMapper.class})
+// public interface OrderEntityMapper {
+
+//     @Mapping(target = "items", ignore = false)
+//     Order toDomain(OrderEntity orderEntity);
+
+//     @Mapping(target = "items", ignore = false)
+//     OrderEntity toEntity(Order order);
+// }

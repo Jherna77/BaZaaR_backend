@@ -22,6 +22,13 @@ public class User {
     private List<Item> cart;
     private List<Order> orders;
 
+    public User() {
+    }
+
+    public User(Long id) {
+        this.id = id;
+    }
+
     public User(Long id, Boolean enabled, UserRole role, String email, String password, String name, String surnames,
             String address, String city, String province, String zipCode, List<Product> shop, List<Item> cart,
             List<Order> orders) {

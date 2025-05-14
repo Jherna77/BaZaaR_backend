@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -46,9 +47,8 @@ public class ProductEntity {
     @Column(name = "image_url")
     private List<String> imagesUrl;
 
-    private Long userId;
-    // @ManyToOne
-    // @JoinColumn(name = "user_id", nullable = false)
-    // private UserEntity user;
+    @ManyToOne
+    @JoinColumn(name = "user_owner_id", nullable = false)
+    private UserEntity owner;
 
 }

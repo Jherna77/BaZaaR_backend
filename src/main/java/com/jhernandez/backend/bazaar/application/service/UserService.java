@@ -110,7 +110,8 @@ public class UserService implements UserServicePort {
         if (id == null)
             throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         User existingUser = findUserById(id);
-        if (existingUser.getEnabled()) throw new UserException(ErrorCode.USER_ALREADY_ENABLED);
+        if (existingUser.getEnabled())
+            throw new UserException(ErrorCode.USER_ALREADY_ENABLED);
         existingUser.setEnabled(true);
         userRepositoryPort.saveUser(existingUser);
     }
@@ -122,7 +123,8 @@ public class UserService implements UserServicePort {
         if (id == MASTER_ADMIN_ID)
             throw new UserException(ErrorCode.MASTER_ADMIN_DISABLE);
         User existingUser = findUserById(id);
-        if (!existingUser.getEnabled()) throw new UserException(ErrorCode.USER_ALREADY_DISABLED);
+        if (!existingUser.getEnabled())
+            throw new UserException(ErrorCode.USER_ALREADY_DISABLED);
         existingUser.setEnabled(false);
         userRepositoryPort.saveUser(existingUser);
     }

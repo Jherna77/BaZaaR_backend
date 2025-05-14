@@ -3,6 +3,7 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.reposit
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.application.port.UserRoleRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.model.UserRole;
@@ -20,7 +21,7 @@ public class MysqlUserRoleRepository implements UserRoleRepositoryPort {
     private final JpaUserRoleRepository userRoleRepository;
     private final UserRoleEntityMapper userRoleEntityMapper;
 
-
+    @Transactional(readOnly = true)
     @Override
     public List<UserRole> findAllUserRoles() {
         log.info("Finding all user roles");
@@ -29,6 +30,7 @@ public class MysqlUserRoleRepository implements UserRoleRepositoryPort {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserRole findUserRoleById(Long id) {
         log.info("Finding user role by id: {}", id);

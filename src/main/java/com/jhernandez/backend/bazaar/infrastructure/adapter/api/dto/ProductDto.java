@@ -11,13 +11,13 @@ public class ProductDto {
     
     private Long id;
     private Boolean enabled;
-    private Long userId;
     private String name;
     private String description;
     private Double price;
     private Double shipping;    
     private List<CategoryDto> categories;
     private List<String> imagesUrl;
+    private Long ownerId;
 
 }
 
