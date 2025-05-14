@@ -1,6 +1,6 @@
 package com.jhernandez.backend.bazaar.domain.exception;
 
-public abstract class DomainException extends Exception {
+public abstract class DomainException extends RuntimeException {
 
     private final ErrorCode errorCode;
 

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jhernandez.backend.bazaar.application.port.OrderServicePort;
-import com.jhernandez.backend.bazaar.domain.exception.DomainException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.OrderDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.OrderDtoMapper;
 
@@ -36,13 +35,8 @@ public class OrderController {
     @PostMapping("/user/{userId}")
     public ResponseEntity<?> createOrderFromCart(@PathVariable Long userId) {
         log.info("Creating order");
-        try {
-            orderService.createOrderFromCart(userId);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (DomainException e) {
-            log.error("Error creating order");
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        orderService.createOrderFromCart(userId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // @GetMapping
@@ -56,25 +50,15 @@ public class OrderController {
     @GetMapping("/user/{userId}")
     public List<OrderDto> findOrdersByUserId(@PathVariable Long userId) {
         log.info("Finding all orders for the user with ID ", userId);
-        try {
-            return orderService.findOrdersByUserId(userId).stream()
-                .map(orderDtoMapper::toDto)
-                .collect(Collectors.toList());
-        } catch (DomainException e) {
-            log.error("Error finding orders for user with ID {}", userId);
-            throw new RuntimeException(e);
-        }
+        return orderService.findOrdersByUserId(userId).stream()
+            .map(orderDtoMapper::toDto)
+            .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findOrderById(@PathVariable Long id) {
         log.info("Finding order with ID {}", id);
-        try {
-            return ResponseEntity.ok(orderDtoMapper.toDto(orderService.findOrderById(id)));
-        } catch (DomainException e) {
-            log.error("Error getting order with ID {}", id);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok(orderDtoMapper.toDto(orderService.findOrderById(id)));
     }
 
     // @PutMapping("/{id}")

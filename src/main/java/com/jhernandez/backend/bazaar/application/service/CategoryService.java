@@ -38,6 +38,7 @@ public class CategoryService implements CategoryServicePort{
 
     @Override
     public void createCategory(Category category, ImageFile categoryImage) throws CategoryException, ImageFileException {
+        validateImage(categoryImage);
         validateCategoryForCreate(category);
         // Save image in storage and update URL
         category.setImageUrl(imageServicePort.saveImage(categoryImage).getImageUrl());
@@ -122,11 +123,14 @@ public class CategoryService implements CategoryServicePort{
         categoryRepositoryPort.deleteCategoryById(id);
     }
 
+    private void validateImage(ImageFile imageFile) throws CategoryException {
+        if (imageFile == null)
+            throw new CategoryException(ErrorCode.CATEGORY_IMAGE_REQUIRED);
+    }
+
     private void validateCategoryForCreate(Category category) throws CategoryException {
         if (category.getName() == null || category.getName().isEmpty())
             throw new CategoryException(ErrorCode.CATEGORY_NAME_REQUIRED);
-        if (category.getImageUrl() == null || category.getImageUrl().isEmpty())
-            throw new CategoryException(ErrorCode.CATEGORY_IMAGE_REQUIRED);
         if (categoryRepositoryPort.existsByName(category.getName()))
             throw new CategoryException(ErrorCode.CATEGORY_NAME_EXISTS);
     }

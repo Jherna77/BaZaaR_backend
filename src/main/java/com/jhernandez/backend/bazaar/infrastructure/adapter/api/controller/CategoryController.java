@@ -21,8 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ARG_CATEGORY;
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ARG_IMAGE;
 import com.jhernandez.backend.bazaar.application.port.CategoryServicePort;
-import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
-import com.jhernandez.backend.bazaar.domain.exception.DomainException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.CategoryDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.CategoryDtoMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ImageFileDtoMapper;
@@ -53,15 +51,10 @@ public class CategoryController {
         @RequestPart(ARG_CATEGORY) CategoryDto category,
         @RequestPart(ARG_IMAGE) MultipartFile imageFile) {
         log.info("Creating category: {}", category.getName());
-        try {
-            log.debug("No errors found in field validation");
-            categoryService.createCategory(
-                        categoryDtoMapper.toDomain(category),
-                        imageFileDtoMapper.toDomain(imageFile));
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (DomainException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        categoryService.createCategory(
+                    categoryDtoMapper.toDomain(category),
+                    imageFileDtoMapper.toDomain(imageFile));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
@@ -84,12 +77,7 @@ public class CategoryController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findCategoryById(@PathVariable Long id) {
         log.info("Finding category with ID {}", id);
-        try {
-            return ResponseEntity.ok(categoryDtoMapper.toDto(categoryService.findCategoryById(id)));
-        } catch (CategoryException e) {
-            log.error("Error getting category with ID {}", id);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok(categoryDtoMapper.toDto(categoryService.findCategoryById(id)));
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -99,55 +87,34 @@ public class CategoryController {
         @RequestPart(value = ARG_IMAGE, required = false) MultipartFile imageFile,
         @PathVariable Long id) {   
         log.info("Updating category {}", category.getName());
-        try {
-            log.debug("No errors found in field validation");
-            categoryService.updateCategory(
-                            categoryDtoMapper.toDomain(category),
-                            imageFileDtoMapper.toDomain(imageFile));
-            return ResponseEntity.ok().build();                
-        } catch (DomainException e) {
-            log.error("Error updating category with ID {}", category.getName());
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        categoryService.updateCategory(
+                        categoryDtoMapper.toDomain(category),
+                        imageFileDtoMapper.toDomain(imageFile));
+        return ResponseEntity.ok().build();                
     }
 
     @PutMapping("/enable/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> enableCategory(@PathVariable Long id) {
         log.info("Enabling category with ID {}", id);
-        try {
-            categoryService.enableCategoryById(id);
-            return ResponseEntity.ok().build();
-        } catch (CategoryException e) {
-            log.error("Error enabling category with ID {}", id);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        categoryService.enableCategoryById(id);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/disable/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> disableCategory(@PathVariable Long id) {
         log.info("Disabling category with ID {}", id);
-        try {
-            categoryService.disableCategoryById(id);
-            return ResponseEntity.ok().build();
-        } catch (CategoryException e) {
-            log.error("Error disabling category with ID {}", id);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        categoryService.disableCategoryById(id);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
         log.info("Deleting category with ID {}", id);
-        try {
-            categoryService.deleteCategoryById(id);
-            return ResponseEntity.ok().build();
-        } catch (DomainException e) {
-            log.error("Error deleting category with ID {}", id);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        categoryService.deleteCategoryById(id);
+        return ResponseEntity.ok().build();
     }
 
 }

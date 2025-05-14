@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jhernandez.backend.bazaar.application.port.CartServicePort;
-import com.jhernandez.backend.bazaar.domain.exception.DomainException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ItemDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ItemDtoMapper;
 
@@ -35,65 +34,37 @@ public class CartController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserCart(@PathVariable Long id) {
         log.info("Finding cart for user ID {}", id);
-        try {
-            return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(mapper.toDtoList(cartService.getUserCart(id)));
-        } catch (DomainException e) {
-            log.error("Error getting cart with ID {}", id);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 
     @PostMapping("/{userId}")
     public ResponseEntity<?> addItemToCart(@PathVariable Long userId, @RequestBody ItemDto item) {
         log.info("Adding item {} to cart for the user with ID {}", item.getProduct().getName(), userId);
-        try {
-            cartService.addItemToCart(userId, mapper.toDomain(item));
-            return ResponseEntity.noContent().build();
-        } catch (DomainException e) {
-            log.error("Error adding item to cart for user with ID {}", userId);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        cartService.addItemToCart(userId, mapper.toDomain(item));
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{userId}/{itemId}")
     public ResponseEntity<?> removeItemFromCart(@PathVariable Long userId, @PathVariable Long itemId) {
         log.info("Removing item {} to cart for the user with ID {}", itemId, userId);
-        try {
-            return ResponseEntity.status(HttpStatus.OK)
-                .body(mapper.toDtoList(cartService.removeItemFromCart(userId, itemId)));
-        } catch (DomainException e) {
-            log.error("Error removing item from cart for user with ID {}", userId);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(mapper.toDtoList(cartService.removeItemFromCart(userId, itemId)));
     }
 
     @PutMapping("/{userId}/{itemId}/{quantity}")
     public ResponseEntity<?> updateItemQuantity(@PathVariable Long userId, @PathVariable Long itemId,
             @PathVariable int quantity) {
         log.info("Updating item {} quantity for the user with ID {}", itemId, userId);
-        try {
-            return ResponseEntity.status(HttpStatus.OK)
-                .body(mapper.toDtoList(cartService.updateItemQuantity(userId, itemId, quantity)));
-        } catch (DomainException e) {
-            log.error("Error updating item in cart for user with ID {}", userId);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(mapper.toDtoList(cartService.updateItemQuantity(userId, itemId, quantity)));
     }
 
     @PutMapping("/{userId}/clear")
     public ResponseEntity<?> clearCart(@PathVariable Long userId) {
         log.info("Clearing cart for the user with ID {}", userId);
-        try {
-            return ResponseEntity.status(HttpStatus.OK)
-                .body(mapper.toDtoList(cartService.clearCart(userId)));
-            // cartService.clearCart(userId);
-            // return ResponseEntity.noContent().build();
-        } catch (DomainException e) {
-            log.error("Error clearing cart for user with ID {}", userId);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(mapper.toDtoList(cartService.clearCart(userId)));
     }
-
 
 }

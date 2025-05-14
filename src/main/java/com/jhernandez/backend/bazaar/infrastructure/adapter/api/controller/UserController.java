@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jhernandez.backend.bazaar.application.port.UserServicePort;
-import com.jhernandez.backend.bazaar.domain.exception.DomainException;
-import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserRequestDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserResponseDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.UserDtoMapper;
@@ -45,14 +43,8 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody UserRequestDto user) {
         log.info("Registering user with email {}", user.getEmail());
-        try {
-            log.debug("No errors found in field validation");
-            userService.createUser(userDtoMapper.toDomain(user));
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (UserException e) {
-            log.error("Error registering user with email {}", user.getEmail());
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        userService.createUser(userDtoMapper.toDomain(user));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
@@ -67,75 +59,44 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findUserById(@PathVariable Long id) {
         log.info("Finding user with ID {}", id);
-        try {
-            return ResponseEntity.ok(userDtoMapper.toResponseDto(userService.findUserById(id)));
-        } catch (UserException e) {
-            log.error("Error getting user with ID {}", id);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok(userDtoMapper.toResponseDto(userService.findUserById(id)));
     }
 
     @GetMapping("/email/{email}")
     public ResponseEntity<?> findUserByEmail(@PathVariable String email) {
         log.info("Finding user with email {}", email);
-        try {
-            return ResponseEntity.ok(userDtoMapper.toResponseDto(userService.findUserByEmail(email)));
-        } catch (UserException e) {
-            log.error("Error getting user with email {}", email);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok(userDtoMapper.toResponseDto(userService.findUserByEmail(email)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@RequestBody UserRequestDto user, @PathVariable Long id) {
         log.info("Updating user with id {}", id);
-        try {
-            log.debug("No errors found in field validation");
-            userService.updateUser(userDtoMapper.toDomain(user));
-            return ResponseEntity.ok().build();
-        } catch (UserException e) {
-            log.error("Error updating user with ID {}", id);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        userService.updateUser(userDtoMapper.toDomain(user));
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/enable/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> enableUser(@PathVariable Long id) {
         log.info("Enabling user with ID {}", id);
-        try {
-            userService.enableUserById(id);
-            return ResponseEntity.ok().build();
-        } catch (UserException e) {
-            log.error("Error enabling user with ID {}", id);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        userService.enableUserById(id);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/disable/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> disableUser(@PathVariable Long id) {
         log.info("Disabling user with ID {}", id);
-        try {
-            userService.disableUserById(id);
-            return ResponseEntity.ok().build();
-        } catch (UserException e) {
-            log.error("Error disabling user with ID {}", id);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        userService.disableUserById(id);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         log.info("Deleting user with ID {}", id);
-        try {
-            userService.deleteUserById(id);
-            return ResponseEntity.ok().build();
-        } catch (DomainException e) {
-            log.error("Error deleting user with ID {}", id);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        userService.deleteUserById(id);
+        return ResponseEntity.ok().build();
     }
 
 }
