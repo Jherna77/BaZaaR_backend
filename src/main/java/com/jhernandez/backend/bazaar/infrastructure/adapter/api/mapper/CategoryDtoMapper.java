@@ -8,11 +8,14 @@ import org.mapstruct.MappingConstants;
 
 import com.jhernandez.backend.bazaar.domain.model.Category;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.CategoryDto;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.helper.NameDisabler;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
+        uses = { NameDisabler.class })
 public interface CategoryDtoMapper {
 
-    @Mapping(target = "name", expression = "java(NameDisabler.adjust(category.getName(), category.getEnabled()))")
+    @Mapping(target = "name", source = ".", qualifiedByName = "adjustCategoryName")
+    // @Mapping(target = "name", expression = "java(NameDisabler.adjust(category.getName(), category.getEnabled()))")
     CategoryDto toDto(Category category);
 
     Category toDomain(CategoryDto categoryDto);

@@ -6,14 +6,14 @@ import org.mapstruct.MappingConstants;
 
 import com.jhernandez.backend.bazaar.domain.model.Order;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.OrderDto;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.helper.DateMapper;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = { ItemDtoMapper.class })
+        uses = { ItemDtoMapper.class, DateMapper.class  })
 public interface OrderDtoMapper {
 
-    @Mapping(target = "userId", ignore = true)
+    @Mapping(source = "orderDate", target = "orderDate", qualifiedByName = "formatDate")
+    @Mapping(source = "customer.id", target = "customerId")
     OrderDto toDto(Order order);
-
-    Order toDomain(OrderDto orderDto);
 
 }

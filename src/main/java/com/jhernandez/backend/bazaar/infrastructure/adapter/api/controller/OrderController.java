@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jhernandez.backend.bazaar.application.port.OrderServicePort;
-import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.OrderDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.OrderDtoMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ORDERS;
 
-import java.util.List;
 import java.util.stream.Collectors;;
 
 @RestController
@@ -48,11 +46,11 @@ public class OrderController {
     // }
 
     @GetMapping("/user/{userId}")
-    public List<OrderDto> findOrdersByUserId(@PathVariable Long userId) {
+    public ResponseEntity<?> findOrdersByUserId(@PathVariable Long userId) {
         log.info("Finding all orders for the user with ID ", userId);
-        return orderService.findOrdersByUserId(userId).stream()
+        return ResponseEntity.ok(orderService.findOrdersByUserId(userId).stream()
             .map(orderDtoMapper::toDto)
-            .collect(Collectors.toList());
+            .collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")

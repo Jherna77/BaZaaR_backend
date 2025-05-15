@@ -1,5 +1,6 @@
 package com.jhernandez.backend.bazaar.domain.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
@@ -219,8 +220,9 @@ public class User {
             this.cart.stream()
             .map(item -> new Item(null, item.getProduct(), item.getSalePrice(),
                                     item.getSaleShipping(), item.getQuantity(),
-                                    item.getTotalPrice()))
-            .toList()));
+                                    item.getTotalPrice())).toList(),
+            this,
+            LocalDateTime.now()));
         this.cart.clear();
     }
 

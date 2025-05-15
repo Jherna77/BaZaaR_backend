@@ -1,6 +1,7 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 import com.jhernandez.backend.bazaar.domain.model.Order;
@@ -10,8 +11,14 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.O
         uses = { ItemEntityMapper.class })
 public interface OrderEntityMapper {
 
+    @Mapping(target = "customer.shop", ignore = true)
+    @Mapping(target = "customer.cart", ignore = true)
+    @Mapping(target = "customer.orders", ignore = true)
     OrderEntity toEntity (Order order);
 
+    @Mapping(target = "customer.shop", ignore = true)
+    @Mapping(target = "customer.cart", ignore = true)
+    @Mapping(target = "customer.orders", ignore = true)
     Order toDomain(OrderEntity orderEntity);
 
 }

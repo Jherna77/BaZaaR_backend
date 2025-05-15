@@ -7,12 +7,14 @@ import org.mapstruct.MappingConstants;
 import com.jhernandez.backend.bazaar.domain.model.User;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserRequestDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.UserResponseDto;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.helper.NameDisabler;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = { UserRoleDtoMapper.class })
+        uses = { UserRoleDtoMapper.class, NameDisabler.class })
 public interface UserDtoMapper {
 
-    @Mapping(target = "name", expression = "java(NameDisabler.adjust(user.getName(), user.getEnabled()))")
+    // @Mapping(target = "name", expression = "java(NameDisabler.adjust(user.getName(), user.getEnabled()))")
+    @Mapping(target = "name", source = ".", qualifiedByName = "adjustUserName")    
     UserResponseDto toResponseDto(User user);
 
     @Mapping(target = "shop", ignore = true)

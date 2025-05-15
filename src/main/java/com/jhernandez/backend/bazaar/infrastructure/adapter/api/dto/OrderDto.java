@@ -10,7 +10,8 @@ import lombok.Setter;
 public class OrderDto {
 
     private Long id;
-    private Long userId;
     private List<ItemDto> items;
+    private Long customerId;
+    private String orderDate;
 
 }
