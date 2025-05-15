@@ -9,6 +9,9 @@ public class ItemDto {
 
     private Long id;
     private ProductDto product;
+    private Double salePrice;
+    private Double saleShipping;
     private Integer quantity;
+    private Double totalPrice;
 
 }

@@ -4,12 +4,18 @@ public class Item {
 
     private Long id;
     private Product product;
+    private Double salePrice;
+    private Double saleShipping;
     private Integer quantity;
+    private Double totalPrice;
 
-    public Item(Long id, Product product, int quantity) {
+    public Item(Long id, Product product, Double salePrice, Double saleShipping, Integer quantity, Double totalPrice) {
         this.id = id;
         this.product = product;
+        this.salePrice = salePrice;
+        this.saleShipping = saleShipping;
         this.quantity = quantity;
+        this.totalPrice = totalPrice;
     }
 
     public Long getId() {
@@ -28,12 +34,37 @@ public class Item {
         this.product = product;
     }
 
+    public Double getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(Double salePrice) {
+        this.salePrice = salePrice;
+    }
+
+    public Double getSaleShipping() {
+        return saleShipping;
+    }
+
+    public void setSaleShipping(Double saleShipping) {
+        this.saleShipping = saleShipping;
+    }
+
     public Integer getQuantity() {
         return quantity;
     }
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+        setTotalPrice();
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice() {
+        this.totalPrice = this.salePrice * this.quantity + this.saleShipping;
     }
 
 }
