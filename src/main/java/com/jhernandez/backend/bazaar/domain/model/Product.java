@@ -99,6 +99,14 @@ public class Product {
         this.owner = owner;
     }
 
+    public void enable() {
+        this.enabled = true;
+    }
+
+    public void disable() {
+        this.enabled = false;
+    }
+
     public void addCategory(Category category) {
         this.categories.add(category);
     }

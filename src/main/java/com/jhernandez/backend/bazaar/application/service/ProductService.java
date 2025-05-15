@@ -43,19 +43,23 @@ public class ProductService implements ProductServicePort {
 
     @Override
     public void createProduct(Product product, List<ImageFile> productImages) throws ProductException, UserException, ImageFileException {
+        if (productImages == null || productImages.isEmpty()) 
+            throw new ProductException(ErrorCode.PRODUCT_IMAGE_REQUIRED);
         validateProduct(product);
-        validateImages(productImages);
+        
         product.setImagesUrl(imageServicePort.saveImagesList(productImages)
                 .stream()
                 .map(imageFile -> imageFile.getImageUrl())
                 .toList());
+
         User owner = userRepositoryPort.findUserById(product.getOwner().getId())
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));            
         if (!owner.getEnabled())
             throw new UserException(ErrorCode.PRODUCT_OWNER_DISABLED);
         product.setOwner(owner);
         owner.addProductToShop(product);
-        product.setEnabled(true);
+
+        product.enable();
         productRepositoryPort.saveProduct(product);
     }
 
@@ -135,15 +139,14 @@ public class ProductService implements ProductServicePort {
     public void enableProductById(Long id) throws ProductException, UserException {
         if (id == null)
             throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
+
         Product existingProduct = findProductById(id);
         if (existingProduct.getEnabled())
             throw new ProductException(ErrorCode.PRODUCT_ALREADY_ENABLED);
-        // User owner = userRepositoryPort.findUserById(existingProduct.getOwner().getId())
-        //         .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
-        // if (!owner.getEnabled()) throw new UserException(ErrorCode.PRODUCT_OWNER_DISABLED);
         if (!existingProduct.getOwner().getEnabled())
             throw new UserException(ErrorCode.PRODUCT_OWNER_DISABLED);
-        existingProduct.setEnabled(true);
+
+        existingProduct.enable();
         productRepositoryPort.saveProduct(existingProduct);
     }
 
@@ -151,21 +154,27 @@ public class ProductService implements ProductServicePort {
     public void disableProductById(Long id) throws ProductException {
         if (id == null)
             throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
+
         Product existingProduct = findProductById(id);
         if (!existingProduct.getEnabled())
             throw new ProductException(ErrorCode.PRODUCT_ALREADY_DISABLED);
-        existingProduct.setEnabled(false);
+        
+        existingProduct.disable();
         productRepositoryPort.saveProduct(existingProduct);
     }
 
     @Override
-    public void deleteProductById(Long id) throws ProductException, ImageFileException {
-        if (id == null)
-            throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
-        Product existingProduct = findProductById(id);
-        imageServicePort.deleteImageListByUrl(existingProduct.getImagesUrl());
-        productRepositoryPort.deleteProductById(id);
+    public void deleteProductById(Long id) throws ProductException {
+        throw new ProductException(ErrorCode.OPERATION_NOT_ALLOWED);
     }
+    // @Override
+    // public void deleteProductById(Long id) throws ProductException, ImageFileException {
+    //     if (id == null)
+    //         throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
+    //     Product existingProduct = findProductById(id);
+    //     imageServicePort.deleteImageListByUrl(existingProduct.getImagesUrl());
+    //     productRepositoryPort.deleteProductById(id);
+    // }
 
     private void validateProduct(Product product) throws ProductException {
         if (product.getName() == null || product.getName().isEmpty()) 
@@ -178,12 +187,6 @@ public class ProductService implements ProductServicePort {
             throw new ProductException(ErrorCode.PRODUCT_INVALID_SHIPPING);   
         if (product.getCategories() == null || product.getCategories().isEmpty()) 
             throw new ProductException(ErrorCode.PRODUCT_NO_CATEGORY);        
-    }
-
-    private void validateImages(List<ImageFile> productImages) throws ProductException {
-        if (productImages == null || productImages.isEmpty()) {
-            throw new ProductException(ErrorCode.PRODUCT_IMAGE_REQUIRED);
-        }
     }
 
 }

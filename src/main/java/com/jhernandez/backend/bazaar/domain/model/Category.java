@@ -1,5 +1,8 @@
 package com.jhernandez.backend.bazaar.domain.model;
 
+import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
+import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
+
 public class Category {
 
     private Long id;
@@ -44,6 +47,18 @@ public class Category {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public void enable() throws CategoryException {
+        if (this.enabled)
+            throw new CategoryException(ErrorCode.CATEGORY_ALREADY_ENABLED);
+        this.enabled = true;
+    }
+    
+    public void disable() throws CategoryException {
+        if (!this.enabled)
+            throw new CategoryException(ErrorCode.CATEGORY_ALREADY_DISABLED);
+        this.enabled = false;
     }
 
 }

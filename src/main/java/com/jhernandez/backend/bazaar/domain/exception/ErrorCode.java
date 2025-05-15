@@ -36,6 +36,7 @@ public enum ErrorCode {
     PRODUCT_IMAGE_REQUIRED("product.image.required"),
     PRODUCT_NO_CATEGORY("product.no.category"),
     PRODUCT_ID_NOT_NULL("product.id.not.null"),
+    PRODUCT_LIST_NOT_NULL("product.list.not.null"),
     PRODUCT_NOT_FOUND("product.not.found"),
     PRODUCT_OWNER_DISABLED("product.owner.disabled"),
     PRODUCT_ALREADY_ENABLED("product.already.enabled"),
@@ -59,8 +60,8 @@ public enum ErrorCode {
     IMAGE_ERROR("image.error"),
     IMAGE_NOT_FOUND("image.not.found"),
     IMAGE_NOT_READABLE("image.not.readable"),
-    IMAGE_DELETE_ERROR("image.delete.error");
-
+    IMAGE_DELETE_ERROR("image.delete.error"),
+    OPERATION_NOT_ALLOWED("operation.not.allowed");
 
     private final String code;
 

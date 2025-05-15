@@ -162,6 +162,22 @@ public class User {
         this.orders = orders;
     }
 
+    public void enable() throws UserException {
+        if (this.enabled)
+            throw new UserException(ErrorCode.USER_ALREADY_ENABLED);
+        this.enabled = true;
+        if (this.shop != null)
+            this.shop.forEach(product -> product.enable());
+    }
+
+    public void disable() throws UserException {
+        if (!this.enabled)
+            throw new UserException(ErrorCode.USER_ALREADY_DISABLED);
+        this.enabled = false;
+        if (this.shop != null)
+            this.shop.forEach(product -> product.disable());
+    }
+
     public void addProductToShop(Product product) throws UserException {
         for (Product shopProduct : this.shop) {
             if (shopProduct.getId().equals(product.getId())) {

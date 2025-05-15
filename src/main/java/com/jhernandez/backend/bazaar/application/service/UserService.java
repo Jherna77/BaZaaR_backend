@@ -4,14 +4,11 @@ import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.UserRoleRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.UserServicePort;
 import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
-import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
-import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.domain.model.User;
 import com.jhernandez.backend.bazaar.domain.model.UserRole;
 
@@ -37,14 +34,12 @@ public class UserService implements UserServicePort {
    
     private final UserRepositoryPort userRepositoryPort;
     private final PasswordEncoder passwordEncoder;
-    private final ImageServicePort imageServicePort;
     private final UserRoleRepositoryPort userRoleRepositoryPort;
 
     public UserService(UserRepositoryPort userRepositoryPort, PasswordEncoder passwordEncoder,
-            ImageServicePort imageServicePort, UserRoleRepositoryPort userRoleRepositoryPort) {
+            UserRoleRepositoryPort userRoleRepositoryPort) {
         this.userRepositoryPort = userRepositoryPort;
         this.passwordEncoder = passwordEncoder;
-        this.imageServicePort = imageServicePort;
         this.userRoleRepositoryPort = userRoleRepositoryPort;
     }
 
@@ -55,7 +50,7 @@ public class UserService implements UserServicePort {
         validateUserRole(user.getRole());
         validateUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setEnabled(true);
+        user.enable();
         userRepositoryPort.saveUser(user);
     }
 
@@ -89,8 +84,10 @@ public class UserService implements UserServicePort {
             throw new UserException(ErrorCode.MASTER_ADMIN_UPDATE);
         if (!user.getEnabled())
             throw new UserException(ErrorCode.USER_DISABLED);
+
         validateUserRole(user.getRole());
         validateUser(user);
+
         User existingUser = findUserById(user.getId());
         existingUser.setRole(user.getRole());
         // existingUser.setEmail(user.getEmail());
@@ -109,10 +106,9 @@ public class UserService implements UserServicePort {
     public void enableUserById(Long id) throws UserException {
         if (id == null)
             throw new UserException(ErrorCode.USER_ID_NOT_NULL);
+
         User existingUser = findUserById(id);
-        if (existingUser.getEnabled())
-            throw new UserException(ErrorCode.USER_ALREADY_ENABLED);
-        existingUser.setEnabled(true);
+        existingUser.enable();
         userRepositoryPort.saveUser(existingUser);
     }
 
@@ -122,24 +118,27 @@ public class UserService implements UserServicePort {
             throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         if (id == MASTER_ADMIN_ID)
             throw new UserException(ErrorCode.MASTER_ADMIN_DISABLE);
+        
         User existingUser = findUserById(id);
-        if (!existingUser.getEnabled())
-            throw new UserException(ErrorCode.USER_ALREADY_DISABLED);
-        existingUser.setEnabled(false);
+        existingUser.disable();
         userRepositoryPort.saveUser(existingUser);
     }
 
     @Override
-    public void deleteUserById(Long id) throws UserException, ImageFileException {
-        if (id == null)
-            throw new UserException(ErrorCode.USER_ID_NOT_NULL);
-        if (id == MASTER_ADMIN_ID)
-            throw new UserException(ErrorCode.MASTER_ADMIN_DELETE);
-        for (Product product : findUserById(id).getShop()) {
-            imageServicePort.deleteImageListByUrl(product.getImagesUrl());
-        }
-        userRepositoryPort.deleteUserById(id);
+    public void deleteUserById(Long id) throws UserException {
+        throw new UserException(ErrorCode.OPERATION_NOT_ALLOWED);
     }
+    // @Override
+    // public void deleteUserById(Long id) throws UserException, ImageFileException {
+    //     if (id == null)
+    //         throw new UserException(ErrorCode.USER_ID_NOT_NULL);
+    //     if (id == MASTER_ADMIN_ID)
+    //         throw new UserException(ErrorCode.MASTER_ADMIN_DELETE);
+    //     for (Product product : findUserById(id).getShop()) {
+    //         imageServicePort.deleteImageListByUrl(product.getImagesUrl());
+    //     }
+    //     userRepositoryPort.deleteUserById(id);
+    // }
 
     private void validateEmail(String email) throws UserException {
         if (email == null || email.isEmpty())
@@ -180,6 +179,5 @@ public class UserService implements UserServicePort {
         if (!user.getZipCode().matches(ZIP_CODE_PATTERN))
             throw new UserException(ErrorCode.USER_ZIPCODE_INVALID);
     }
-
 
 }
