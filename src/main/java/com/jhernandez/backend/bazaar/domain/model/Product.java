@@ -113,7 +113,7 @@ public class Product {
 
     public void removeCategory(Long categoryId, Category defaultCategory) {
         this.categories
-                .removeIf(category -> category.getId().equals(id));
+                .removeIf(category -> category.getId().equals(categoryId));
         if (this.categories.isEmpty())
             addCategory(defaultCategory);
     }

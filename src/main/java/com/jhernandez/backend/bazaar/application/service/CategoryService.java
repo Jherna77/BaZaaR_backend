@@ -88,6 +88,9 @@ public class CategoryService implements CategoryServicePort{
             throw new CategoryException(ErrorCode.CATEGORY_ID_NOT_NULL);
 
         Category existingCategory = findCategoryById(id);
+        if (existingCategory.getEnabled())
+            throw new CategoryException(ErrorCode.CATEGORY_ALREADY_ENABLED);
+            
         existingCategory.enable();
 
         categoryRepositoryPort.saveCategory(existingCategory);
@@ -105,6 +108,8 @@ public class CategoryService implements CategoryServicePort{
             throw new CategoryException(ErrorCode.CATEGORY_DEFAULT_DISABLE);
 
         Category existingCategory = findCategoryById(id);
+        if (!existingCategory.getEnabled())
+            throw new CategoryException(ErrorCode.CATEGORY_ALREADY_DISABLED);
         existingCategory.disable();
 
         removeCategoryFromProducts(id);

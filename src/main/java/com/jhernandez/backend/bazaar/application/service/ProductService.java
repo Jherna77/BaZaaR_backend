@@ -1,6 +1,5 @@
 package com.jhernandez.backend.bazaar.application.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
@@ -117,21 +116,11 @@ public class ProductService implements ProductServicePort {
         existingProduct.setPrice(product.getPrice());
         existingProduct.setShipping(product.getShipping());
         existingProduct.setCategories(product.getCategories());
-        List<String> finalImages = new ArrayList<>(product.getImagesUrl());
-        List<String> imagesToDelete = new ArrayList<>(existingProduct.getImagesUrl()
-            .stream()
-            .filter(img -> !finalImages.contains(img))
-            .toList());
-        
-        if (imagesToDelete != null && !imagesToDelete.isEmpty())
-            imageServicePort.deleteImageListByUrl(imagesToDelete);
-        if (productsImages != null && !productsImages.isEmpty()) {
-            finalImages.addAll(
-                    imageServicePort.saveImagesList(productsImages).stream()
-                            .map(ImageFile::getImageUrl)
-                            .toList());
-        }
-        existingProduct.setImagesUrl(finalImages);
+        existingProduct.setImagesUrl(getFinalImages(
+                                        productsImages,
+                                        product.getImagesUrl(),
+                                        existingProduct.getImagesUrl())
+        );
         productRepositoryPort.saveProduct(existingProduct);
     }
 
@@ -189,4 +178,34 @@ public class ProductService implements ProductServicePort {
             throw new ProductException(ErrorCode.PRODUCT_NO_CATEGORY);        
     }
 
+    private List<String> getFinalImages(List<ImageFile> productsImages, List<String> finalImages, List<String> existingImages) {
+        List<String> imagesToDelete = existingImages.stream()
+                                                    .filter(img -> !finalImages.contains(img))
+                                                    .toList();
+    
+        if (imagesToDelete != null && !imagesToDelete.isEmpty())
+            imageServicePort.deleteImageListByUrl(imagesToDelete);
+        if (productsImages != null && !productsImages.isEmpty()) 
+            finalImages.addAll(imageServicePort.saveImagesList(productsImages).stream()
+                                                                              .map(ImageFile::getImageUrl)
+                                                                              .toList());
+        return finalImages;
+    }
+
 }
+
+// List<String> finalImages = new ArrayList<>(product.getImagesUrl());
+        // List<String> imagesToDelete = new ArrayList<>(existingProduct.getImagesUrl()
+        //     .stream()
+        //     .filter(img -> !finalImages.contains(img))
+        //     .toList());
+        
+        // if (imagesToDelete != null && !imagesToDelete.isEmpty())
+        //     imageServicePort.deleteImageListByUrl(imagesToDelete);
+        // if (productsImages != null && !productsImages.isEmpty()) {
+        //     finalImages.addAll(
+        //             imageServicePort.saveImagesList(productsImages).stream()
+        //                     .map(ImageFile::getImageUrl)
+        //                     .toList());
+        // }
+        // existingProduct.setImagesUrl(finalImages);
