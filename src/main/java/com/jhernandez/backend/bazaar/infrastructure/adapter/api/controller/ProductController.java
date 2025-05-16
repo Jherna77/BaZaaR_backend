@@ -92,6 +92,14 @@ public class ProductController {
                 .map(productDtoMapper::toDto)
                 .collect(Collectors.toList()));
     }
+
+    @GetMapping("/search/{name}")
+    public ResponseEntity<?> findProductsByName(@PathVariable String name) {
+        log.info("Finding products by name {}", name);
+        return ResponseEntity.ok(productService.findEnabledProductsByName(name).stream()
+                .map(productDtoMapper::toDto)
+                .collect(Collectors.toList()));
+    }
     
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SHOP')")

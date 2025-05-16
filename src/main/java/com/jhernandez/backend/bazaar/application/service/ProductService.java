@@ -87,6 +87,14 @@ public class ProductService implements ProductServicePort {
     }
 
     @Override
+    public List<Product> findEnabledProductsByName(String name) throws ProductException {
+        if (name == null || name.isEmpty())
+            throw new ProductException(ErrorCode.PRODUCT_NAME_REQUIRED);
+        return productRepositoryPort.findEnabledProductsByName(name);
+    }
+
+
+    @Override
     public List<Product> findProductsByUserId(Long userId) throws UserException {
         if (userId == null)
             throw new UserException(ErrorCode.USER_ID_NOT_NULL);

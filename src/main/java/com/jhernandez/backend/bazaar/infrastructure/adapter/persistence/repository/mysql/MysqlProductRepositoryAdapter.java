@@ -68,6 +68,15 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
 
     @Transactional(readOnly = true)
     @Override
+    public List<Product> findEnabledProductsByName(String name) {
+        log.info("Finding all products by name {}", name);
+        return productRepository.findByNameContainingIgnoreCaseAndEnabledTrue(name).stream()
+                .map(productEntityMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public Optional<Product> findProductById(Long id) {
         log.info("Finding product with ID {}", id);
         return productRepository.findById(id).map(productEntityMapper::toDomain);

@@ -9,6 +9,8 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.P
 
 public interface JpaProductRepository extends JpaRepository<ProductEntity, Long> {
 
+    List<ProductEntity> findByNameContainingIgnoreCaseAndEnabledTrue(String name);
+
     @Query("SELECT p FROM ProductEntity p WHERE p.enabled = true")
     List<ProductEntity> findAllEnabled();
 

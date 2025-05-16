@@ -19,6 +19,8 @@ public interface RetrieveProductUseCase {
 
     List<Product> findProductsByUserId(Long userId) throws UserException;
 
+    List<Product> findEnabledProductsByName(String name) throws ProductException;
+
     Product findProductById(Long id) throws ProductException;
 
 }
