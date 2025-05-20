@@ -8,6 +8,7 @@ import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.OrderException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
+import com.jhernandez.backend.bazaar.domain.model.Item;
 import com.jhernandez.backend.bazaar.domain.model.Order;
 import com.jhernandez.backend.bazaar.domain.model.User;
 
@@ -29,6 +30,20 @@ public class OrderService implements OrderServicePort {
         User existingUser = userRepository.findUserById(userId)
             .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
         
+        // for (Item item : existingUser.getCart()) {
+        //     if (item.getProduct().getStock() < item.getQuantity()) {
+        //         throw new UserException(ErrorCode.PRODUCT_STOCK_NOT_ENOUGH);
+        //     }
+        // }
+
+        User seller = new User();
+        for (Item item : existingUser.getCart()) {
+            seller = userRepository.findUserById(item.getProduct().getOwner().getId())
+                .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
+            seller.addSale(item);
+            userRepository.saveUser(seller);
+        }
+
         existingUser.createOrderFromCart();
         userRepository.saveUser(existingUser);
     }
@@ -45,7 +60,7 @@ public class OrderService implements OrderServicePort {
         }
         return userRepository.findUserById(userId)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND))
-                .getOrders();
+                .getPurchaseOrders();
     }
 
     @Override

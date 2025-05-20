@@ -13,15 +13,16 @@ public interface ProductEntityMapper {
 
     @Mapping(target = "owner.shop", ignore = true)
     @Mapping(target = "owner.cart", ignore = true)
-    @Mapping(target = "owner.orders", ignore = true)
+    @Mapping(target = "owner.purchaseOrders", ignore = true)
+    @Mapping(target = "owner.sales", ignore = true)
     Product toDomain(ProductEntity productEntity);
 
     @Mapping(target = "owner.shop", ignore = true)
     @Mapping(target = "owner.cart", ignore = true)
-    @Mapping(target = "owner.orders", ignore = true)
+    @Mapping(target = "owner.purchaseOrders", ignore = true)
+    @Mapping(target = "owner.sales", ignore = true)
     ProductEntity toEntity(Product product);
 }
-
 
 // @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
 //         uses = {CategoryEntityMapper.class})

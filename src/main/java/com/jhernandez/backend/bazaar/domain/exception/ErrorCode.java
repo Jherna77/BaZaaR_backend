@@ -24,6 +24,7 @@ public enum ErrorCode {
     MASTER_ADMIN_UPDATE("master.admin.update"),
     MASTER_ADMIN_DISABLE("master.admin.disable"),
     MASTER_ADMIN_DELETE("master.admin.delete"),
+    CART_EMPTY("cart.empty"),
     CART_ITEM_NOT_FOUND("cart.product.not.found"),
     CART_ITEM_ALREADY_EXISTS("cart.product.already.exists"),
     SHOP_PRODUCT_ALREADY_EXISTS("shop.product.already.exists"),

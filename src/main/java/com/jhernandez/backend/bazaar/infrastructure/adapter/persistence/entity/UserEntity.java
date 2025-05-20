@@ -52,14 +52,19 @@ public class UserEntity {
     // private List<ProductEntity> shop;
     
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "cart_user_id")
     private List<ItemEntity> cart;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderEntity> orders;
+    @Column(name = "purchase_orders")
+    private List<OrderEntity> purchaseOrders;
 
     // @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     // @JoinColumn(name = "user_id")
     // private List<OrderEntity> orders;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "sales_user_id")
+    private List<ItemEntity> sales;
 
 }

@@ -21,7 +21,8 @@ public class User {
     private String zipCode;
     private List<Product> shop;
     private List<Item> cart;
-    private List<Order> orders;
+    private List<Order> purchaseOrders;
+    private List<Item> sales;
 
     public User() {
     }
@@ -32,7 +33,7 @@ public class User {
 
     public User(Long id, Boolean enabled, UserRole role, String email, String password, String name, String surnames,
             String address, String city, String province, String zipCode, List<Product> shop, List<Item> cart,
-            List<Order> orders) {
+            List<Order> purchaseOrders, List<Item> sales) {
         this.id = id;
         this.enabled = enabled;
         this.role = role;
@@ -46,7 +47,8 @@ public class User {
         this.zipCode = zipCode;
         this.shop = shop;
         this.cart = cart;
-        this.orders = orders;
+        this.purchaseOrders = purchaseOrders;
+        this.sales = sales;
     }
 
     public Long getId() {
@@ -101,8 +103,12 @@ public class User {
         return cart;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public List<Order> getPurchaseOrders() {
+        return purchaseOrders;
+    }
+
+    public List<Item> getSales() {
+        return sales;
     }
 
     public void setId(Long id) {
@@ -159,8 +165,12 @@ public class User {
         this.cart = cart;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setPurchaseOrders(List<Order> orders) {
+        this.purchaseOrders = orders;
+    }
+
+    public void setSales(List<Item> sales) {
+        this.sales = sales;
     }
 
     public void enable() {
@@ -214,8 +224,12 @@ public class User {
         this.cart.removeIf(item -> item.getId().equals(itemId));
     }
     
-    public void createOrderFromCart() {    
-        this.orders.add(new Order(
+    public void createOrderFromCart() throws UserException { 
+        if (this.cart.isEmpty()) {
+            throw new UserException(ErrorCode.CART_EMPTY);
+        }
+           
+        this.purchaseOrders.add(new Order(
             null,
             this.cart.stream()
             .map(item -> new Item(null, item.getProduct(), item.getSalePrice(),
@@ -224,6 +238,16 @@ public class User {
             this,
             LocalDateTime.now()));
         this.cart.clear();
+    }
+
+    public void addSale(Item item) {
+        this.sales.add(new Item(
+                null,
+                item.getProduct(),
+                item.getSalePrice(),
+                item.getSaleShipping(),
+                item.getQuantity(),
+                item.getTotalPrice()));
     }
 
 }

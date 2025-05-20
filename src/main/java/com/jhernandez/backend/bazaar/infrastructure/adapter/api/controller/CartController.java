@@ -16,13 +16,13 @@ import com.jhernandez.backend.bazaar.application.port.CartServicePort;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto.ItemDto;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ItemDtoMapper;
 
-import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.CART;
+import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.SALES;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping(CART)
+@RequestMapping(SALES)
 @CrossOrigin(originPatterns = "*")
 @RequiredArgsConstructor
 @Slf4j
