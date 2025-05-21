@@ -35,6 +35,5 @@ public class Values {
 
     public static final String ORDERS = "/api/orders";
     public static final String CART = "/api/cart";
-    public static final String SALES = "/api/sales";
 
 }

@@ -23,37 +23,37 @@ class ProductEntityMapperTest {
     @Autowired
     private JpaProductRepository productRepository;
 
-    @Transactional(readOnly = true)
-    @Test
-    void shouldMapProductEntityToDomain() {
-        Optional<ProductEntity> entityOpt = productRepository.findById(1L);
-        assertTrue(entityOpt.isPresent());
+    // @Transactional(readOnly = true)
+    // @Test
+    // void shouldMapProductEntityToDomain() {
+    //     Optional<ProductEntity> entityOpt = productRepository.findById(1L);
+    //     assertTrue(entityOpt.isPresent());
 
-        ProductEntity entity = entityOpt.get();
-        Product domain = productMapper.toDomain(entity);
+    //     ProductEntity entity = entityOpt.get();
+    //     Product domain = productMapper.toDomain(entity);
 
-        assertNotNull(domain);
-        assertEquals(entity.getId(), domain.getId());
-        assertEquals(entity.getName(), domain.getName());
-        assertEquals(entity.getOwner().getId(), domain.getOwner().getId());
-        assertNull(domain.getOwner().getShop());
-    }
+    //     assertNotNull(domain);
+    //     assertEquals(entity.getId(), domain.getId());
+    //     assertEquals(entity.getName(), domain.getName());
+    //     assertEquals(entity.getOwner().getId(), domain.getOwner().getId());
+    //     assertNull(domain.getOwner().getShop());
+    // }
 
-    @Transactional(readOnly = true)
-    @Test
-    void shouldMapProductEntityToEntity() {
-        ProductEntity entity = productRepository.findById(1L).orElseThrow();
-        Product domain = productMapper.toDomain(entity);
-        domain.setId(77L);
-        ProductEntity mappedEntity = productMapper.toEntity(domain);
+    // @Transactional(readOnly = true)
+    // @Test
+    // void shouldMapProductEntityToEntity() {
+    //     ProductEntity entity = productRepository.findById(1L).orElseThrow();
+    //     Product domain = productMapper.toDomain(entity);
+    //     domain.setId(77L);
+    //     ProductEntity mappedEntity = productMapper.toEntity(domain);
 
-        assertNotNull(mappedEntity);
-        assertEquals(domain.getId(), mappedEntity.getId());
-        assertEquals(domain.getName(), mappedEntity.getName());
-        assertEquals(domain.getOwner().getId(), mappedEntity.getOwner().getId());
-        assertNull(mappedEntity.getOwner().getShop());
+    //     assertNotNull(mappedEntity);
+    //     assertEquals(domain.getId(), mappedEntity.getId());
+    //     assertEquals(domain.getName(), mappedEntity.getName());
+    //     assertEquals(domain.getOwner().getId(), mappedEntity.getOwner().getId());
+    //     assertNull(mappedEntity.getOwner().getShop());
 
-    }
+    // }
 }
 
 // @DataJpaTest

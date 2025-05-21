@@ -61,7 +61,7 @@ public class CartService implements CartServicePort{
     public List<Item> clearCart(Long userId) throws UserException{
         User user = userRepository.findUserById(userId)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
-        user.getCart().clear();
+        user.clearCart();
         return userRepository.saveUser(user)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_SAVE_ERROR))
                 .getCart();

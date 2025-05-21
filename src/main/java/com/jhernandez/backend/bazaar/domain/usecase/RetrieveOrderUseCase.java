@@ -10,7 +10,9 @@ public interface RetrieveOrderUseCase {
 
     // List<Order> findAllOrders();
 
-    List<Order> findOrdersByUserId(Long userId) throws UserException;
+    List<Order> findPurchaseOrdersByUserId(Long userId) throws UserException;
+    
+    List<Order> findSaleOrdersByUserId(Long userId) throws UserException;
 
     Order findOrderById(Long id) throws OrderException;
 

@@ -67,4 +67,8 @@ public class Item {
         this.totalPrice = this.salePrice * this.quantity + this.saleShipping;
     }
 
+    // public Item clone() {
+    //     return new Item(this.id, this.product, this.salePrice, this.saleShipping, this.quantity, this.totalPrice);
+    // }
+
 }

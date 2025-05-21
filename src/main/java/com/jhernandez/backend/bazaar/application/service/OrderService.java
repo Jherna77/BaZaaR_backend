@@ -1,6 +1,10 @@
 package com.jhernandez.backend.bazaar.application.service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.jhernandez.backend.bazaar.application.port.OrderRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.OrderServicePort;
@@ -8,7 +12,6 @@ import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.OrderException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
-import com.jhernandez.backend.bazaar.domain.model.Item;
 import com.jhernandez.backend.bazaar.domain.model.Order;
 import com.jhernandez.backend.bazaar.domain.model.User;
 
@@ -27,34 +30,28 @@ public class OrderService implements OrderServicePort {
         if (userId == null) {
             throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         }
-        User existingUser = userRepository.findUserById(userId)
+        User customer = userRepository.findUserById(userId)
             .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
         
-        // for (Item item : existingUser.getCart()) {
-        //     if (item.getProduct().getStock() < item.getQuantity()) {
-        //         throw new UserException(ErrorCode.PRODUCT_STOCK_NOT_ENOUGH);
-        //     }
-        // }
-
-        User seller = new User();
-        for (Item item : existingUser.getCart()) {
-            seller = userRepository.findUserById(item.getProduct().getOwner().getId())
-                .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
-            seller.addSale(item);
-            userRepository.saveUser(seller);
+        if (customer.getCart().isEmpty()) {
+            throw new UserException(ErrorCode.CART_EMPTY);
         }
 
-        existingUser.createOrderFromCart();
-        userRepository.saveUser(existingUser);
+        List<Order> newOrders = new ArrayList<>();
+        customer.getCart().forEach(item -> {
+            newOrders.add(new Order(
+                null,
+                item,
+                // item.clone(),
+                customer,
+                LocalDateTime.now()));
+        });
+
+        processOrders(newOrders, customer);
     }
 
-    // @Override
-    // public List<Order> findAllOrders() {
-    //     return orderRepository.findAllOrders();
-    // }
-
     @Override
-    public List<Order> findOrdersByUserId(Long userId) throws UserException {
+    public List<Order> findPurchaseOrdersByUserId(Long userId) throws UserException {
         if (userId == null) {
             throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         }
@@ -64,27 +61,41 @@ public class OrderService implements OrderServicePort {
     }
 
     @Override
+    public List<Order> findSaleOrdersByUserId(Long userId) throws UserException {
+        if (userId == null) {
+            throw new UserException(ErrorCode.USER_ID_NOT_NULL);
+        }
+        return userRepository.findUserById(userId)
+                .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND))
+                .getSaleOrders();
+    }
+
+    @Override
     public Order findOrderById(Long id) throws OrderException {
         return orderRepository.findOrderById(id)
             .orElseThrow(() -> new OrderException(ErrorCode.ORDER_NOT_FOUND));
     }
 
-    // @Override
-    // public void updateOrder(Order order) throws OrderException {
-    //     
-    //     orderRepository.saveOrder(order);
-    // }
+    public void processOrders(List<Order> newOrders, User customer) {
+        Set<User> sellersToUpdate = new HashSet<>();
 
-    // @Override
-    // public void deleteOrderById(Long orderId) throws OrderException {
-    //     if (orderId == null) {
-    //         throw new OrderException("Order ID cannot be null");
-    //     }
-    //     if (!orderRepository.existsById(orderId)) {
-    //         throw new OrderException("Order not found");
-    //     }
-    //     orderRepository.deleteOrderById(orderId);
-    // }
+        User seller = new User();
+        for (Order order : newOrders) {
+            seller = userRepository.findUserById(order.getItem().getProduct().getOwner().getId())
+                        .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
+            customer.addPurchaseOrder(order);
+            seller.addSaleOrder(order);
+            sellersToUpdate.add(seller);
+        }
 
+        customer.clearCart();
+
+        userRepository.saveUser(customer);
+
+        for (User userSeller : sellersToUpdate) {
+            userRepository.saveUser(userSeller);
+        }
+
+    }
 
 }

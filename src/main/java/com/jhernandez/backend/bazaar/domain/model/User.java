@@ -1,6 +1,7 @@
 package com.jhernandez.backend.bazaar.domain.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
@@ -22,10 +23,15 @@ public class User {
     private List<Product> shop;
     private List<Item> cart;
     private List<Order> purchaseOrders;
-    private List<Item> sales;
+    private List<Order> saleOrders;
 
     public User() {
+    this.cart = new ArrayList<>();
+    this.shop = new ArrayList<>();
+    this.purchaseOrders = new ArrayList<>();
+    this.saleOrders = new ArrayList<>();
     }
+
 
     public User(Long id) {
         this.id = id;
@@ -33,7 +39,7 @@ public class User {
 
     public User(Long id, Boolean enabled, UserRole role, String email, String password, String name, String surnames,
             String address, String city, String province, String zipCode, List<Product> shop, List<Item> cart,
-            List<Order> purchaseOrders, List<Item> sales) {
+            List<Order> purchaseOrders, List<Order> saleOrders) {
         this.id = id;
         this.enabled = enabled;
         this.role = role;
@@ -45,10 +51,10 @@ public class User {
         this.city = city;
         this.province = province;
         this.zipCode = zipCode;
-        this.shop = shop;
-        this.cart = cart;
-        this.purchaseOrders = purchaseOrders;
-        this.sales = sales;
+        this.shop = (shop != null) ? shop : new ArrayList<>();
+        this.cart = (cart != null) ? cart : new ArrayList<>();
+        this.purchaseOrders = (purchaseOrders != null) ? purchaseOrders : new ArrayList<>();
+        this.saleOrders = (saleOrders != null) ? saleOrders : new ArrayList<>();
     }
 
     public Long getId() {
@@ -107,8 +113,8 @@ public class User {
         return purchaseOrders;
     }
 
-    public List<Item> getSales() {
-        return sales;
+    public List<Order> getSaleOrders() {
+        return saleOrders;
     }
 
     public void setId(Long id) {
@@ -169,8 +175,8 @@ public class User {
         this.purchaseOrders = orders;
     }
 
-    public void setSales(List<Item> sales) {
-        this.sales = sales;
+    public void setSaleOrders(List<Order> saleOrders) {
+        this.saleOrders = saleOrders;
     }
 
     public void enable() {
@@ -220,34 +226,48 @@ public class User {
         this.cart.add(item);
     }
 
-    public void removeItemFromCart(Long itemId) throws UserException {
+    public void removeItemFromCart(Long itemId) {
         this.cart.removeIf(item -> item.getId().equals(itemId));
     }
-    
-    public void createOrderFromCart() throws UserException { 
-        if (this.cart.isEmpty()) {
-            throw new UserException(ErrorCode.CART_EMPTY);
-        }
-           
-        this.purchaseOrders.add(new Order(
-            null,
-            this.cart.stream()
-            .map(item -> new Item(null, item.getProduct(), item.getSalePrice(),
-                                    item.getSaleShipping(), item.getQuantity(),
-                                    item.getTotalPrice())).toList(),
-            this,
-            LocalDateTime.now()));
+
+    public void addPurchaseOrder(Order order) {
+        this.purchaseOrders.add(order);
+    }
+
+    public void addSaleOrder(Order order) {
+        this.saleOrders.add(order);
+    }
+
+    public void clearCart() {
         this.cart.clear();
     }
 
-    public void addSale(Item item) {
-        this.sales.add(new Item(
+    public void createOrdersFromCart() { 
+        this.cart.forEach(item -> {
+            this.purchaseOrders.add(new Order(
                 null,
-                item.getProduct(),
-                item.getSalePrice(),
-                item.getSaleShipping(),
-                item.getQuantity(),
-                item.getTotalPrice()));
+                item,
+                this,
+                LocalDateTime.now()));
+        });
+        this.cart.clear();
     }
+
+    
+    // public void createOrderFromCart() throws UserException { 
+    //     if (this.cart.isEmpty()) {
+    //         throw new UserException(ErrorCode.CART_EMPTY);
+    //     }
+           
+    //     this.purchaseOrders.add(new Order(
+    //         null,
+    //         this.cart.stream()
+    //         .map(item -> new Item(null, item.getProduct(), item.getSalePrice(),
+    //                                 item.getSaleShipping(), item.getQuantity(),
+    //                                 item.getTotalPrice())).toList(),
+    //         this,
+    //         LocalDateTime.now()));
+    //     this.cart.clear();
+    // }
 
 }

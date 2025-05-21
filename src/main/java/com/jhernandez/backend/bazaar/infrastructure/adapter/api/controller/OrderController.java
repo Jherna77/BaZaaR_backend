@@ -45,13 +45,22 @@ public class OrderController {
     //         .collect(Collectors.toList());
     // }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> findOrdersByUserId(@PathVariable Long userId) {
+    @GetMapping("/purchase/{userId}")
+    public ResponseEntity<?> findPurchaseOrdersByUserId(@PathVariable Long userId) {
         log.info("Finding all orders for the user with ID ", userId);
-        return ResponseEntity.ok(orderService.findOrdersByUserId(userId).stream()
+        return ResponseEntity.ok(orderService.findPurchaseOrdersByUserId(userId).stream()
             .map(orderDtoMapper::toDto)
             .collect(Collectors.toList()));
     }
+
+    @GetMapping("/sale/{userId}")
+    public ResponseEntity<?> findSaleOrdersByUserId(@PathVariable Long userId) {
+        log.info("Finding all orders for the user with ID ", userId);
+        return ResponseEntity.ok(orderService.findSaleOrdersByUserId(userId).stream()
+            .map(orderDtoMapper::toDto)
+            .collect(Collectors.toList()));
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findOrderById(@PathVariable Long id) {

@@ -20,7 +20,7 @@ public interface UserDtoMapper {
     @Mapping(target = "shop", ignore = true)
     @Mapping(target = "cart", ignore = true)
     @Mapping(target = "purchaseOrders", ignore = true)
-    @Mapping(target = "sales", ignore = true)
+    @Mapping(target = "saleOrders", ignore = true)
     User toDomain(UserRequestDto userRequestDto);
 
 }

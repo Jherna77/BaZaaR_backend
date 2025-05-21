@@ -14,11 +14,13 @@ public interface OrderEntityMapper {
     @Mapping(target = "customer.shop", ignore = true)
     @Mapping(target = "customer.cart", ignore = true)
     @Mapping(target = "customer.purchaseOrders", ignore = true)
+    @Mapping(target = "customer.saleOrders", ignore = true)
     OrderEntity toEntity (Order order);
 
     @Mapping(target = "customer.shop", ignore = true)
     @Mapping(target = "customer.cart", ignore = true)
     @Mapping(target = "customer.purchaseOrders", ignore = true)
+    @Mapping(target = "customer.saleOrders", ignore = true)
     Order toDomain(OrderEntity orderEntity);
 
 }
