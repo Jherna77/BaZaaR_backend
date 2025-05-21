@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.application.port.OrderRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.model.Order;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.OrderEntity;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.OrderEntityMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaOrderRepository;
 
@@ -21,14 +22,14 @@ public class MysqlOrderRepositoryAdapter implements OrderRepositoryPort {
     private final JpaOrderRepository orderRepository;
     private final OrderEntityMapper orderEntityMapper;
 
-    // @Transactional
-    // @Override
-    // public Optional<Order> saveOrder(Order order) {
-    //     log.info("Saving order {}", order.getId());
-    //     OrderEntity orderEntity = orderEntityMapper.toEntity(order);
-    //     return Optional.of(orderEntityMapper.toDomain(
-    //             orderRepository.save(orderEntity)));
-    // }
+    @Transactional
+    @Override
+    public Optional<Order> saveOrder(Order order) {
+        log.info("Saving order {}", order.getId());
+        OrderEntity orderEntity = orderEntityMapper.toEntity(order);
+        return Optional.of(orderEntityMapper.toDomain(
+                orderRepository.save(orderEntity)));
+    }
 
     // @Transactional(readOnly = true)
     // @Override

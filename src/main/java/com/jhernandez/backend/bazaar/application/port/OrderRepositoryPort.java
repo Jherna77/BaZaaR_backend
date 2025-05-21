@@ -6,7 +6,7 @@ import com.jhernandez.backend.bazaar.domain.model.Order;
 
 public interface OrderRepositoryPort {
 
-    // Optional<Order> saveOrder(Order order);
+    Optional<Order> saveOrder(Order order);
 
     // List<Order> findAllOrders();
 

@@ -14,6 +14,7 @@ public interface OrderDtoMapper {
 
     @Mapping(source = "orderDate", target = "orderDate", qualifiedByName = "formatDate")
     @Mapping(source = "customer.id", target = "customerId")
+    @Mapping(source = "seller.id", target = "sellerId")
     OrderDto toDto(Order order);
 
 }

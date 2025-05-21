@@ -1,6 +1,5 @@
 package com.jhernandez.backend.bazaar.domain.model;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +25,10 @@ public class User {
     private List<Order> saleOrders;
 
     public User() {
-    this.cart = new ArrayList<>();
-    this.shop = new ArrayList<>();
-    this.purchaseOrders = new ArrayList<>();
-    this.saleOrders = new ArrayList<>();
+    // this.cart = new ArrayList<>();
+    // this.shop = new ArrayList<>();
+    // this.purchaseOrders = new ArrayList<>();
+    // this.saleOrders = new ArrayList<>();
     }
 
 
@@ -241,33 +240,5 @@ public class User {
     public void clearCart() {
         this.cart.clear();
     }
-
-    public void createOrdersFromCart() { 
-        this.cart.forEach(item -> {
-            this.purchaseOrders.add(new Order(
-                null,
-                item,
-                this,
-                LocalDateTime.now()));
-        });
-        this.cart.clear();
-    }
-
-    
-    // public void createOrderFromCart() throws UserException { 
-    //     if (this.cart.isEmpty()) {
-    //         throw new UserException(ErrorCode.CART_EMPTY);
-    //     }
-           
-    //     this.purchaseOrders.add(new Order(
-    //         null,
-    //         this.cart.stream()
-    //         .map(item -> new Item(null, item.getProduct(), item.getSalePrice(),
-    //                                 item.getSaleShipping(), item.getQuantity(),
-    //                                 item.getTotalPrice())).toList(),
-    //         this,
-    //         LocalDateTime.now()));
-    //     this.cart.clear();
-    // }
 
 }

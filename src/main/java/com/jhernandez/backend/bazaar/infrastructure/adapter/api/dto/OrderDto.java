@@ -9,8 +9,8 @@ public class OrderDto {
 
     private Long id;
     private ItemDto item;
-    // private List<ItemDto> items;
     private Long customerId;
+    private Long sellerId;
     private String orderDate;
 
 }
