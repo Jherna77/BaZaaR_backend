@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jhernandez.backend.bazaar.application.service.SaleService;
+import com.jhernandez.backend.bazaar.application.port.SaleServicePort;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.ItemDtoMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.
 @Slf4j
 public class SaleController {
 
-    private final SaleService saleService;
+    private final SaleServicePort saleService;
     private final ItemDtoMapper mapper;
 
     @GetMapping("/{id}")
