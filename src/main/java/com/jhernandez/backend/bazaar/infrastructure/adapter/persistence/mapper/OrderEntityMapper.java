@@ -15,22 +15,24 @@ public interface OrderEntityMapper {
 
     @Mapping(target = "customer.shop", ignore = true)
     @Mapping(target = "customer.cart", ignore = true)
-    @Mapping(target = "customer.purchaseOrders", ignore = true)
+    // @Mapping(target = "customer.purchaseOrders", ignore = true)
     @Mapping(target = "customer.saleOrders", ignore = true)
     @Mapping(target = "seller.shop", ignore = true)
     @Mapping(target = "seller.cart", ignore = true)
-    @Mapping(target = "seller.purchaseOrders", ignore = true)
+    // @Mapping(target = "seller.purchaseOrders", ignore = true)
     @Mapping(target = "seller.saleOrders", ignore = true)
+    // @Mapping(target = "item.product.categories", ignore = true)
     OrderEntity toEntity (Order order);
 
     @Mapping(target = "customer.shop", ignore = true)
     @Mapping(target = "customer.cart", ignore = true)
-    @Mapping(target = "customer.purchaseOrders", ignore = true)
+    // @Mapping(target = "customer.purchaseOrders", ignore = true)
     @Mapping(target = "customer.saleOrders", ignore = true)
     @Mapping(target = "seller.shop", ignore = true)
     @Mapping(target = "seller.cart", ignore = true)
-    @Mapping(target = "seller.purchaseOrders", ignore = true)
+    // @Mapping(target = "seller.purchaseOrders", ignore = true)
     @Mapping(target = "seller.saleOrders", ignore = true)
+    // @Mapping(target = "item.product.categories", ignore = true)
     Order toDomain(OrderEntity orderEntity);
 
     List<Order> toDomain(List<OrderEntity> orderEntities);

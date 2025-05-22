@@ -49,6 +49,7 @@ public class MysqlOrderRepositoryAdapter implements OrderRepositoryPort {
         return orderRepository.findById(id).map(orderEntityMapper::toDomain);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Order> findOrdersByCustomerId(Long id) {
         log.info("Finding orders for customer with ID {}", id);

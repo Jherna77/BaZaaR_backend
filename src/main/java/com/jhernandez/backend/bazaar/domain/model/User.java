@@ -21,7 +21,7 @@ public class User {
     private String zipCode;
     private List<Product> shop;
     private List<Item> cart;
-    private List<Order> purchaseOrders;
+    // private List<Order> purchaseOrders;
     private List<Order> saleOrders;
 
     public User() {
@@ -52,7 +52,7 @@ public class User {
         this.zipCode = zipCode;
         this.shop = (shop != null) ? shop : new ArrayList<>();
         this.cart = (cart != null) ? cart : new ArrayList<>();
-        this.purchaseOrders = (purchaseOrders != null) ? purchaseOrders : new ArrayList<>();
+        // this.purchaseOrders = (purchaseOrders != null) ? purchaseOrders : new ArrayList<>();
         this.saleOrders = (saleOrders != null) ? saleOrders : new ArrayList<>();
     }
 
@@ -108,9 +108,9 @@ public class User {
         return cart;
     }
 
-    public List<Order> getPurchaseOrders() {
-        return purchaseOrders;
-    }
+    // public List<Order> getPurchaseOrders() {
+    //     return purchaseOrders;
+    // }
 
     public List<Order> getSaleOrders() {
         return saleOrders;
@@ -170,9 +170,9 @@ public class User {
         this.cart = cart;
     }
 
-    public void setPurchaseOrders(List<Order> orders) {
-        this.purchaseOrders = orders;
-    }
+    // public void setPurchaseOrders(List<Order> orders) {
+    //     this.purchaseOrders = orders;
+    // }
 
     public void setSaleOrders(List<Order> saleOrders) {
         this.saleOrders = saleOrders;
@@ -229,9 +229,9 @@ public class User {
         this.cart.removeIf(item -> item.getId().equals(itemId));
     }
 
-    public void addPurchaseOrder(Order order) {
-        this.purchaseOrders.add(order);
-    }
+    // public void addPurchaseOrder(Order order) {
+    //     this.purchaseOrders.add(order);
+    // }
 
     public void addSaleOrder(Order order) {
         this.saleOrders.add(order);

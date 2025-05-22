@@ -51,8 +51,8 @@ public class UserEntity {
     @JoinColumn(name = "cart_user_id")
     private List<ItemEntity> cart;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderEntity> purchaseOrders;
+    // @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<OrderEntity> purchaseOrders;
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderEntity> saleOrders;

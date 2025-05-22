@@ -51,7 +51,7 @@ public class OrderService implements OrderServicePort {
             log.info("Cloned item {}", clonedItem);
             Order newOrder= orderRepository.saveOrder(new Order(null, clonedItem, customer, seller, LocalDateTime.now()))
                     .orElseThrow(() -> new UserException(ErrorCode.OPERATION_NOT_ALLOWED));
-            customer.addPurchaseOrder(newOrder);
+            // customer.addPurchaseOrder(newOrder);
             seller.addSaleOrder(newOrder);
         }
 
