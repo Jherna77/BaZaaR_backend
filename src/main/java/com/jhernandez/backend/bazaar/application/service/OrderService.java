@@ -43,16 +43,16 @@ public class OrderService implements OrderServicePort {
         }
 
         for (Item item : customer.getCart()) {
-            User seller = userRepository.findUserById(item.getProduct().getOwner().getId())
+            User seller = userRepository.findUserById(item.getProduct().getShop().getId())
                     .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
             
             Item clonedItem = itemRepository.saveItem(item.clone())
                     .orElseThrow(() -> new UserException(ErrorCode.OPERATION_NOT_ALLOWED));
             log.info("Cloned item {}", clonedItem);
-            Order newOrder= orderRepository.saveOrder(new Order(null, clonedItem, customer, seller, LocalDateTime.now()))
+            orderRepository.saveOrder(new Order(null, clonedItem, customer, seller, LocalDateTime.now()))
                     .orElseThrow(() -> new UserException(ErrorCode.OPERATION_NOT_ALLOWED));
             // customer.addPurchaseOrder(newOrder);
-            seller.addSaleOrder(newOrder);
+            // seller.addSaleOrder(newOrder);
         }
 
         customer.clearCart();
@@ -75,9 +75,10 @@ public class OrderService implements OrderServicePort {
         if (userId == null) {
             throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         }
-        return userRepository.findUserById(userId)
-                .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND))
-                .getSaleOrders();
+        return orderRepository.findOrdersByShopId(userId);
+        // return userRepository.findUserById(userId)
+        //         .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND))
+        //         .getSaleOrders();
     }
 
     @Override

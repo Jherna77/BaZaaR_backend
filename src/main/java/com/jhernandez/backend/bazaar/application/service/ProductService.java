@@ -51,11 +51,11 @@ public class ProductService implements ProductServicePort {
                 .map(imageFile -> imageFile.getImageUrl())
                 .toList());
 
-        User owner = userRepositoryPort.findUserById(product.getOwner().getId())
+        User owner = userRepositoryPort.findUserById(product.getShop().getId())
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));            
         if (!owner.getEnabled())
             throw new UserException(ErrorCode.PRODUCT_OWNER_DISABLED);
-        product.setOwner(owner);
+        product.setShop(owner);
         owner.addProductToShop(product);
 
         product.enable();
@@ -100,7 +100,7 @@ public class ProductService implements ProductServicePort {
             throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         return userRepositoryPort.findUserById(userId)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND))
-                .getShop();
+                .getProducts();
     }
 
     @Override
@@ -140,7 +140,7 @@ public class ProductService implements ProductServicePort {
         Product existingProduct = findProductById(id);
         if (existingProduct.getEnabled())
             throw new ProductException(ErrorCode.PRODUCT_ALREADY_ENABLED);
-        if (!existingProduct.getOwner().getEnabled())
+        if (!existingProduct.getShop().getEnabled())
             throw new UserException(ErrorCode.PRODUCT_OWNER_DISABLED);
 
         existingProduct.enable();

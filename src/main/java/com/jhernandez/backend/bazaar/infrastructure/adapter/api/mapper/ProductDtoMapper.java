@@ -14,10 +14,10 @@ public interface ProductDtoMapper {
 
     // @Mapping(target = "name", expression = "java(NameDisabler.adjust(product.getName(), product.getEnabled()))")
     @Mapping(target = "name", source = ".", qualifiedByName = "adjustProductName")    
-    @Mapping(source = "owner.id", target = "ownerId")
+    @Mapping(source = "shop.id", target = "shopId")
     ProductDto toDto(Product product);
 
-    @Mapping(target = "owner", expression = "java(new User(productDto.getOwnerId()))")
+    @Mapping(target = "shop", expression = "java(new User(productDto.getShopId()))")
     Product toDomain(ProductDto productDto);
 
 }

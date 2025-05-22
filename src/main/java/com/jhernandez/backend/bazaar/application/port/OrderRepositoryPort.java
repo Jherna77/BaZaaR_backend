@@ -15,6 +15,8 @@ public interface OrderRepositoryPort {
 
     List<Order> findOrdersByCustomerId(Long id);
 
+    List<Order> findOrdersByShopId(Long id);
+
     // Boolean existsById(Long id);
 
     // void deleteOrderById(Long id);

@@ -12,10 +12,10 @@ public class Product {
     private Double shipping;
     private List<Category> categories;
     private List<String> imagesUrl;
-    private User owner;
+    private User shop;
 
     public Product(Long id, Boolean enabled, String name, String description, Double price, Double shipping,
-            List<Category> categories, List<String> imagesUrl, User owner) {
+            List<Category> categories, List<String> imagesUrl, User shop) {
         this.id = id;
         this.enabled = enabled;
         this.name = name;
@@ -24,7 +24,7 @@ public class Product {
         this.shipping = shipping;
         this.categories = categories;
         this.imagesUrl = imagesUrl;
-        this.owner = owner;
+        this.shop = shop;
     }
 
     public Long getId() {
@@ -59,8 +59,8 @@ public class Product {
         return imagesUrl;
     }
 
-    public User getOwner() {
-        return owner;
+    public User getShop() {
+        return shop;
     }
 
     public void setId(Long id) {
@@ -95,8 +95,8 @@ public class Product {
         this.imagesUrl = imagesUrl;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setShop(User shop) {
+        this.shop = shop;
     }
 
     public void enable() {

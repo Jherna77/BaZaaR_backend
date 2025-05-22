@@ -35,8 +35,8 @@ class ProductEntityMapperTest {
         assertNotNull(domain);
         assertEquals(entity.getId(), domain.getId());
         assertEquals(entity.getName(), domain.getName());
-        assertEquals(entity.getOwner().getId(), domain.getOwner().getId());
-        assertNull(domain.getOwner().getShop());
+        assertEquals(entity.getShop().getId(), domain.getShop().getId());
+        assertNull(domain.getShop().getProducts());
     }
 
     @Transactional(readOnly = true)
@@ -50,8 +50,8 @@ class ProductEntityMapperTest {
         assertNotNull(mappedEntity);
         assertEquals(domain.getId(), mappedEntity.getId());
         assertEquals(domain.getName(), mappedEntity.getName());
-        assertEquals(domain.getOwner().getId(), mappedEntity.getOwner().getId());
-        assertNull(mappedEntity.getOwner().getShop());
+        assertEquals(domain.getShop().getId(), mappedEntity.getShop().getId());
+        assertNull(mappedEntity.getShop().getProducts());
 
     }
 }

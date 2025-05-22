@@ -48,7 +48,7 @@ public class ProductEntity {
     private List<String> imagesUrl;
 
     @ManyToOne
-    @JoinColumn(name = "user_owner_id", nullable = false)
-    private UserEntity owner;
+    @JoinColumn(name = "shop_id", nullable = false)
+    private UserEntity shop;
 
 }

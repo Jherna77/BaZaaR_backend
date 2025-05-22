@@ -19,16 +19,12 @@ public class User {
     private String city;
     private String province;
     private String zipCode;
-    private List<Product> shop;
+    private List<Product> products;
     private List<Item> cart;
     // private List<Order> purchaseOrders;
-    private List<Order> saleOrders;
+    // private List<Order> saleOrders;
 
     public User() {
-    // this.cart = new ArrayList<>();
-    // this.shop = new ArrayList<>();
-    // this.purchaseOrders = new ArrayList<>();
-    // this.saleOrders = new ArrayList<>();
     }
 
 
@@ -37,8 +33,8 @@ public class User {
     }
 
     public User(Long id, Boolean enabled, UserRole role, String email, String password, String name, String surnames,
-            String address, String city, String province, String zipCode, List<Product> shop, List<Item> cart,
-            List<Order> purchaseOrders, List<Order> saleOrders) {
+            String address, String city, String province, String zipCode, List<Product> products, List<Item> cart) {
+            //List<Order> purchaseOrders, List<Order> saleOrders) {
         this.id = id;
         this.enabled = enabled;
         this.role = role;
@@ -50,10 +46,10 @@ public class User {
         this.city = city;
         this.province = province;
         this.zipCode = zipCode;
-        this.shop = (shop != null) ? shop : new ArrayList<>();
+        this.products = (products != null) ? products : new ArrayList<>();
         this.cart = (cart != null) ? cart : new ArrayList<>();
         // this.purchaseOrders = (purchaseOrders != null) ? purchaseOrders : new ArrayList<>();
-        this.saleOrders = (saleOrders != null) ? saleOrders : new ArrayList<>();
+        // this.saleOrders = (saleOrders != null) ? saleOrders : new ArrayList<>();
     }
 
     public Long getId() {
@@ -100,8 +96,8 @@ public class User {
         return zipCode;
     }
 
-    public List<Product> getShop() {
-        return shop;
+    public List<Product> getProducts() {
+        return products;
     }
 
     public List<Item> getCart() {
@@ -112,9 +108,9 @@ public class User {
     //     return purchaseOrders;
     // }
 
-    public List<Order> getSaleOrders() {
-        return saleOrders;
-    }
+    // public List<Order> getSaleOrders() {
+    //     return saleOrders;
+    // }
 
     public void setId(Long id) {
         this.id = id;
@@ -122,8 +118,8 @@ public class User {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
-        if (this.shop != null)
-            this.shop.forEach(product -> product.setEnabled(enabled));
+        if (this.products != null)
+            this.products.forEach(product -> product.setEnabled(enabled));
     }
 
     public void setRole(UserRole role) {
@@ -162,8 +158,8 @@ public class User {
         this.zipCode = zipCode;
     }
 
-    public void setShop(List<Product> shop) {
-        this.shop = shop;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     public void setCart(List<Item> cart) {
@@ -174,42 +170,42 @@ public class User {
     //     this.purchaseOrders = orders;
     // }
 
-    public void setSaleOrders(List<Order> saleOrders) {
-        this.saleOrders = saleOrders;
-    }
+    // public void setSaleOrders(List<Order> saleOrders) {
+    //     this.saleOrders = saleOrders;
+    // }
 
     public void enable() {
         this.enabled = true;
-        if (this.shop != null)
-            this.shop.forEach(product -> product.enable());
+        if (this.products != null)
+            this.products.forEach(product -> product.enable());
     }
 
     public void disable() throws UserException {
         if (!this.enabled)
             throw new UserException(ErrorCode.USER_ALREADY_DISABLED);
         this.enabled = false;
-        if (this.shop != null)
-            this.shop.forEach(product -> product.disable());
+        if (this.products != null)
+            this.products.forEach(product -> product.disable());
     }
 
     public void addProductToShop(Product product) throws UserException {
-        for (Product shopProduct : this.shop) {
+        for (Product shopProduct : this.products) {
             if (shopProduct.getId().equals(product.getId())) {
                 throw new UserException(ErrorCode.SHOP_PRODUCT_ALREADY_EXISTS);
             }
         }
-        this.shop.add(product);
+        this.products.add(product);
     }
 
     public void removeProductFromShop(Long productId) throws UserException {
-        this.shop.removeIf(product -> product.getId().equals(productId));
+        this.products.removeIf(product -> product.getId().equals(productId));
     }
 
     public void updateProductInShop(Product product) throws UserException {
-        for (Product shopProduct : this.shop) {
+        for (Product shopProduct : this.products) {
             if (shopProduct.getId().equals(product.getId())) {
-                this.shop.remove(shopProduct);
-                this.shop.add(product);
+                this.products.remove(shopProduct);
+                this.products.add(product);
                 return;
             }
         }
@@ -233,9 +229,9 @@ public class User {
     //     this.purchaseOrders.add(order);
     // }
 
-    public void addSaleOrder(Order order) {
-        this.saleOrders.add(order);
-    }
+    // public void addSaleOrder(Order order) {
+    //     this.saleOrders.add(order);
+    // }
 
     public void clearCart() {
         this.cart.clear();

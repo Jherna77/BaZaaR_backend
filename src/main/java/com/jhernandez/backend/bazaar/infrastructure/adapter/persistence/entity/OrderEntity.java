@@ -32,8 +32,8 @@ public class OrderEntity {
     private UserEntity customer;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "seller_id", nullable = false)
-    private UserEntity seller;
+    @JoinColumn(name = "shop_id", nullable = false)
+    private UserEntity shop;
 
     @Column(name = "order_date")    
     private LocalDateTime orderDate;

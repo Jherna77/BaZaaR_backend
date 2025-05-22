@@ -10,7 +10,7 @@ public class OrderDto {
     private Long id;
     private ItemDto item;
     private Long customerId;
-    private Long sellerId;
+    private Long shopId;
     private String orderDate;
 
 }

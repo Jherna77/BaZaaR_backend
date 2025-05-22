@@ -44,8 +44,8 @@ public class UserEntity {
     @Column(name = "zip_code")
     private String zipCode;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductEntity> shop;
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductEntity> products;
     
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cart_user_id")
@@ -54,7 +54,7 @@ public class UserEntity {
     // @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     // private List<OrderEntity> purchaseOrders;
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderEntity> saleOrders;
+    // @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<OrderEntity> saleOrders;
     
 }

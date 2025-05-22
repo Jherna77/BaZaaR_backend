@@ -17,10 +17,10 @@ public interface UserDtoMapper {
     @Mapping(target = "name", source = ".", qualifiedByName = "adjustUserName")    
     UserResponseDto toResponseDto(User user);
 
-    @Mapping(target = "shop", ignore = true)
+    @Mapping(target = "products", ignore = true)
     @Mapping(target = "cart", ignore = true)
     // @Mapping(target = "purchaseOrders", ignore = true)
-    @Mapping(target = "saleOrders", ignore = true)
+    // @Mapping(target = "saleOrders", ignore = true)
     User toDomain(UserRequestDto userRequestDto);
 
 }

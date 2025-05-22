@@ -17,7 +17,7 @@ public class ProductDto {
     private Double shipping;    
     private List<CategoryDto> categories;
     private List<String> imagesUrl;
-    private Long ownerId;
+    private Long shopId;
 
 }
 
