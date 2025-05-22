@@ -9,6 +9,9 @@ public class Item {
     private Integer quantity;
     private Double totalPrice;
 
+    public Item() {
+    }
+
     public Item(Long id, Product product, Double salePrice, Double saleShipping, Integer quantity, Double totalPrice) {
         this.id = id;
         this.product = product;
@@ -67,8 +70,8 @@ public class Item {
         this.totalPrice = this.salePrice * this.quantity + this.saleShipping;
     }
 
-    // public Item clone() {
-    //     return new Item(this.id, this.product, this.salePrice, this.saleShipping, this.quantity, this.totalPrice);
-    // }
+    public Item clone() {
+        return new Item(null, this.product, this.salePrice, this.saleShipping, this.quantity, this.totalPrice);
+    }
 
 }

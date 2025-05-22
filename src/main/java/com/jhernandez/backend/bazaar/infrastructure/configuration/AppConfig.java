@@ -48,8 +48,9 @@ public class AppConfig {
     }
 
     @Bean
-    OrderServicePort orderServicePort(UserRepositoryPort userRepositoryPort, OrderRepositoryPort orderRepositoryPort) {
-        return new OrderService(userRepositoryPort, orderRepositoryPort);
+    OrderServicePort orderServicePort(UserRepositoryPort userRepositoryPort,
+     OrderRepositoryPort orderRepositoryPort, ItemRepositoryPort itemRepositoryPort) {
+        return new OrderService(userRepositoryPort, orderRepositoryPort, itemRepositoryPort);
     }
 
     @Bean

@@ -1,6 +1,8 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.mysql;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +47,14 @@ public class MysqlOrderRepositoryAdapter implements OrderRepositoryPort {
     public Optional<Order> findOrderById(Long id) {
         log.info("Finding order with ID {}", id);
         return orderRepository.findById(id).map(orderEntityMapper::toDomain);
+    }
+
+    @Override
+    public List<Order> findOrdersByCustomerId(Long id) {
+        log.info("Finding orders for customer with ID {}", id);
+        return orderRepository.findByCustomerId(id).stream()
+                .map(orderEntityMapper::toDomain)
+                .collect(Collectors.toList());
     }
 
     // @Transactional(readOnly = true)
