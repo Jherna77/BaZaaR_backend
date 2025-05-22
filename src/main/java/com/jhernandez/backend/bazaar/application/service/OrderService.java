@@ -12,6 +12,7 @@ import com.jhernandez.backend.bazaar.domain.exception.OrderException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.Item;
 import com.jhernandez.backend.bazaar.domain.model.Order;
+import com.jhernandez.backend.bazaar.domain.model.OrderStatus;
 import com.jhernandez.backend.bazaar.domain.model.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -51,8 +52,6 @@ public class OrderService implements OrderServicePort {
             log.info("Cloned item {}", clonedItem);
             orderRepository.saveOrder(new Order(null, clonedItem, customer, seller, LocalDateTime.now()))
                     .orElseThrow(() -> new UserException(ErrorCode.OPERATION_NOT_ALLOWED));
-            // customer.addPurchaseOrder(newOrder);
-            // seller.addSaleOrder(newOrder);
         }
 
         customer.clearCart();
@@ -65,9 +64,6 @@ public class OrderService implements OrderServicePort {
             throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         }
         return orderRepository.findOrdersByCustomerId(userId);
-        // return userRepository.findUserById(userId)
-        //         .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND))
-        //         .getPurchaseOrders();
     }
 
     @Override
@@ -76,15 +72,26 @@ public class OrderService implements OrderServicePort {
             throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         }
         return orderRepository.findOrdersByShopId(userId);
-        // return userRepository.findUserById(userId)
-        //         .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND))
-        //         .getSaleOrders();
     }
 
     @Override
     public Order findOrderById(Long id) throws OrderException {
         return orderRepository.findOrderById(id)
                 .orElseThrow(() -> new OrderException(ErrorCode.ORDER_NOT_FOUND));
+    }
+
+    @Override
+    public Order updateOrderStatus(Long id, OrderStatus status) throws OrderException {
+        Order order = orderRepository.findOrderById(id)
+                .orElseThrow(() -> new OrderException(ErrorCode.ORDER_NOT_FOUND));
+
+        if (order.getStatus().equals(status)) {
+            throw new OrderException(ErrorCode.ORDER_STATUS_SAME);
+        }
+
+        order.setStatus(status);
+        return orderRepository.saveOrder(order)
+                .orElseThrow(() -> new OrderException(ErrorCode.OPERATION_NOT_ALLOWED));
     }
 
 }

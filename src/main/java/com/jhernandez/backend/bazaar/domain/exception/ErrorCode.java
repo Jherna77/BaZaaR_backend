@@ -35,6 +35,7 @@ public enum ErrorCode {
     ORDER_DELIVER_ERROR("order.deliver.error"),
     ORDER_CANCEL_ERROR("order.cancel.error"),
     ORDER_RETURN_ERROR("order.return.error"),
+    ORDER_STATUS_SAME("order.status.same"),
     PRODUCT_NAME_REQUIRED("product.name.required"),
     PRODUCT_DESCRIPTION_REQUIRED("product.description.required"),
     PRODUCT_INVALID_PRICE("product.invalid.price"),
