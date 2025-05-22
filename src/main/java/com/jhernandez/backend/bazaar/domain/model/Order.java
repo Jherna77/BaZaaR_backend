@@ -2,19 +2,25 @@ package com.jhernandez.backend.bazaar.domain.model;
 
 import java.time.LocalDateTime;
 
+import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
+import com.jhernandez.backend.bazaar.domain.exception.OrderException;
+
 public class Order {
 
     private Long id;
+    private OrderStatus status;
     private Item item;
     private User customer;
     private User shop;
     private LocalDateTime orderDate;
 
     public Order() {
+        this.status = OrderStatus.PENDING;
     }
 
     public Order(Long id, Item item, User customer, User shop, LocalDateTime orderDate) {
         this.id = id;
+        this.status = OrderStatus.PENDING;
         this.item = item;
         this.customer = customer;
         this.shop = shop;
@@ -27,6 +33,14 @@ public class Order {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 
     public Item getItem() {
@@ -59,6 +73,41 @@ public class Order {
 
     public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
+    }
+
+    public void confirm() throws OrderException {
+        if (this.status != OrderStatus.PENDING) {
+            throw new OrderException(ErrorCode.ORDER_CONFIRM_ERROR);
+        }
+        this.status = OrderStatus.CONFIRMED;
+    }
+
+    public void ship() throws OrderException {
+        if (this.status != OrderStatus.CONFIRMED) {
+            throw new OrderException(ErrorCode.ORDER_SHIP_ERROR);
+        }
+        this.status = OrderStatus.SHIPPED;
+    }
+
+    public void deliver() throws OrderException {
+        if (this.status != OrderStatus.SHIPPED) {
+            throw new OrderException(ErrorCode.ORDER_DELIVER_ERROR);
+        }
+        this.status = OrderStatus.DELIVERED;
+    }
+
+    public void cancel() throws OrderException {
+        if (this.status == OrderStatus.DELIVERED || this.status == OrderStatus.RETURNED) {
+            throw new OrderException(ErrorCode.ORDER_CANCEL_ERROR);
+        }
+        this.status = OrderStatus.CANCELLED;
+    }
+
+    public void returnOrder() throws OrderException {
+        if (this.status != OrderStatus.DELIVERED) {
+            throw new OrderException(ErrorCode.ORDER_RETURN_ERROR);
+        }
+        this.status = OrderStatus.RETURNED;
     }
 
 }

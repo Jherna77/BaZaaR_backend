@@ -2,8 +2,12 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity;
 
 import java.time.LocalDateTime;
 
+import com.jhernandez.backend.bazaar.domain.model.OrderStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,7 +26,11 @@ public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderStatus status;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "item_id", nullable = false)
     private ItemEntity item;
