@@ -89,7 +89,17 @@ public class OrderService implements OrderServicePort {
             throw new OrderException(ErrorCode.ORDER_STATUS_SAME);
         }
 
-        order.setStatus(status);
+        switch (status) {
+            // case PENDING -> order.setStatus(status);
+            case CONFIRMED -> order.confirm();
+            case SHIPPED -> order.ship();
+            case DELIVERED -> order.deliver();
+            case CANCELLED -> order.cancel();
+            case RETURNED -> order.returnOrder();
+            default -> throw new OrderException(ErrorCode.OPERATION_NOT_ALLOWED);
+        }
+
+        // order.setStatus(status);
         return orderRepository.saveOrder(order)
                 .orElseThrow(() -> new OrderException(ErrorCode.OPERATION_NOT_ALLOWED));
     }

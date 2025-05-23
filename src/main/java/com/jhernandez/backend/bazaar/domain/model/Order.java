@@ -75,6 +75,19 @@ public class Order {
         this.orderDate = orderDate;
     }
 
+    // public void setStatus(OrderStatus newStatus) throws OrderException {
+    //     switch (newStatus) {
+    //         case PENDING -> this.status = OrderStatus.PENDING;
+    //         case CONFIRMED -> confirm();
+    //         case SHIPPED -> ship();
+    //         case DELIVERED -> deliver();
+    //         case CANCELLED -> cancel();
+    //         case RETURNED -> returnOrder();
+    //         default -> throw new OrderException(ErrorCode.OPERATION_NOT_ALLOWED);
+    //     }
+    // }
+
+
     public void confirm() throws OrderException {
         if (this.status != OrderStatus.PENDING) {
             throw new OrderException(ErrorCode.ORDER_CONFIRM_ERROR);

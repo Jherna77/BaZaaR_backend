@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.STATUSES;
 
+import java.util.Arrays;
+
 @RestController
 @RequestMapping(STATUSES)
 @CrossOrigin(originPatterns = "*")
@@ -21,8 +23,17 @@ public class OrderStatusController {
 
     @GetMapping
     public OrderStatus[] findAllOrderStatuses() {
-        log.info("Finding all order statuses");
-        return OrderStatus.values();
+        log.info("Finding all order statuses (excluding PENDING)");
+        return Arrays.stream(OrderStatus.values())
+                .filter(status -> status != OrderStatus.PENDING)
+                .toArray(OrderStatus[]::new);
     }
+
+    // @GetMapping
+    // public OrderStatus[] findAllOrderStatuses() {
+    // log.info("Finding all order statuses");
+
+    // return OrderStatus.values();
+    // }
 
 }

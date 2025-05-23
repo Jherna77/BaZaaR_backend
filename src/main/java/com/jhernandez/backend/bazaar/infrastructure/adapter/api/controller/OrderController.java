@@ -77,7 +77,7 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SHOP')")
     public ResponseEntity<?> updateOrder(@PathVariable Long id, @RequestBody OrderStatusDto status) {
         log.info("Updating order with ID to status {}", id, status.getStatus());
-        return ResponseEntity.ok(orderService.updateOrderStatus(id, OrderStatus.valueOf(status.getStatus())));
+        return ResponseEntity.ok(orderDtoMapper.toDto(orderService.updateOrderStatus(id, OrderStatus.valueOf(status.getStatus()))));
     }
 
     // @DeleteMapping("/{id}")
