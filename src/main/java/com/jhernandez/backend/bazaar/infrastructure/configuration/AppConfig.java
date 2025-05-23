@@ -58,4 +58,10 @@ public class AppConfig {
         return new CartService(userRepositoryPort);
     }
 
+    @Bean
+    ReviewServicePort reviewServicePort(ReviewRepositoryPort reviewRepositoryPort,
+        UserRepositoryPort userRepositoryPort, ProductRepositoryPort productRepositoryPort) {
+        return new ReviewService(reviewRepositoryPort, userRepositoryPort, productRepositoryPort);
+    }
+
 }

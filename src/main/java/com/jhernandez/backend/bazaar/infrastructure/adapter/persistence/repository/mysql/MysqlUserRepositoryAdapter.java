@@ -2,7 +2,6 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.reposit
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +38,8 @@ public class MysqlUserRepositoryAdapter implements UserRepositoryPort {
         log.info("Finding all users");
          return userRepository.findAll().stream()
             .map(userEntityMapper::toDomain)
-            .collect(Collectors.toList());
+            .toList();
+            // .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

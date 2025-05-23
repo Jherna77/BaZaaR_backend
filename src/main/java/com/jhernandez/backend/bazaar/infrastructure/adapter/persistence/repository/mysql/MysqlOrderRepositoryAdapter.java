@@ -2,7 +2,6 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.reposit
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,7 +54,8 @@ public class MysqlOrderRepositoryAdapter implements OrderRepositoryPort {
         log.info("Finding purchase orders for customer with ID {}", id);
         return orderRepository.findByCustomerId(id).stream()
                 .map(orderEntityMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
+                // .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -64,7 +64,8 @@ public class MysqlOrderRepositoryAdapter implements OrderRepositoryPort {
         log.info("Finding sale orders for shop with ID {}", id);
         return orderRepository.findByShopId(id).stream()
                 .map(orderEntityMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
+                // .collect(Collectors.toList());
     }
 
     // @Transactional(readOnly = true)

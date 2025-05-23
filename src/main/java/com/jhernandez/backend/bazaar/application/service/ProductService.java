@@ -93,7 +93,6 @@ public class ProductService implements ProductServicePort {
         return productRepositoryPort.findEnabledProductsByName(name);
     }
 
-
     @Override
     public List<Product> findProductsByUserId(Long userId) throws UserException {
         if (userId == null)

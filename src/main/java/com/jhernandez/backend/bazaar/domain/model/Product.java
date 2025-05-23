@@ -14,6 +14,13 @@ public class Product {
     private List<String> imagesUrl;
     private User shop;
 
+    public Product() {
+    }
+
+    public Product(Long id) {
+        this.id = id;
+    }
+
     public Product(Long id, Boolean enabled, String name, String description, Double price, Double shipping,
             List<Category> categories, List<String> imagesUrl, User shop) {
         this.id = id;

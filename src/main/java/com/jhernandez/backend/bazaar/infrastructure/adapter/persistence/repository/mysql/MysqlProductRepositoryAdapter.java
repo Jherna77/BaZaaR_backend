@@ -2,7 +2,6 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.reposit
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +35,8 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         log.info("Finding all products {}");
         return productRepository.findAll().stream()
                 .map(productEntityMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
+                // .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -45,7 +45,8 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         log.info("Finding all enabled products {}");
         return productRepository.findAllEnabled().stream()
                 .map(productEntityMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
+                // .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -54,7 +55,8 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         log.info("Finding all products by category with ID {}", categoryId);
         return productRepository.findByCategoryId(categoryId).stream()
                 .map(productEntityMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
+                // .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -63,7 +65,8 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         log.info("Finding all products by category with ID {}", categoryId);
         return productRepository.findEnabledByCategoryId(categoryId).stream()
                 .map(productEntityMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
+                // .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -72,7 +75,8 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         log.info("Finding all products by name {}", name);
         return productRepository.findByNameContainingIgnoreCaseAndEnabledTrue(name).stream()
                 .map(productEntityMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
+                // .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
