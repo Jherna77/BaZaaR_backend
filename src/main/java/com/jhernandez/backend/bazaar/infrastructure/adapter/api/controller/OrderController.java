@@ -22,8 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ORDERS;
 
-import java.util.stream.Collectors;;
-
 @RestController
 @RequestMapping(ORDERS)
 @CrossOrigin(originPatterns = "*")
@@ -55,7 +53,8 @@ public class OrderController {
         log.info("Finding all orders for the user with ID ", userId);
         return ResponseEntity.ok(orderService.findPurchaseOrdersByUserId(userId).stream()
             .map(orderDtoMapper::toDto)
-            .collect(Collectors.toList()));
+            .toList());
+            // .collect(Collectors.toList()));
     }
 
     @GetMapping("/sale/{userId}")
@@ -63,7 +62,8 @@ public class OrderController {
         log.info("Finding all orders for the user with ID ", userId);
         return ResponseEntity.ok(orderService.findSaleOrdersByUserId(userId).stream()
             .map(orderDtoMapper::toDto)
-            .collect(Collectors.toList()));
+            .toList());
+            // .collect(Collectors.toList()));
     }
 
 

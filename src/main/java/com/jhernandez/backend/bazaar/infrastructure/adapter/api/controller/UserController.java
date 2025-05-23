@@ -1,7 +1,6 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +52,8 @@ public class UserController {
         log.info("Finding all users");
         return userService.findAllUsers().stream()
                 .map(userDtoMapper::toResponseDto)
-                .collect(Collectors.toList());
+                .toList();
+                // .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")

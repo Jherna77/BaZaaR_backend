@@ -84,6 +84,7 @@ public class SpringSecurityConfig {
      *      - GET /api/products/category/{categoryId}
      *      - GET /api/products/search/{name}
      *      - GET /api/images/{filename:.+}
+     *      - GET /api/reviews/product/{productId}
      *      - POST /api/users/register
      * 
      * All other endpoints require authentication.
@@ -101,7 +102,8 @@ public class SpringSecurityConfig {
                 PRODUCTS_USER_ID,
                 PRODUCTS_CATEGORY_ID,
                 PRODUCTS_SEARCH_NAME,
-                IMAGE_ID)
+                IMAGE_ID,
+                REVIEW_PRODUCT_ID)
                 .permitAll()
             .requestMatchers(HttpMethod.POST, REGISTER).permitAll()
             .anyRequest().authenticated())

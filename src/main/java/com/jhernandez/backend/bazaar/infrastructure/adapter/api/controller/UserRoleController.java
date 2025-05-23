@@ -12,7 +12,6 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.UserRoleD
 import static com.jhernandez.backend.bazaar.infrastructure.configuration.Values.ROLES;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,8 @@ public class UserRoleController {
         log.info("Finding all user roles");
         return userRoleService.findAllUserRoles().stream()
                 .map(userRoleDtoMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
+                // .collect(Collectors.toList());
     }
 
 

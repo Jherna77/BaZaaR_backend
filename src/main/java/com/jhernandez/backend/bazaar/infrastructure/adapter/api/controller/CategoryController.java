@@ -1,7 +1,6 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -61,17 +60,23 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<CategoryDto> findAllCategories() {
         log.info("Finding all categories");
-        return categoryService.findAllCategories().stream()
-            .map(categoryDtoMapper::toDto)
-            .collect(Collectors.toList());
+        return categoryDtoMapper.toDtoList(categoryService.findAllCategories());
+        // return categoryService.findAllCategories().stream()
+        //     .map(categoryDtoMapper::toDto)
+        //     .toList();
+            // .collect(Collectors.toList());
     }
 
     @GetMapping("/enabled")
     public List<CategoryDto> findAllEnabledCategories() {
         log.info("Finding all enabled categories");
-        return categoryService.findAllEnabledCategories().stream()
-            .map(categoryDtoMapper::toDto)
-            .collect(Collectors.toList());
+
+        return categoryDtoMapper.toDtoList(categoryService.findAllEnabledCategories());
+
+        // return categoryService.findAllEnabledCategories().stream()
+        //     .map(categoryDtoMapper::toDto)
+        //     .toList();
+            // .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")

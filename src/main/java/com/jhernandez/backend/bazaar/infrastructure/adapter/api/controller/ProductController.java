@@ -1,7 +1,6 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -60,7 +59,8 @@ public class ProductController {
         log.info("Finding all products");
         return productService.findAllProducts().stream()
             .map(productDtoMapper::toDto)
-            .collect(Collectors.toList());
+            .toList();
+            // .collect(Collectors.toList());
     }
 
     @GetMapping("/enabled")
@@ -68,7 +68,8 @@ public class ProductController {
         log.info("Finding all enabled products");
         return productService.findAllEnabledProducts().stream()
             .map(productDtoMapper::toDto)
-            .collect(Collectors.toList());
+            .toList();
+            // .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -82,7 +83,8 @@ public class ProductController {
         log.info("Finding products by shop with ID {}", userId);
         return ResponseEntity.ok(productService.findProductsByUserId(userId).stream()
                 .map(productDtoMapper::toDto)
-                .collect(Collectors.toList()));
+                .toList());
+                // .collect(Collectors.toList()));
     }
 
     @GetMapping("/category/{categoryId}")
@@ -90,7 +92,8 @@ public class ProductController {
         log.info("Finding products by category with ID {}", categoryId);
         return ResponseEntity.ok(productService.findEnabledProductsByCategoryId(categoryId).stream()
                 .map(productDtoMapper::toDto)
-                .collect(Collectors.toList()));
+                .toList());
+                // .collect(Collectors.toList()));
     }
 
     @GetMapping("/search/{name}")
@@ -98,7 +101,8 @@ public class ProductController {
         log.info("Finding products by name {}", name);
         return ResponseEntity.ok(productService.findEnabledProductsByName(name).stream()
                 .map(productDtoMapper::toDto)
-                .collect(Collectors.toList()));
+                .toList());
+                // .collect(Collectors.toList()));
     }
     
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
