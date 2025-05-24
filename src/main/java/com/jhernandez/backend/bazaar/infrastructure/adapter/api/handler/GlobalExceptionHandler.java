@@ -6,9 +6,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
+import com.jhernandez.backend.bazaar.domain.exception.DomainException;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.exception.OrderException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
+import com.jhernandez.backend.bazaar.domain.exception.ReviewException;
+
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,6 +25,21 @@ import java.util.Locale;
 public class GlobalExceptionHandler {
 
     private final MessageSource messageSource;
+
+    /**
+     * Handles UserException and returns a localized error message.
+     *
+     * @param ex     the UserException thrown
+     * @param locale the locale for localization
+     * @return a ResponseEntity with the error message
+     */
+
+    @ExceptionHandler(DomainException.class)
+    public ResponseEntity<String> handleDomainException(DomainException ex, Locale locale) {
+        String message = messageSource.getMessage(ex.getErrorCode().getCode(), null, locale);
+        log.error("DomainException: {}", message);
+        return ResponseEntity.badRequest().body(message);
+    }
 
     @ExceptionHandler(UserException.class)
     public ResponseEntity<String> handleUserException(UserException ex, Locale locale) {
@@ -55,6 +73,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleOrderException(OrderException ex, Locale locale) {
         String message = messageSource.getMessage(ex.getErrorCode().getCode(), null, locale);
         log.error("OrderException: {}", message);
+        return ResponseEntity.badRequest().body(message);
+    }
+
+    @ExceptionHandler(ReviewException.class)
+    public ResponseEntity<String> handleReviewException(ReviewException ex, Locale locale) {
+        String message = messageSource.getMessage(ex.getErrorCode().getCode(), null, locale);
+        log.error("ReviewException: {}", message);
         return ResponseEntity.badRequest().body(message);
     }
     

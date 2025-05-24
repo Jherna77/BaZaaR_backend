@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,14 +30,20 @@ public class ReviewController {
     private final ReviewDtoMapper reviewDtoMapper;
 
     @PostMapping
-    public ResponseEntity<?> createReview(ReviewDto review) {
+    public ResponseEntity<?> createReview(@RequestBody ReviewDto review) {
         log.info("Creating review...");
         reviewService.createReview(reviewDtoMapper.toDomain(review));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @GetMapping("/{reviewId}")
+    public ResponseEntity<?> findReviewById(@PathVariable Long reviewId) {
+        log.info("Finding review with ID {}", reviewId);
+        return ResponseEntity.ok(reviewDtoMapper.toDto(reviewService.findReviewById(reviewId)));
+    }
+
     @GetMapping("/product/{productId}")
-    public ResponseEntity<?> findReviewsByProductId(Long productId) {
+    public ResponseEntity<?> findReviewsByProductId(@PathVariable Long productId) {
         log.info("Finding reviews by product with ID {}", productId);
         return ResponseEntity.ok(reviewService.findReviewsByProductId(productId).stream()
                 .map(reviewDtoMapper::toDto)
@@ -43,7 +51,7 @@ public class ReviewController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<?> findReviewsByUserId(Long userId) {
+    public ResponseEntity<?> findReviewsByUserId(@PathVariable Long userId) {
         log.info("Finding reviews by user with ID {}", userId);
         return ResponseEntity.ok(reviewService.findReviewsByUserId(userId).stream()
                 .map(reviewDtoMapper::toDto)

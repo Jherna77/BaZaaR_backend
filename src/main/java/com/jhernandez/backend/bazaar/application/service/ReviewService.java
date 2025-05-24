@@ -8,6 +8,7 @@ import com.jhernandez.backend.bazaar.application.port.ReviewServicePort;
 import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
+import com.jhernandez.backend.bazaar.domain.exception.ReviewException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.domain.model.Review;
@@ -34,8 +35,19 @@ public class ReviewService implements ReviewServicePort {
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
         review.setProduct(product);
         review.setUser(user);
+        review.setReviewDateNow();
         reviewRepository.saveReview(review);
     }
+
+    @Override
+    public Review findReviewById(Long reviewId) throws ReviewException {
+        if (reviewId == null) {
+            throw new ReviewException(ErrorCode.REVIEW_ID_NOT_NULL);
+        }
+        return reviewRepository.findReviewById(reviewId)
+                .orElseThrow(() -> new ReviewException(ErrorCode.REVIEW_NOT_FOUND));
+    }
+
 
     @Override
     public List<Review> findReviewsByProductId(Long productId) throws ProductException {

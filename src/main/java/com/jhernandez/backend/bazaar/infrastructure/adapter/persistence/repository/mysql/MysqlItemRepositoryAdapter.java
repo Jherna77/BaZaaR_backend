@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class MySqlItemRepositoryAdapter implements ItemRepositoryPort{
+public class MysqlItemRepositoryAdapter implements ItemRepositoryPort{
 
     private final JpaItemRepository itemRepository;
     private final ItemEntityMapper itemEntityMapper;

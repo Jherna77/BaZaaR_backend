@@ -15,9 +15,6 @@ import com.jhernandez.backend.bazaar.domain.model.Order;
 import com.jhernandez.backend.bazaar.domain.model.OrderStatus;
 import com.jhernandez.backend.bazaar.domain.model.User;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class OrderService implements OrderServicePort {
 
     private final UserRepositoryPort userRepository;
@@ -49,7 +46,6 @@ public class OrderService implements OrderServicePort {
             
             Item clonedItem = itemRepository.saveItem(item.clone())
                     .orElseThrow(() -> new UserException(ErrorCode.OPERATION_NOT_ALLOWED));
-            log.info("Cloned item {}", clonedItem);
             orderRepository.saveOrder(new Order(null, clonedItem, customer, seller, LocalDateTime.now()))
                     .orElseThrow(() -> new UserException(ErrorCode.OPERATION_NOT_ALLOWED));
         }

@@ -55,6 +55,9 @@ public class Review {
     public void setReviewDate(LocalDateTime reviewDate) {
         this.reviewDate = reviewDate;
     }
+    public void setReviewDateNow() {
+        this.reviewDate = LocalDateTime.now();
+    }
 
     
     

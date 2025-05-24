@@ -68,6 +68,8 @@ public enum ErrorCode {
     IMAGE_NOT_FOUND("image.not.found"),
     IMAGE_NOT_READABLE("image.not.readable"),
     IMAGE_DELETE_ERROR("image.delete.error"),
+    REVIEW_ID_NOT_NULL("review.id.not.null"),
+    REVIEW_NOT_FOUND("review.not.found"),
     OPERATION_NOT_ALLOWED("operation.not.allowed");
 
     private final String code;
