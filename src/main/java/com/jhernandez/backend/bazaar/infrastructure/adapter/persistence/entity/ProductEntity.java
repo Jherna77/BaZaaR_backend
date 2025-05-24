@@ -51,4 +51,9 @@ public class ProductEntity {
     @JoinColumn(name = "shop_id", nullable = false)
     private UserEntity shop;
 
+    private Double rating;
+
+    @Column(name = "rating_count")
+    private Integer ratingCount;
+
 }

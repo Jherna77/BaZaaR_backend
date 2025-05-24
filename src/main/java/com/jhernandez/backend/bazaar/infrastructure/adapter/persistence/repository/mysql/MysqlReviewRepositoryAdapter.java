@@ -55,5 +55,11 @@ public class MysqlReviewRepositoryAdapter implements ReviewRepositoryPort {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<Integer> findRatingsByProductId(Long productId) {
+        log.info("Finding ratings for product with ID {}", productId);
+        return reviewRepository.findRatingsByProductId(productId);
+    }
 
 }

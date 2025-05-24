@@ -37,6 +37,9 @@ public class ReviewService implements ReviewServicePort {
         review.setUser(user);
         review.setReviewDateNow();
         reviewRepository.saveReview(review);
+        
+        product.calculateRating(reviewRepository.findRatingsByProductId(product.getId()));
+        productRepository.saveProduct(product);
     }
 
     @Override

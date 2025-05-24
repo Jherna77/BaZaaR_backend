@@ -15,4 +15,6 @@ public interface ReviewRepositoryPort {
 
     List<Review> findReviewsByUserId(Long userId);
 
+    List<Integer> findRatingsByProductId(Long productId);
+
 }

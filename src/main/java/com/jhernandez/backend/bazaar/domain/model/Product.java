@@ -13,6 +13,8 @@ public class Product {
     private List<Category> categories;
     private List<String> imagesUrl;
     private User shop;
+    private Double rating;
+    private Integer ratingCount;
 
     public Product() {
     }
@@ -22,7 +24,7 @@ public class Product {
     }
 
     public Product(Long id, Boolean enabled, String name, String description, Double price, Double shipping,
-            List<Category> categories, List<String> imagesUrl, User shop) {
+            List<Category> categories, List<String> imagesUrl, User shop, Double rating, Integer ratingCount) {
         this.id = id;
         this.enabled = enabled;
         this.name = name;
@@ -32,6 +34,8 @@ public class Product {
         this.categories = categories;
         this.imagesUrl = imagesUrl;
         this.shop = shop;
+        this.rating = rating;
+        this.ratingCount = ratingCount;
     }
 
     public Long getId() {
@@ -68,6 +72,14 @@ public class Product {
 
     public User getShop() {
         return shop;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public Integer getRatingCount() {
+        return ratingCount;
     }
 
     public void setId(Long id) {
@@ -110,6 +122,14 @@ public class Product {
         this.enabled = true;
     }
 
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public void setRatingCount(Integer ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
     public void disable() {
         this.enabled = false;
     }
@@ -131,6 +151,16 @@ public class Product {
 
     public void removeImageUrl(String imageUrl) {
         this.imagesUrl.remove(imageUrl);
+    }
+
+    public void calculateRating(List<Integer> ratings) {
+        if (ratings == null || ratings.isEmpty()) {
+            this.rating = 0.0;
+            this.ratingCount = 0;
+            return;
+        }
+        this.ratingCount = ratings.size();
+        this.rating = ratings.stream().mapToDouble(Integer::doubleValue).sum() / this.ratingCount;
     }
 
 }
