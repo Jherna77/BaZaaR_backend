@@ -7,8 +7,7 @@ import lombok.Setter;
 @Setter
 public class ReviewDto {
     private Long id;
-    private Long productId;
-    private Long userId;
+    private Long orderId;
     private String comment;
     private Integer rating;
     private String reviewDate;

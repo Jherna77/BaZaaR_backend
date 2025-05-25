@@ -13,12 +13,10 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.helper.Da
 public interface ReviewDtoMapper {
 
     @Mapping(source = "reviewDate", target = "reviewDate", qualifiedByName = "formatDate")
-    @Mapping(source = "product.id", target = "productId")
-    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "order.id", target = "orderId")
     ReviewDto toDto(Review review);
 
-    @Mapping(target = "product", expression = "java(new Product(reviewDto.getProductId()))")
-    @Mapping(target = "user", expression = "java(new User(reviewDto.getUserId()))")
+    @Mapping(target = "order", expression = "java(new Order(reviewDto.getOrderId()))")
     @Mapping(target = "reviewDate", ignore = true)
     Review toDomain(ReviewDto reviewDto);
 

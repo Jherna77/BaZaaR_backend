@@ -39,6 +39,13 @@ public class MysqlReviewRepositoryAdapter implements ReviewRepositoryPort {
 
     @Transactional(readOnly = true)
     @Override
+    public Boolean existsByOrderId(Long orderId) {
+        log.info("Checking if review exists for order with ID {}", orderId);
+        return reviewRepository.existsByOrderId(orderId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public List<Review> findReviewsByProductId(Long productId) {
         log.info("Finding reviews for product with ID {}", productId);
         return reviewRepository.findByProductId(productId).stream()

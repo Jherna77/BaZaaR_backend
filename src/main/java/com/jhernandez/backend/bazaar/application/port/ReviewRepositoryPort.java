@@ -11,6 +11,8 @@ public interface ReviewRepositoryPort {
 
     Optional<Review> findReviewById(Long reviewId);
 
+    Boolean existsByOrderId(Long orderId);
+
     List<Review> findReviewsByProductId(Long productId);
 
     List<Review> findReviewsByUserId(Long userId);

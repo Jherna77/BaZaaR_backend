@@ -4,16 +4,20 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.ReviewEntity;
 
 public interface JpaReviewRepository extends JpaRepository<ReviewEntity, Long> {
 
-    List<ReviewEntity> findByProductId(Long productId);
+    Boolean existsByOrderId(Long orderId);
 
-    List<ReviewEntity> findByUserId(Long userId);
+    @Query("SELECT r FROM ReviewEntity r WHERE r.order.item.product.id = :productId")
+    List<ReviewEntity> findByProductId(@Param("productId") Long productId);
 
-    @Query("SELECT r.rating FROM ReviewEntity r WHERE r.product.id = :productId")
-    List<Integer> findRatingsByProductId(Long productId);
+    @Query("SELECT r FROM ReviewEntity r WHERE r.order.customer.id = :userId")
+    List<ReviewEntity> findByUserId(@Param("userId") Long userId);
 
+    @Query("SELECT r.rating FROM ReviewEntity r WHERE r.order.item.product.id = :productId")
+    List<Integer> findRatingsByProductId(@Param("productId") Long productId);
 }

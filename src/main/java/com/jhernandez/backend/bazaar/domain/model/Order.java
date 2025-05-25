@@ -18,6 +18,11 @@ public class Order {
         this.status = OrderStatus.PENDING;
     }
 
+    public Order(Long id) {
+        this.id = id;
+        this.status = OrderStatus.PENDING;
+    }
+
     public Order(Long id, Item item, User customer, User shop, LocalDateTime orderDate) {
         this.id = id;
         this.status = OrderStatus.PENDING;
@@ -74,19 +79,6 @@ public class Order {
     public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
     }
-
-    // public void setStatus(OrderStatus newStatus) throws OrderException {
-    //     switch (newStatus) {
-    //         case PENDING -> this.status = OrderStatus.PENDING;
-    //         case CONFIRMED -> confirm();
-    //         case SHIPPED -> ship();
-    //         case DELIVERED -> deliver();
-    //         case CANCELLED -> cancel();
-    //         case RETURNED -> returnOrder();
-    //         default -> throw new OrderException(ErrorCode.OPERATION_NOT_ALLOWED);
-    //     }
-    // }
-
 
     public void confirm() throws OrderException {
         if (this.status != OrderStatus.PENDING) {

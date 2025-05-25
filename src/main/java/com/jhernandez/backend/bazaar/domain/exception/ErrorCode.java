@@ -70,6 +70,7 @@ public enum ErrorCode {
     IMAGE_DELETE_ERROR("image.delete.error"),
     REVIEW_ID_NOT_NULL("review.id.not.null"),
     REVIEW_NOT_FOUND("review.not.found"),
+    REVIEW_ALREADY_EXISTS("review.already.exists"),
     OPERATION_NOT_ALLOWED("operation.not.allowed");
 
     private final String code;

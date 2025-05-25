@@ -60,8 +60,8 @@ public class AppConfig {
 
     @Bean
     ReviewServicePort reviewServicePort(ReviewRepositoryPort reviewRepositoryPort,
-        UserRepositoryPort userRepositoryPort, ProductRepositoryPort productRepositoryPort) {
-        return new ReviewService(reviewRepositoryPort, userRepositoryPort, productRepositoryPort);
+        OrderRepositoryPort orderRepositoryPort, ProductRepositoryPort productRepositoryPort) {
+        return new ReviewService(reviewRepositoryPort, orderRepositoryPort, productRepositoryPort);
     }
 
 }

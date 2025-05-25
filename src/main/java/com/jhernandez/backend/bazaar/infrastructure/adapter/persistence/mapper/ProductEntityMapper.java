@@ -13,13 +13,9 @@ public interface ProductEntityMapper {
 
     @Mapping(target = "shop.products", ignore = true)
     @Mapping(target = "shop.cart", ignore = true)
-    // @Mapping(target = "owner.purchaseOrders", ignore = true)
-    // @Mapping(target = "owner.saleOrders", ignore = true)
     Product toDomain(ProductEntity productEntity);
 
     @Mapping(target = "shop.products", ignore = true)
     @Mapping(target = "shop.cart", ignore = true)
-    // @Mapping(target = "owner.purchaseOrders", ignore = true)
-    // @Mapping(target = "owner.saleOrders", ignore = true)
     ProductEntity toEntity(Product product);
 }
