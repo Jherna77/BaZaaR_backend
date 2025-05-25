@@ -36,7 +36,6 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         return productRepository.findAll().stream()
                 .map(productEntityMapper::toDomain)
                 .toList();
-                // .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -46,7 +45,6 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         return productRepository.findAllEnabled().stream()
                 .map(productEntityMapper::toDomain)
                 .toList();
-                // .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -56,7 +54,6 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         return productRepository.findByCategoryId(categoryId).stream()
                 .map(productEntityMapper::toDomain)
                 .toList();
-                // .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -66,7 +63,6 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         return productRepository.findEnabledByCategoryId(categoryId).stream()
                 .map(productEntityMapper::toDomain)
                 .toList();
-                // .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -76,7 +72,15 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
         return productRepository.findByNameContainingIgnoreCaseAndEnabledTrue(name).stream()
                 .map(productEntityMapper::toDomain)
                 .toList();
-                // .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Product> findRecentEnabledProducts() {
+        log.info("Finding recent enabled products");
+        return productRepository.findRecentEnabledProducts().stream()
+                .map(productEntityMapper::toDomain)
+                .toList();
     }
 
     @Transactional(readOnly = true)

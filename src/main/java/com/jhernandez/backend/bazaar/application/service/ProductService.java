@@ -29,6 +29,8 @@ import com.jhernandez.backend.bazaar.domain.model.User;
  */
 public class ProductService implements ProductServicePort {
 
+    private static final Integer MAX_RECENT_PRODUCTS = 5;
+
     private final ProductRepositoryPort productRepositoryPort;
     private final UserRepositoryPort userRepositoryPort;
     private final ImageServicePort imageServicePort;
@@ -53,12 +55,15 @@ public class ProductService implements ProductServicePort {
 
         User owner = userRepositoryPort.findUserById(product.getShop().getId())
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));            
-        if (!owner.getEnabled())
+        if (!owner.getEnabled()) {
             throw new UserException(ErrorCode.PRODUCT_OWNER_DISABLED);
+        }
+        
         product.setShop(owner);
         owner.addProductToShop(product);
-
         product.enable();
+        product.setCreatedAtNow();
+        
         productRepositoryPort.saveProduct(product);
     }
 
@@ -108,6 +113,11 @@ public class ProductService implements ProductServicePort {
             throw new ProductException(ErrorCode.PRODUCT_ID_NOT_NULL);
         return productRepositoryPort.findProductById(id)
                 .orElseThrow(() -> new ProductException(ErrorCode.PRODUCT_NOT_FOUND));
+    }
+
+    @Override
+    public List<Product> findRecentEnabledProducts() {
+        return productRepositoryPort.findRecentEnabledProducts().subList(0, MAX_RECENT_PRODUCTS);
     }
 
     @Override

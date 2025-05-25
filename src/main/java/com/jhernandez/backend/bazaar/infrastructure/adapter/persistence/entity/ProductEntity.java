@@ -1,5 +1,6 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.CollectionTable;
@@ -55,5 +56,8 @@ public class ProductEntity {
 
     @Column(name = "rating_count")
     private Integer ratingCount;
+
+    @Column(name = "created_at")    
+    private LocalDateTime createdAt;
 
 }

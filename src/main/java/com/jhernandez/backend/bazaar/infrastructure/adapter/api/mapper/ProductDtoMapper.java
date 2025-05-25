@@ -20,6 +20,7 @@ public interface ProductDtoMapper {
     ProductDto toDto(Product product);
 
     @Mapping(target = "shop", expression = "java(new User(productDto.getShopId()))")
+    @Mapping(target = "createdAt", ignore = true)
     Product toDomain(ProductDto productDto);
 
     List<ProductDto> toDtoList(List<Product> products);

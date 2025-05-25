@@ -24,6 +24,8 @@ public interface ProductRepositoryPort {
 
     List<Product> findEnabledProductsByName(String name);
 
+    List<Product> findRecentEnabledProducts();
+
     // List<Product> findProductsByUserId(Long userId);
 
     Optional<Product> findProductById(Long id);

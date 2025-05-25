@@ -98,6 +98,14 @@ public class ProductController {
                 .map(productDtoMapper::toDto)
                 .toList());
     }
+
+    @GetMapping("/recent")
+    public ResponseEntity<?> findRecentProducts() {
+        log.info("Finding recent products");
+        return ResponseEntity.ok(productService.findRecentEnabledProducts().stream()
+                .map(productDtoMapper::toDto)
+                .toList());
+    }
     
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SHOP')")

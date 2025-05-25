@@ -1,5 +1,6 @@
 package com.jhernandez.backend.bazaar.domain.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Product {
@@ -15,6 +16,7 @@ public class Product {
     private User shop;
     private Double rating;
     private Integer ratingCount;
+    private LocalDateTime createdAt;
 
     public Product() {
     }
@@ -24,7 +26,8 @@ public class Product {
     }
 
     public Product(Long id, Boolean enabled, String name, String description, Double price, Double shipping,
-            List<Category> categories, List<String> imagesUrl, User shop, Double rating, Integer ratingCount) {
+            List<Category> categories, List<String> imagesUrl, User shop, Double rating, Integer ratingCount,
+            LocalDateTime createdAt) {
         this.id = id;
         this.enabled = enabled;
         this.name = name;
@@ -36,6 +39,7 @@ public class Product {
         this.shop = shop;
         this.rating = rating;
         this.ratingCount = ratingCount;
+        this.createdAt = createdAt;
     }
 
     public Long getId() {
@@ -82,6 +86,10 @@ public class Product {
         return ratingCount;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -116,6 +124,14 @@ public class Product {
 
     public void setShop(User shop) {
         this.shop = shop;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setCreatedAtNow() {
+        this.createdAt = LocalDateTime.now();;
     }
 
     public void enable() {

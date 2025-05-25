@@ -29,6 +29,7 @@ public class Values {
     public static final String PRODUCTS_USER_ID = PRODUCTS + "/user/{userId}";
     public static final String PRODUCTS_CATEGORY_ID = PRODUCTS + "/category/{categoryId}";
     public static final String PRODUCTS_SEARCH_NAME = PRODUCTS + "/search/{name}";
+    public static final String PRODUCTS_RECENT = PRODUCTS + "/recent";
 
     public static final String IMAGES = "/api/images";
     public static final String IMAGE_ID = IMAGES + "/{filename:.+}";

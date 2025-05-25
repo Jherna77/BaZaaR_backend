@@ -83,6 +83,7 @@ public class SpringSecurityConfig {
      *      - GET /api/products/user/{userId}
      *      - GET /api/products/category/{categoryId}
      *      - GET /api/products/search/{name}
+     *      - GET /api/products/recent
      *      - GET /api/images/{filename:.+}
      *      - GET /api/reviews/product/{productId}
      *      - POST /api/users/register
@@ -102,6 +103,7 @@ public class SpringSecurityConfig {
                 PRODUCTS_USER_ID,
                 PRODUCTS_CATEGORY_ID,
                 PRODUCTS_SEARCH_NAME,
+                PRODUCTS_RECENT,
                 IMAGE_ID,
                 REVIEW_PRODUCT_ID)
                 .permitAll()
