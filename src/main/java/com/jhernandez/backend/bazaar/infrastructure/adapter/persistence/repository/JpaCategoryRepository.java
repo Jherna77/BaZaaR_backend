@@ -14,4 +14,10 @@ public interface JpaCategoryRepository extends JpaRepository<CategoryEntity, Lon
     @Query("SELECT c FROM CategoryEntity c WHERE c.enabled = true")
     List<CategoryEntity> findAllEnabled();
 
+    @Query(value = "SELECT * FROM categories WHERE enabled = true ORDER BY RAND() LIMIT 3", nativeQuery = true)
+    List<CategoryEntity> findRandomEnabled();
+
+    // @Query(value = "SELECT * FROM categories WHERE enabled = true ORDER BY RAND() LIMIT :maxRandomCategories", nativeQuery = true)
+    // List<CategoryEntity> findRandomEnabled(@Param("maxRandomCategories") Integer maxRandomCategories);
+
 }

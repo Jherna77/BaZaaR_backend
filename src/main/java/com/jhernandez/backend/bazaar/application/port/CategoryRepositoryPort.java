@@ -18,6 +18,9 @@ public interface CategoryRepositoryPort {
 
     List<Category> findAllEnabledCategories();
 
+    List<Category> findRandomEnabledCategories();
+    // List<Category> findRandomEnabledCategories(Integer maxRandomCategories);
+
     Optional<Category> findCategoryById(Long id);
 
     Boolean existsByName(String name);

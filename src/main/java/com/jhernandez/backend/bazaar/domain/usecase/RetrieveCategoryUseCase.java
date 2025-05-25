@@ -11,6 +11,8 @@ public interface RetrieveCategoryUseCase {
 
     List<Category> findAllEnabledCategories();
 
+    List<Category> findRandomEnabledCategories();
+
     Category findCategoryById(Long id) throws CategoryException;
 
 }

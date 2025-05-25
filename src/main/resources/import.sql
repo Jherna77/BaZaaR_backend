@@ -45,6 +45,9 @@ INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, 
 INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (14, 7, 'Coche teledirigido', 'Coche teledirigido de la marca Nikko', 20.0, 1.50, 1, 0.0, 0, '2025-05-25 22:37:00');
 INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (15, 7, 'Pelota', 'Pelota de goma', 5.0, 1.50, 1, 0.0, 0, '2025-05-25 22:42:00');
 INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (16, 8, 'El Quijote', 'Libro de Miguel de Cervantes', 10.0, 1.0, 1, 0.0, 0, '2025-05-25 22:41:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (17, 8, 'Reina Roja', 'Libro de Juan Gómez Jurado', 10.0, 1.0, 1, 0.0, 0, '2025-05-26 00:33:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (18, 9, 'Guitarra clásica', 'Guitarra clásica de la marca Alhambra', 999.0, 0.0, 1, 0.0, 0, '2025-05-26 00:41:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (19, 9, 'Gafas de sol', 'Gafas de sol polarizadas de la marca Hawkers', 20.0, 3.0, 1, 0.0, 0, '2025-05-26 00:45:00');
 
 -- Asignación de productos a categorías
 INSERT INTO products_categories (product_id, category_id) VALUES (1, 2);
@@ -63,6 +66,9 @@ INSERT INTO products_categories (product_id, category_id) VALUES (13, 6);
 INSERT INTO products_categories (product_id, category_id) VALUES (14, 6);
 INSERT INTO products_categories (product_id, category_id) VALUES (15, 6);
 INSERT INTO products_categories (product_id, category_id) VALUES (16, 7);
+INSERT INTO products_categories (product_id, category_id) VALUES (17, 7);
+INSERT INTO products_categories (product_id, category_id) VALUES (18, 1);
+INSERT INTO products_categories (product_id, category_id) VALUES (19, 1);
 
 -- Asignación de imágenes a productos
 INSERT INTO product_images (product_id, image_url) VALUES (1, '/api/images/00product11.jpg');
@@ -120,3 +126,11 @@ INSERT INTO product_images (product_id, image_url) VALUES (15, '/api/images/00pr
 INSERT INTO product_images (product_id, image_url) VALUES (15, '/api/images/00product154.jpg');
 INSERT INTO product_images (product_id, image_url) VALUES (16, '/api/images/00product161.jpg');
 INSERT INTO product_images (product_id, image_url) VALUES (16, '/api/images/00product162.jpg');
+INSERT INTO product_images (product_id, image_url) VALUES (17, '/api/images/00product171.jpg');
+INSERT INTO product_images (product_id, image_url) VALUES (18, '/api/images/00product181.jpg');
+INSERT INTO product_images (product_id, image_url) VALUES (18, '/api/images/00product182.jpg');
+INSERT INTO product_images (product_id, image_url) VALUES (18, '/api/images/00product183.jpg');
+INSERT INTO product_images (product_id, image_url) VALUES (18, '/api/images/00product184.jpg');
+INSERT INTO product_images (product_id, image_url) VALUES (19, '/api/images/00product191.jpg');
+INSERT INTO product_images (product_id, image_url) VALUES (19, '/api/images/00product192.jpg');
+INSERT INTO product_images (product_id, image_url) VALUES (19, '/api/images/00product193.jpg');

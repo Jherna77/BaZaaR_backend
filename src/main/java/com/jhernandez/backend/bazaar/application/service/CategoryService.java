@@ -63,6 +63,11 @@ public class CategoryService implements CategoryServicePort{
     }
 
     @Override
+    public List<Category> findRandomEnabledCategories() {
+        return categoryRepositoryPort.findRandomEnabledCategories();
+    }
+
+    @Override
     public Category findCategoryById(Long id) throws CategoryException {
         return categoryRepositoryPort.findCategoryById(id)
             .orElseThrow(() -> new CategoryException(ErrorCode.CATEGORY_NOT_FOUND));

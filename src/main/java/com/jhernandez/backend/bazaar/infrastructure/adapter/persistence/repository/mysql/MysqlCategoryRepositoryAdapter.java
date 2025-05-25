@@ -38,7 +38,6 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
         return categoryRepository.findAll().stream()
                 .map(categoryEntityMapper::toDomain)
                 .toList();
-                // .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -48,7 +47,15 @@ public class MysqlCategoryRepositoryAdapter implements CategoryRepositoryPort {
         return categoryRepository.findAllEnabled().stream()
                 .map(categoryEntityMapper::toDomain)
                 .toList();
-                // .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Category> findRandomEnabledCategories() {
+        log.info("Finding random enabled categories");
+        return categoryRepository.findRandomEnabled().stream()
+                .map(categoryEntityMapper::toDomain)
+                .toList();
     }
 
     @Transactional(readOnly = true)

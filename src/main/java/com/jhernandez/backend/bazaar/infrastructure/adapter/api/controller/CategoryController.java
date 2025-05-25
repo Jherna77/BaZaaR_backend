@@ -61,22 +61,18 @@ public class CategoryController {
     public List<CategoryDto> findAllCategories() {
         log.info("Finding all categories");
         return categoryDtoMapper.toDtoList(categoryService.findAllCategories());
-        // return categoryService.findAllCategories().stream()
-        //     .map(categoryDtoMapper::toDto)
-        //     .toList();
-            // .collect(Collectors.toList());
     }
 
     @GetMapping("/enabled")
     public List<CategoryDto> findAllEnabledCategories() {
         log.info("Finding all enabled categories");
-
         return categoryDtoMapper.toDtoList(categoryService.findAllEnabledCategories());
+    }
 
-        // return categoryService.findAllEnabledCategories().stream()
-        //     .map(categoryDtoMapper::toDto)
-        //     .toList();
-            // .collect(Collectors.toList());
+    @GetMapping("/random")
+    public List<CategoryDto> findRandomEnabledCategories() {
+        log.info("Finding random enabled categories");
+        return categoryDtoMapper.toDtoList(categoryService.findRandomEnabledCategories());
     }
 
     @GetMapping("/{id}")

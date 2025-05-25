@@ -21,6 +21,7 @@ public class Values {
 
     public static final String CATEGORIES = "/api/categories";
     public static final String CATEGORIES_ENABLED = CATEGORIES + "/enabled";
+    public static final String CATEGORIES_RANDOM = CATEGORIES + "/random";
     public static final String CATEGORY_ID = CATEGORIES + "/{id}";
 
     public static final String PRODUCTS = "/api/products";

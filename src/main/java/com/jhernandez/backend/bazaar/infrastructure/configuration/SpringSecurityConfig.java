@@ -78,6 +78,7 @@ public class SpringSecurityConfig {
      *      - GET /api/roles
      *      - GET /api/categories/enabled
      *      - GET /api/categories/{id}
+     *      - GET /api/categories/random
      *      - GET /api/products/enabled
      *      - GET /api/products/{id}
      *      - GET /api/products/user/{userId}
@@ -98,6 +99,7 @@ public class SpringSecurityConfig {
                 ROLES,
                 CATEGORIES_ENABLED,
                 CATEGORY_ID,
+                CATEGORIES_RANDOM,
                 PRODUCTS_ENABLED,
                 PRODUCT_ID,
                 PRODUCTS_USER_ID,
