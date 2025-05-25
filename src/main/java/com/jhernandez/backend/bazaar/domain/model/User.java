@@ -21,6 +21,7 @@ public class User {
     private String zipCode;
     private List<Product> products;
     private List<Item> cart;
+    private List<Product> favourites;
 
     public User() {
     }
@@ -31,7 +32,8 @@ public class User {
     }
 
     public User(Long id, Boolean enabled, UserRole role, String email, String password, String name, String surnames,
-            String address, String city, String province, String zipCode, List<Product> products, List<Item> cart) {
+            String address, String city, String province, String zipCode, List<Product> products, List<Item> cart,
+            List<Product> favourites) {
         this.id = id;
         this.enabled = enabled;
         this.role = role;
@@ -45,6 +47,7 @@ public class User {
         this.zipCode = zipCode;
         this.products = (products != null) ? products : new ArrayList<>();
         this.cart = (cart != null) ? cart : new ArrayList<>();
+        this.favourites = (favourites != null) ? favourites : new ArrayList<>();
     }
 
     public Long getId() {
@@ -97,6 +100,10 @@ public class User {
 
     public List<Item> getCart() {
         return cart;
+    }
+
+    public List<Product> getFavourites() {
+        return favourites;
     }
 
     public void setId(Long id) {
@@ -153,6 +160,10 @@ public class User {
         this.cart = cart;
     }
 
+    public void setFavourites(List<Product> favourites) {
+        this.favourites = favourites;
+    }
+
     public void enable() {
         this.enabled = true;
         if (this.products != null)
@@ -206,6 +217,19 @@ public class User {
 
     public void clearCart() {
         this.cart.clear();
+    }
+
+    public void addProductToFavourites(Product product) throws UserException {
+        for (Product favourite : this.favourites) {
+            if (favourite.getId().equals(product.getId())) {
+                throw new UserException(ErrorCode.FAVOURITE_PRODUCT_ALREADY_EXISTS);
+            }
+        }
+        this.favourites.add(product);
+    }
+
+    public void removeProductFromFavourites(Long productId) {
+        this.favourites.removeIf(product -> product.getId().equals(productId));
     }
 
 }

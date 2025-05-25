@@ -29,6 +29,7 @@ public enum ErrorCode {
     CART_ITEM_ALREADY_EXISTS("cart.product.already.exists"),
     SHOP_PRODUCT_ALREADY_EXISTS("shop.product.already.exists"),
     SHOP_PRODUCT_NOT_FOUND("shop.product.not.found"),
+    FAVOURITE_PRODUCT_ALREADY_EXISTS("favourite.product.already.exists"),
     ORDER_NOT_FOUND("order.not.found"),
     ORDER_CONFIRM_ERROR("order.confirm.error"),
     ORDER_SHIP_ERROR("order.ship.error"),

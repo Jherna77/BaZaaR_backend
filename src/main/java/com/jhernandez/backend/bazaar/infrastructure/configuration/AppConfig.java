@@ -64,4 +64,9 @@ public class AppConfig {
         return new ReviewService(reviewRepositoryPort, orderRepositoryPort, productRepositoryPort);
     }
 
+    @Bean
+    PreferencesServicePort preferencesServicePort(UserRepositoryPort userRepositoryPort, ProductRepositoryPort productRepositoryPort) {
+        return new PreferencesService(userRepositoryPort, productRepositoryPort);
+    }
+
 }

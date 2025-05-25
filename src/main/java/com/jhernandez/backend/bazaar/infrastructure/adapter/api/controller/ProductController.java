@@ -48,7 +48,6 @@ public class ProductController {
         log.info("Creating product: {}", product.getName());
         productService.createProduct(
                 productDtoMapper.toDomain(product),
-                // product.getUserId(),
                 imageFileDtoMapper.toDomainList(imageFileList));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -60,7 +59,6 @@ public class ProductController {
         return productService.findAllProducts().stream()
             .map(productDtoMapper::toDto)
             .toList();
-            // .collect(Collectors.toList());
     }
 
     @GetMapping("/enabled")
@@ -69,7 +67,6 @@ public class ProductController {
         return productService.findAllEnabledProducts().stream()
             .map(productDtoMapper::toDto)
             .toList();
-            // .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -84,7 +81,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.findProductsByUserId(userId).stream()
                 .map(productDtoMapper::toDto)
                 .toList());
-                // .collect(Collectors.toList()));
     }
 
     @GetMapping("/category/{categoryId}")
@@ -93,7 +89,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.findEnabledProductsByCategoryId(categoryId).stream()
                 .map(productDtoMapper::toDto)
                 .toList());
-                // .collect(Collectors.toList()));
     }
 
     @GetMapping("/search/{name}")
@@ -102,7 +97,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.findEnabledProductsByName(name).stream()
                 .map(productDtoMapper::toDto)
                 .toList());
-                // .collect(Collectors.toList()));
     }
     
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

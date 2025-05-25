@@ -1,5 +1,7 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -19,5 +21,7 @@ public interface ProductDtoMapper {
 
     @Mapping(target = "shop", expression = "java(new User(productDto.getShopId()))")
     Product toDomain(ProductDto productDto);
+
+    List<ProductDto> toDtoList(List<Product> products);
 
 }

@@ -9,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -51,10 +53,10 @@ public class UserEntity {
     @JoinColumn(name = "cart_user_id")
     private List<ItemEntity> cart;
 
-    // @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    // private List<OrderEntity> purchaseOrders;
-
-    // @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
-    // private List<OrderEntity> saleOrders;
+    @ManyToMany
+    @JoinTable(name = "user_favourite_products",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<ProductEntity> favourites;
     
 }
