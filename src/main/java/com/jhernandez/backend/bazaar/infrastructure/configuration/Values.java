@@ -44,6 +44,8 @@ public class Values {
 
     public static final String STATUSES = "/api/statuses";
 
+    public static final String PAYMENTS = "/api/payments";
+
     public static final String REVIEWS = "/api/reviews";
     public static final String REVIEW_PRODUCT_ID = REVIEWS + "/product/{productId}";
     public static final String REVIEW_USER_ID = REVIEWS + "/user/{userId}";

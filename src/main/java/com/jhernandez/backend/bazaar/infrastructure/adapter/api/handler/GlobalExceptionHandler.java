@@ -1,6 +1,7 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.handler;
 
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
+import com.stripe.exception.StripeException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,6 +81,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleReviewException(ReviewException ex, Locale locale) {
         String message = messageSource.getMessage(ex.getErrorCode().getCode(), null, locale);
         log.error("ReviewException: {}", message);
+        return ResponseEntity.badRequest().body(message);
+    }
+
+    @ExceptionHandler(StripeException.class)
+    public ResponseEntity<String> handleStripeException(StripeException ex, Locale locale) {
+        String message = messageSource.getMessage(ex.getCode(), null, locale);
+        log.error("StripeException: {}", message);
         return ResponseEntity.badRequest().body(message);
     }
     
