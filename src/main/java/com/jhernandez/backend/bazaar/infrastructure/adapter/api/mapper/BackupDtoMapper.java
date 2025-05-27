@@ -1,5 +1,7 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -10,9 +12,11 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.api.mapper.helper.Da
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
         uses = { DateMapper.class })
-public interface BackupMapper {
+public interface BackupDtoMapper {
 
     @Mapping(source = "createdAt", target = "createdAt", qualifiedByName = "formatDate")
     BackupDto toDto(Backup backup);
+
+    List<BackupDto> toDtoList(List<Backup> backupList);
 
 }

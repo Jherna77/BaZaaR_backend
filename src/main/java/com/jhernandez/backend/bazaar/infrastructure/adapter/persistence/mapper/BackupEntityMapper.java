@@ -1,5 +1,7 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
@@ -12,5 +14,7 @@ public interface BackupEntityMapper {
     Backup toDomain(BackupEntity backupEntity);
 
     BackupEntity toEntity(Backup backup);
+
+    List<Backup> toDomainList(List<BackupEntity> backupEntityList);
 
 }

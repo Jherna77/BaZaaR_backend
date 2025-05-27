@@ -77,6 +77,9 @@ public enum ErrorCode {
     PAYMENT_INTENT_FAILED("payment.intent.failed"),
     BACKUP_PATH_ERROR("backup.path.error"),
     BACKUP_SCRIPT_ERROR("backup.script.error"),
+    BACKUP_NOT_FOUND("backup.not.found"),
+    BACKUP_ID_NOT_NULL("backup.id.not.null"),
+    BACKUP_RESTORE_ERROR("backup.restore.error"),
     OPERATION_NOT_ALLOWED("operation.not.allowed");
 
     private final String code;

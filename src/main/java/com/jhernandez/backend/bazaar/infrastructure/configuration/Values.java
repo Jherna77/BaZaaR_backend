@@ -46,7 +46,7 @@ public class Values {
 
     public static final String PAYMENTS = "/api/payments";
 
-    public static final String BACKUP = "/api/backup";
+    public static final String BACKUPS = "/api/backups";
 
     public static final String REVIEWS = "/api/reviews";
     public static final String REVIEW_PRODUCT_ID = REVIEWS + "/product/{productId}";

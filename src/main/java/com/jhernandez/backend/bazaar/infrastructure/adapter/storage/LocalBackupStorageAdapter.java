@@ -20,12 +20,39 @@ public class LocalBackupStorageAdapter implements BackupStoragePort {
 
     @Override
     public String backupDatabase() {
+        log.info("Starting database backup using script: {}", DB_SCRIPT);
         return runScript(DB_SCRIPT);
     }
     
     @Override
     public String backupImages() {
+        log.info("Starting images backup using script: {}", IMG_SCRIPT);
         return runScript(IMG_SCRIPT);
+    }
+
+    @Override
+    public void restoreDatabase(String databaseFileName) throws BackupException {
+        log.info("Restoring database from file: {}", databaseFileName);
+        try {
+            // ProcessBuilder builder = new ProcessBuilder("bash", "-c", "mysql -u root -p bazaar < " + databaseFileName);
+            // builder.redirectErrorStream(true);
+            // Process process = builder.start();
+            // process.waitFor();
+        } catch (Exception e) {
+            throw new BackupException(ErrorCode.BACKUP_RESTORE_ERROR);
+        }
+    }
+    @Override
+    public void restoreImages(String imagesFileName) throws BackupException {
+        log.info("Restoring images from file: {}", imagesFileName);
+        try {
+            // ProcessBuilder builder = new ProcessBuilder("bash", "-c", "cp -r " + imagesFileName + " /path/to/images/directory");
+            // builder.redirectErrorStream(true);
+            // Process process = builder.start();
+            // process.waitFor();
+        } catch (Exception e) {
+            throw new BackupException(ErrorCode.BACKUP_RESTORE_ERROR);
+        }
     }
 
     private String runScript(String scriptPath) throws BackupException {

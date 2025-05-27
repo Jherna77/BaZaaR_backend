@@ -54,7 +54,6 @@ public class OrderController {
         return ResponseEntity.ok(orderService.findPurchaseOrdersByUserId(userId).stream()
             .map(orderDtoMapper::toDto)
             .toList());
-            // .collect(Collectors.toList()));
     }
 
     @GetMapping("/sale/{userId}")
@@ -63,7 +62,6 @@ public class OrderController {
         return ResponseEntity.ok(orderService.findSaleOrdersByUserId(userId).stream()
             .map(orderDtoMapper::toDto)
             .toList());
-            // .collect(Collectors.toList()));
     }
 
 
