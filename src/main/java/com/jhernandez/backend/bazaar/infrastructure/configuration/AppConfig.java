@@ -74,4 +74,9 @@ public class AppConfig {
         return new PaymentService(paymentProviderPort);
     }
 
+    @Bean
+    BackupServicePort backupServicePort(BackupStoragePort backupStoragePort, BackupRepositoryPort backupRepositoryPort) {
+        return new BackupService(backupStoragePort, backupRepositoryPort);
+    }
+
 }

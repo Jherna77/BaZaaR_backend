@@ -6,6 +6,7 @@ import com.stripe.exception.StripeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import com.jhernandez.backend.bazaar.domain.exception.BackupException;
 import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.domain.exception.DomainException;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
@@ -96,6 +97,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handlePaymentException(PaymentException ex, Locale locale) {
         String message = messageSource.getMessage(ex.getErrorCode().getCode(), null, locale);
         log.error("PaymentException: {}", message);
+        return ResponseEntity.badRequest().body(message);
+    }
+
+    @ExceptionHandler(BackupException.class)
+    public ResponseEntity<String> handleBackupException(BackupException ex, Locale locale) {
+        String message = messageSource.getMessage(ex.getErrorCode().getCode(), null, locale);
+        log.error("BackupException: {}", message);
         return ResponseEntity.badRequest().body(message);
     }
     

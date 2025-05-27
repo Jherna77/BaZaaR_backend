@@ -75,6 +75,8 @@ public enum ErrorCode {
     PAYMENT_AMOUNT_INVALID("payment.amount.invalid"),
     PAYMENT_CURRENCY_INVALID("payment.currency.invalid"),
     PAYMENT_INTENT_FAILED("payment.intent.failed"),
+    BACKUP_PATH_ERROR("backup.path.error"),
+    BACKUP_SCRIPT_ERROR("backup.script.error"),
     OPERATION_NOT_ALLOWED("operation.not.allowed");
 
     private final String code;

@@ -1,0 +1,30 @@
+package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.mysql;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.jhernandez.backend.bazaar.application.port.BackupRepositoryPort;
+import com.jhernandez.backend.bazaar.domain.model.Backup;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.BackupEntityMapper;
+import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaBackupRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class MysqlBackupRepositoryAdapter implements BackupRepositoryPort {
+
+    private final JpaBackupRepository backupRepository;
+    private final BackupEntityMapper backupEntityMapper;
+
+    @Transactional
+    @Override
+    public void saveBackup(Backup backup) {
+        log.info("Saving backup with database file: {} and images file: {}", 
+                 backup.getDataBaseFileName(), backup.getImagesFileName());
+        backupRepository.save(backupEntityMapper.toEntity(backup));
+    }
+
+}
