@@ -5,9 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PaymentRequestDto {
+public class PaymentResponseDto {
 
-    private Double amount;
-    private String currency;
+    String clientSecret;
 
 }

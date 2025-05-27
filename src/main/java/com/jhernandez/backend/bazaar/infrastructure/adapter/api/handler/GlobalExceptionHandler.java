@@ -10,6 +10,7 @@ import com.jhernandez.backend.bazaar.domain.exception.CategoryException;
 import com.jhernandez.backend.bazaar.domain.exception.DomainException;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
 import com.jhernandez.backend.bazaar.domain.exception.OrderException;
+import com.jhernandez.backend.bazaar.domain.exception.PaymentException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.exception.ReviewException;
 
@@ -88,6 +89,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleStripeException(StripeException ex, Locale locale) {
         String message = messageSource.getMessage(ex.getCode(), null, locale);
         log.error("StripeException: {}", message);
+        return ResponseEntity.badRequest().body(message);
+    }
+
+    @ExceptionHandler(PaymentException.class)
+    public ResponseEntity<String> handlePaymentException(PaymentException ex, Locale locale) {
+        String message = messageSource.getMessage(ex.getErrorCode().getCode(), null, locale);
+        log.error("PaymentException: {}", message);
         return ResponseEntity.badRequest().body(message);
     }
     

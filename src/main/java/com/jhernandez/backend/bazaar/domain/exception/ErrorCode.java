@@ -72,6 +72,9 @@ public enum ErrorCode {
     REVIEW_ID_NOT_NULL("review.id.not.null"),
     REVIEW_NOT_FOUND("review.not.found"),
     REVIEW_ALREADY_EXISTS("review.already.exists"),
+    PAYMENT_AMOUNT_INVALID("payment.amount.invalid"),
+    PAYMENT_CURRENCY_INVALID("payment.currency.invalid"),
+    PAYMENT_INTENT_FAILED("payment.intent.failed"),
     OPERATION_NOT_ALLOWED("operation.not.allowed");
 
     private final String code;

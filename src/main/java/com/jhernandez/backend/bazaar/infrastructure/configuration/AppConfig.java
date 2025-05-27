@@ -69,4 +69,9 @@ public class AppConfig {
         return new PreferencesService(userRepositoryPort, productRepositoryPort);
     }
 
+    @Bean
+    PaymentServicePort paymentServicePort(PaymentProviderPort paymentProviderPort) {
+        return new PaymentService(paymentProviderPort);
+    }
+
 }
