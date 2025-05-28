@@ -1,5 +1,7 @@
 package com.jhernandez.backend.bazaar.application.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.jhernandez.backend.bazaar.application.port.BackupRepositoryPort;
@@ -21,11 +23,18 @@ public class BackupService implements BackupServicePort {
 
     @Override
     public void createBackup() throws BackupException {
-        String databaseFileName = backupStorage.backupDatabase();
-        String imagesFileName = backupStorage.backupImages();
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
+
+        String databaseFileName = "/bazaar/backups/db_" + timestamp + ".sql";
+        String imagesFileName = "/bazaar/backups/images_" + timestamp + ".tar.gz";
+
         Backup backup = new Backup(databaseFileName, imagesFileName);
         backupRepository.saveBackup(backup);
+
+        backupStorage.backupDatabase(databaseFileName);
+        backupStorage.backupImages(imagesFileName);
     }
+
 
     @Override
     public List<Backup> findAllBackups() {

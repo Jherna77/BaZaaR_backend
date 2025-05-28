@@ -51,7 +51,7 @@ public class BackupController {
         return ResponseEntity.ok(backupDtoMapper.toDto(backupService.findBackupById(id)));
     }
 
-    @PostMapping("/restore/{id}")
+    @PutMapping("/restore/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> restoreBackup(@PathVariable Long id) {
         log.info("Restoring backup with id: {}", id);

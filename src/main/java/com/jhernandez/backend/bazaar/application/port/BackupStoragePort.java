@@ -1,13 +1,15 @@
 package com.jhernandez.backend.bazaar.application.port;
 
+import com.jhernandez.backend.bazaar.domain.exception.BackupException;
+
 public interface BackupStoragePort {
 
-    String backupDatabase();
+    void backupDatabase(String databaseFilePath) throws BackupException;
 
-    String backupImages();
+    void backupImages(String imagesFilePath) throws BackupException;
 
-    void restoreDatabase(String databaseFileName);
+    void restoreDatabase(String databaseFilePath) throws BackupException;
     
-    void restoreImages(String imagesFileName);
+    void restoreImages(String imagesFilePath) throws BackupException;
 
 }

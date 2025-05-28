@@ -15,67 +15,66 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LocalBackupStorageAdapter implements BackupStoragePort {
 
-    private static final String DB_SCRIPT = "/bazaar/backup_db.sh";
-    private static final String IMG_SCRIPT = "/bazaar/backup_images.sh";
+    private static final String DB_BACKUP_SCRIPT = "/bazaar/backup_db.sh";
+    private static final String IMG_BACKUP_SCRIPT = "/bazaar/backup_images.sh";
+    private static final String DB_RESTORE_SCRIPT = "/bazaar/restore_db.sh";
+    private static final String IMG_RESTORE_SCRIPT = "/bazaar/restore_images.sh";
 
     @Override
-    public String backupDatabase() {
-        log.info("Starting database backup using script: {}", DB_SCRIPT);
-        return runScript(DB_SCRIPT);
-    }
-    
-    @Override
-    public String backupImages() {
-        log.info("Starting images backup using script: {}", IMG_SCRIPT);
-        return runScript(IMG_SCRIPT);
+    public void backupDatabase(String databaseFilePath) throws BackupException {
+        log.info("Starting database backup to: {}", databaseFilePath);
+        runScript(DB_BACKUP_SCRIPT, databaseFilePath);
     }
 
     @Override
-    public void restoreDatabase(String databaseFileName) throws BackupException {
-        log.info("Restoring database from file: {}", databaseFileName);
-        try {
-            // ProcessBuilder builder = new ProcessBuilder("bash", "-c", "mysql -u root -p bazaar < " + databaseFileName);
-            // builder.redirectErrorStream(true);
-            // Process process = builder.start();
-            // process.waitFor();
-        } catch (Exception e) {
-            throw new BackupException(ErrorCode.BACKUP_RESTORE_ERROR);
-        }
-    }
-    @Override
-    public void restoreImages(String imagesFileName) throws BackupException {
-        log.info("Restoring images from file: {}", imagesFileName);
-        try {
-            // ProcessBuilder builder = new ProcessBuilder("bash", "-c", "cp -r " + imagesFileName + " /path/to/images/directory");
-            // builder.redirectErrorStream(true);
-            // Process process = builder.start();
-            // process.waitFor();
-        } catch (Exception e) {
-            throw new BackupException(ErrorCode.BACKUP_RESTORE_ERROR);
-        }
+    public void backupImages(String imagesFilePath) throws BackupException {
+        log.info("Starting images backup to: {}", imagesFilePath);
+        runScript(IMG_BACKUP_SCRIPT, imagesFilePath);
     }
 
-    private String runScript(String scriptPath) throws BackupException {
+    @Override
+    public void restoreDatabase(String databaseFilePath) throws BackupException {
+        log.info("Restoring database from: {}", databaseFilePath);
+        runRestoreScript(DB_RESTORE_SCRIPT, databaseFilePath);
+    }
+
+    @Override
+    public void restoreImages(String imagesFilePath) throws BackupException {
+        log.info("Restoring images from: {}", imagesFilePath);
+        runRestoreScript(IMG_RESTORE_SCRIPT, imagesFilePath);
+    }
+
+    private void runScript(String scriptPath, String outputPath) throws BackupException {
         try {
-            ProcessBuilder builder = new ProcessBuilder("bash", scriptPath);
+            ProcessBuilder builder = new ProcessBuilder("bash", scriptPath, outputPath);
             builder.redirectErrorStream(true);
             Process process = builder.start();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String outputPath = reader.readLine();
             process.waitFor();
-
-            if (outputPath == null || outputPath.isBlank()) {
-                throw new BackupException(ErrorCode.BACKUP_PATH_ERROR);
-            }
-
-            return outputPath;
+            log.info("Backup creado en {}", outputPath);
         } catch (Exception e) {
             throw new BackupException(ErrorCode.BACKUP_SCRIPT_ERROR);
         }
     }
 
+    private void runRestoreScript(String scriptPath, String filePath) throws BackupException {
+        try {
+            ProcessBuilder builder = new ProcessBuilder("bash", scriptPath, filePath);
+            builder.redirectErrorStream(true);
+            Process process = builder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                log.info("SCRIPT: {}", line);
+            }
+
+            int exitCode = process.waitFor();
+            if (exitCode != 0) {
+                throw new BackupException(ErrorCode.BACKUP_RESTORE_ERROR);
+            }
+        } catch (Exception e) {
+            throw new BackupException(ErrorCode.BACKUP_RESTORE_ERROR);
+        }
+    }
+
 }
-
-
-
