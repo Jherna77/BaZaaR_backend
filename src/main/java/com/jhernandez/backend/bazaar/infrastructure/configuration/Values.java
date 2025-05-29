@@ -11,7 +11,9 @@ public class Values {
     public static final String ARG_IMAGE = "image";
     
     // API Endpoints
-    public static final String AUTH = "/api/auth";
+    // public static final String AUTH = "/api/auth";
+    public static final String VALIDATE_TOKEN = "/validate-token";
+    public static final String PING = "/ping";
     
     public static final String USERS = "/api/users";
     public static final String USER_ID = USERS + "/{id}";
