@@ -33,6 +33,8 @@ public class Values {
     public static final String PRODUCTS_CATEGORY_ID = PRODUCTS + "/category/{categoryId}";
     public static final String PRODUCTS_SEARCH_NAME = PRODUCTS + "/search/{name}";
     public static final String PRODUCTS_RECENT = PRODUCTS + "/recent";
+    public static final String PRODUCTS_TOP_SELLING = PRODUCTS + "/top-selling";
+    public static final String PRODUCTS_TOP_RATED = PRODUCTS + "/top-rated";
 
     public static final String IMAGES = "/api/images";
     public static final String IMAGE_ID = IMAGES + "/{filename:.+}";

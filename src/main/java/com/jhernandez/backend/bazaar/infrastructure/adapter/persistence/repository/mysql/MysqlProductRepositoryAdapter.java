@@ -85,6 +85,24 @@ public class MysqlProductRepositoryAdapter implements ProductRepositoryPort {
 
     @Transactional(readOnly = true)
     @Override
+    public List<Product> findTopSellingEnabledProducts() {
+        log.info("Finding top selling enabled products");
+        return productRepository.findTopSellingEnabledProducts().stream()
+                .map(productEntityMapper::toDomain)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Product> findTopRatedEnabledProducts() {
+        log.info("Finding top rated enabled products");
+        return productRepository.findTopRatedEnabledProducts().stream()
+                .map(productEntityMapper::toDomain)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public Optional<Product> findProductById(Long id) {
         log.info("Finding product with ID {}", id);
         return productRepository.findById(id).map(productEntityMapper::toDomain);

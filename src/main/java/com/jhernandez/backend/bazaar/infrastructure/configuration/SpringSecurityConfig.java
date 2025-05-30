@@ -108,6 +108,8 @@ public class SpringSecurityConfig {
                 PRODUCTS_CATEGORY_ID,
                 PRODUCTS_SEARCH_NAME,
                 PRODUCTS_RECENT,
+                PRODUCTS_TOP_SELLING,
+                PRODUCTS_TOP_RATED,
                 IMAGE_ID,
                 REVIEW_PRODUCT_ID)
                 .permitAll()

@@ -26,6 +26,10 @@ public interface ProductRepositoryPort {
 
     List<Product> findRecentEnabledProducts();
 
+    List<Product> findTopSellingEnabledProducts();
+
+    List<Product> findTopRatedEnabledProducts();
+
     // List<Product> findProductsByUserId(Long userId);
 
     Optional<Product> findProductById(Long id);

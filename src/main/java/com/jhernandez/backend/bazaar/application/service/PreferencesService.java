@@ -46,6 +46,8 @@ public class PreferencesService implements PreferencesServicePort {
         Product product = productRepository.findProductById(productId)
                 .orElseThrow(() -> new ProductException(ErrorCode.PRODUCT_NOT_FOUND));
         user.addProductToFavourites(product);
+        user.addCategoriesToFavourites(product.getCategories());
+
         return userRepository.saveUser(user)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_SAVE_ERROR))
                 .getFavProducts();

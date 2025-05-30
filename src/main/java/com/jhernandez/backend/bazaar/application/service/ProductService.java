@@ -29,7 +29,7 @@ import com.jhernandez.backend.bazaar.domain.model.User;
  */
 public class ProductService implements ProductServicePort {
 
-    private static final Integer MAX_RECENT_PRODUCTS = 5;
+    private static final Integer MAX_PRODUCTS = 10;
 
     private final ProductRepositoryPort productRepositoryPort;
     private final UserRepositoryPort userRepositoryPort;
@@ -117,7 +117,17 @@ public class ProductService implements ProductServicePort {
 
     @Override
     public List<Product> findRecentEnabledProducts() {
-        return productRepositoryPort.findRecentEnabledProducts().subList(0, MAX_RECENT_PRODUCTS);
+        return productRepositoryPort.findRecentEnabledProducts().subList(0, MAX_PRODUCTS);
+    }
+
+    @Override
+    public List<Product> findTopSellingEnabledProducts() {
+        return productRepositoryPort.findTopSellingEnabledProducts().subList(0, MAX_PRODUCTS);
+    }
+
+    @Override
+    public List<Product> findTopRatedEnabledProducts() {
+        return productRepositoryPort.findTopRatedEnabledProducts().subList(0, MAX_PRODUCTS);
     }
 
     @Override

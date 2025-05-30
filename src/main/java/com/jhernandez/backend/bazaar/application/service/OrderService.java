@@ -56,7 +56,6 @@ public class OrderService implements OrderServicePort {
                     .orElseThrow(() -> new UserException(ErrorCode.PRODUCT_NOT_FOUND));
             
             product.addSold(item.getQuantity());
-
             productRepository.saveProduct(product);
                     
             customer.addCategoriesToFavourites(item.getProduct().getCategories());

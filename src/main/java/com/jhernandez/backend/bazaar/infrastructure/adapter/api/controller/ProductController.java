@@ -106,6 +106,22 @@ public class ProductController {
                 .map(productDtoMapper::toDto)
                 .toList());
     }
+
+    @GetMapping("/top-selling")
+    public ResponseEntity<?> findTopSellingProducts() {
+        log.info("Finding top selling products");
+        return ResponseEntity.ok(productService.findTopSellingEnabledProducts().stream()
+                .map(productDtoMapper::toDto)
+                .toList());
+    }
+
+    @GetMapping("/top-rated")
+    public ResponseEntity<?> findTopRatedProducts() {
+        log.info("Finding top rated products");
+        return ResponseEntity.ok(productService.findTopRatedEnabledProducts().stream()
+                .map(productDtoMapper::toDto)
+                .toList());
+    }
     
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SHOP')")

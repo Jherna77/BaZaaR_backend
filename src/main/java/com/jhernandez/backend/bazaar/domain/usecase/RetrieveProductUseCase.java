@@ -23,6 +23,10 @@ public interface RetrieveProductUseCase {
 
     List<Product> findRecentEnabledProducts();
 
+    List<Product> findTopSellingEnabledProducts();
+
+    List<Product> findTopRatedEnabledProducts();
+
     Product findProductById(Long id) throws ProductException;
 
 }
