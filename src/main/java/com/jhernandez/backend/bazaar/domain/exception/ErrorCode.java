@@ -27,6 +27,7 @@ public enum ErrorCode {
     CART_EMPTY("cart.empty"),
     CART_ITEM_NOT_FOUND("cart.product.not.found"),
     CART_ITEM_ALREADY_EXISTS("cart.product.already.exists"),
+    CART_ITEM_FROM_OWN_SHOP("cart.product.from.own.shop"),
     SHOP_PRODUCT_ALREADY_EXISTS("shop.product.already.exists"),
     SHOP_PRODUCT_NOT_FOUND("shop.product.not.found"),
     FAVOURITE_PRODUCT_ALREADY_EXISTS("favourite.product.already.exists"),

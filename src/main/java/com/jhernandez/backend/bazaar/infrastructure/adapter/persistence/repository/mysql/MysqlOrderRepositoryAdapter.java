@@ -26,7 +26,7 @@ public class MysqlOrderRepositoryAdapter implements OrderRepositoryPort {
     @Transactional
     @Override
     public Optional<Order> saveOrder(Order order) {
-        log.info("Saving order {}", order.getId());
+        log.info("Saving order");
         OrderEntity orderEntity = orderEntityMapper.toEntity(order);
         return Optional.of(orderEntityMapper.toDomain(
                 orderRepository.save(orderEntity)));

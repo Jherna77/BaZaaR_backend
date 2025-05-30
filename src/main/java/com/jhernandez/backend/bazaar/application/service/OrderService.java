@@ -6,6 +6,7 @@ import java.util.List;
 import com.jhernandez.backend.bazaar.application.port.ItemRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.OrderRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.OrderServicePort;
+import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.OrderException;
@@ -13,18 +14,25 @@ import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.Item;
 import com.jhernandez.backend.bazaar.domain.model.Order;
 import com.jhernandez.backend.bazaar.domain.model.OrderStatus;
+import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.domain.model.User;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class OrderService implements OrderServicePort {
 
     private final UserRepositoryPort userRepository;
     private final OrderRepositoryPort orderRepository;
     private final ItemRepositoryPort itemRepository;
+    private final ProductRepositoryPort productRepository;
 
-    public OrderService(UserRepositoryPort userRepository, OrderRepositoryPort orderRepository, ItemRepositoryPort itemRepository) {
+    public OrderService(UserRepositoryPort userRepository, OrderRepositoryPort orderRepository,
+                        ItemRepositoryPort itemRepository, ProductRepositoryPort productRepository) {
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -44,6 +52,13 @@ public class OrderService implements OrderServicePort {
             User seller = userRepository.findUserById(item.getProduct().getShop().getId())
                     .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
             
+            Product product = productRepository.findProductById(item.getProduct().getId())
+                    .orElseThrow(() -> new UserException(ErrorCode.PRODUCT_NOT_FOUND));
+            
+            product.addSold(item.getQuantity());
+
+            productRepository.saveProduct(product);
+                    
             customer.addCategoriesToFavourites(item.getProduct().getCategories());
             
             Item clonedItem = itemRepository.saveItem(item.clone())

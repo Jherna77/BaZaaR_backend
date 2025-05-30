@@ -18,6 +18,7 @@ public class ProductDto {
     private List<CategoryDto> categories;
     private List<String> imagesUrl;
     private Long shopId;
+    private Integer sold;
     private Double rating;
     private Integer ratingCount;
 

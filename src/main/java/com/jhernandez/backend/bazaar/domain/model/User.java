@@ -213,6 +213,9 @@ public class User {
     }
 
     public void addItemToCart(Item item) throws UserException {
+        if (item.getProduct().getShop().getId().equals(this.id)) {
+            throw new UserException(ErrorCode.CART_ITEM_FROM_OWN_SHOP);
+        }
         for (Item cartItem : this.cart) {
             if (cartItem.getProduct().getId().equals(item.getProduct().getId())) {
                 throw new UserException(ErrorCode.CART_ITEM_ALREADY_EXISTS);

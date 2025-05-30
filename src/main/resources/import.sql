@@ -28,26 +28,56 @@ INSERT INTO categories (id, name, image_url, enabled) VALUES (5, 'Moda', '/api/i
 INSERT INTO categories (id, name, image_url, enabled) VALUES (6, 'Juguetes', '/api/images/00category5.jpg', 1);
 INSERT INTO categories (id, name, image_url, enabled) VALUES (7, 'Libros', '/api/images/00category6.jpg', 1);
 
+-- Categorías favoritas de los usuarios de prueba
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (1, 1);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (1, 2);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (2, 3);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (2, 4);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (3, 2);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (3, 5);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (4, 3);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (4, 5);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (5, 4);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (5, 6);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (6, 5);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (6, 7);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (7, 6);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (7, 2);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (8, 7);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (8, 3);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (9, 1);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (9, 4);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (10, 2);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (10, 5);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (11, 3);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (11, 6);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (12, 4);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (12, 7);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (13, 5);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (13, 6);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (14, 6);
+INSERT INTO user_favourite_categories (user_id, category_id) VALUES (14, 5);
+
 -- Productos de prueba
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (1, 3, 'Balón de fútbol', 'Balón de fútbol de la marca Adidas', 20.0, 3.33, 1, 0.0, 0, '2025-05-25 22:47:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (2, 3, 'Balón de baloncesto', 'Balón de baloncesto de la marca Spalding', 25.0, 3.33, 1, 0.0, 0, '2025-05-25 22:40:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (3, 3, 'Balón de voleibol', 'Balón de voleibol de la marca Mikasa', 30.0, 3.33, 1, 0.0, 0, '2025-05-25 22:34:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (4, 4, 'Smartphone', 'Smartphone de la marca Samsung', 300.0, 0.0, 1, 0.0, 0, '2025-05-25 22:43:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (5, 4, 'Tablet', 'Tablet de la marca Apple', 400.0, 0.0, 1, 0.0, 0, '2025-05-25 22:39:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (6, 4, 'Portátil', 'Portátil de la marca HP', 500.0, 0.0, 1, 0.0, 0, '2025-05-25 22:36:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (7, 5, 'Sofá', 'Sofá de 3 plazas', 600.0, 50.0, 1, 0.0, 0, '2025-05-25 22:45:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (8, 5, 'Mesa', 'Mesa de comedor', 200.0, 50.0, 1, 0.0, 0, '2025-05-25 22:46:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (9, 5, 'Silla', 'Silla de oficina', 100.0, 50.0, 1, 0.0, 0, '2025-05-25 22:38:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (10, 6, 'Camiseta', 'Camiseta de manga corta', 10.0, 2.0, 1, 0.0, 0, '2025-05-25 22:32:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (11, 6, 'Pantalón', 'Pantalón vaquero', 20.0, 2.0, 1, 0.0, 0, '2025-05-25 22:44:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (12, 6, 'Zapatos', 'Zapatos de vestir', 30.0, 2.0, 1, 0.0, 0, '2025-05-25 22:35:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (13, 7, 'Muñeca', 'Muñeca de la marca Barbie', 15.0, 1.50, 1, 0.0, 0, '2025-05-25 22:33:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (14, 7, 'Coche teledirigido', 'Coche teledirigido de la marca Nikko', 20.0, 1.50, 1, 0.0, 0, '2025-05-25 22:37:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (15, 7, 'Pelota', 'Pelota de goma', 5.0, 1.50, 1, 0.0, 0, '2025-05-25 22:42:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (16, 8, 'El Quijote', 'Libro de Miguel de Cervantes', 10.0, 1.0, 1, 0.0, 0, '2025-05-25 22:41:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (17, 8, 'Reina Roja', 'Libro de Juan Gómez Jurado', 10.0, 1.0, 1, 0.0, 0, '2025-05-26 00:33:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (18, 9, 'Guitarra clásica', 'Guitarra clásica de la marca Alhambra', 999.0, 0.0, 1, 0.0, 0, '2025-05-26 00:41:00');
-INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, rating, rating_count, created_at) VALUES (19, 9, 'Gafas de sol', 'Gafas de sol polarizadas de la marca Hawkers', 20.0, 3.0, 1, 0.0, 0, '2025-05-26 00:45:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (1, 3, 'Balón de fútbol', 'Balón de fútbol de la marca Adidas', 20.0, 3.33, 1, 0, 0.0, 0, '2025-05-25 22:47:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (2, 3, 'Balón de baloncesto', 'Balón de baloncesto de la marca Spalding', 25.0, 3.33, 1, 0, 0.0, 0, '2025-05-25 22:40:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (3, 3, 'Balón de voleibol', 'Balón de voleibol de la marca Mikasa', 30.0, 3.33, 1, 0, 0.0, 0, '2025-05-25 22:34:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (4, 4, 'Smartphone', 'Smartphone de la marca Samsung', 300.0, 0.0, 1, 0, 0.0, 0, '2025-05-25 22:43:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (5, 4, 'Tablet', 'Tablet de la marca Apple', 400.0, 0.0, 1, 0, 0.0, 0, '2025-05-25 22:39:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (6, 4, 'Portátil', 'Portátil de la marca HP', 500.0, 0.0, 1, 0, 0.0, 0, '2025-05-25 22:36:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (7, 5, 'Sofá', 'Sofá de 3 plazas', 600.0, 50.0, 1, 0, 0.0, 0, '2025-05-25 22:45:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (8, 5, 'Mesa', 'Mesa de comedor', 200.0, 50.0, 1, 0, 0.0, 0, '2025-05-25 22:46:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (9, 5, 'Silla', 'Silla de oficina', 100.0, 50.0, 1, 0, 0.0, 0, '2025-05-25 22:38:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (10, 6, 'Camiseta', 'Camiseta de manga corta', 10.0, 2.0, 1, 0, 0.0, 0, '2025-05-25 22:32:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (11, 6, 'Pantalón', 'Pantalón vaquero', 20.0, 2.0, 1, 0, 0.0, 0, '2025-05-25 22:44:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (12, 6, 'Zapatos', 'Zapatos de vestir', 30.0, 2.0, 1, 0, 0.0, 0, '2025-05-25 22:35:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (13, 7, 'Muñeca', 'Muñeca de la marca Barbie', 15.0, 1.50, 1, 0, 0.0, 0, '2025-05-25 22:33:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (14, 7, 'Coche teledirigido', 'Coche teledirigido de la marca Nikko', 20.0, 1.50, 1, 0, 0.0, 0, '2025-05-25 22:37:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (15, 7, 'Pelota', 'Pelota de goma', 5.0, 1.50, 1, 0, 0.0, 0, '2025-05-25 22:42:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (16, 8, 'El Quijote', 'Libro de Miguel de Cervantes', 10.0, 1.0, 1, 0, 0.0, 0, '2025-05-25 22:41:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (17, 8, 'Reina Roja', 'Libro de Juan Gómez Jurado', 10.0, 1.0, 1, 0, 0.0, 0, '2025-05-26 00:33:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (18, 9, 'Guitarra clásica', 'Guitarra clásica de la marca Alhambra', 999.0, 0.0, 1, 0, 0.0, 0, '2025-05-26 00:41:00');
+INSERT INTO products (id, shop_id, name, description, price, shipping, enabled, sold, rating, rating_count, created_at) VALUES (19, 9, 'Gafas de sol', 'Gafas de sol polarizadas de la marca Hawkers', 20.0, 3.0, 1, 0, 0.0, 0, '2025-05-26 00:45:00');
 
 -- Asignación de productos a categorías
 INSERT INTO products_categories (product_id, category_id) VALUES (1, 2);

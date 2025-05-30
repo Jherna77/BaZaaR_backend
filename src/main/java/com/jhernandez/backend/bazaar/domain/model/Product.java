@@ -14,6 +14,7 @@ public class Product {
     private List<Category> categories;
     private List<String> imagesUrl;
     private User shop;
+    private Integer sold;
     private Double rating;
     private Integer ratingCount;
     private LocalDateTime createdAt;
@@ -26,8 +27,8 @@ public class Product {
     }
 
     public Product(Long id, Boolean enabled, String name, String description, Double price, Double shipping,
-            List<Category> categories, List<String> imagesUrl, User shop, Double rating, Integer ratingCount,
-            LocalDateTime createdAt) {
+            List<Category> categories, List<String> imagesUrl, User shop, Integer sold, Double rating,
+            Integer ratingCount, LocalDateTime createdAt) {
         this.id = id;
         this.enabled = enabled;
         this.name = name;
@@ -37,6 +38,7 @@ public class Product {
         this.categories = categories;
         this.imagesUrl = imagesUrl;
         this.shop = shop;
+        this.sold = sold;
         this.rating = rating;
         this.ratingCount = ratingCount;
         this.createdAt = createdAt;
@@ -76,6 +78,10 @@ public class Product {
 
     public User getShop() {
         return shop;
+    }
+
+    public Integer getSold() {
+        return sold;
     }
 
     public Double getRating() {
@@ -126,6 +132,18 @@ public class Product {
         this.shop = shop;
     }
 
+    public void setSold(Integer sold) {
+        this.sold = sold;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public void setRatingCount(Integer ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
@@ -136,14 +154,6 @@ public class Product {
 
     public void enable() {
         this.enabled = true;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
-    public void setRatingCount(Integer ratingCount) {
-        this.ratingCount = ratingCount;
     }
 
     public void disable() {
@@ -169,6 +179,12 @@ public class Product {
         this.imagesUrl.remove(imageUrl);
     }
 
+    public void addSold(Integer quantity) {
+        if (quantity != null && quantity > 0) {
+            this.sold += quantity;
+        }
+    }
+
     public void calculateRating(List<Integer> ratings) {
         if (ratings == null || ratings.isEmpty()) {
             this.rating = 0.0;
@@ -183,10 +199,4 @@ public class Product {
 
     // private BigDecimal discountPrice;
     // private BigDecimal discountRate;
-    // private String imageUrl;
-    // private String imageName;
-    // private String imageType;
-    // private Long stockQuantity;
-    // private Long soldQuantity;
-    // private Long createdAt;
-    // private Long updatedAt;
+    // private Long stock;
