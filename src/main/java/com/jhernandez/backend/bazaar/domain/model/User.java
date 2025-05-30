@@ -242,4 +242,12 @@ public class User {
         this.favProducts.removeIf(product -> product.getId().equals(productId));
     }
 
+    public void addCategoriesToFavourites(List<Category> categories) {
+        for (Category category : categories) {
+            if (!this.favCategories.contains(category)) {
+                this.favCategories.add(category);
+            }
+        }
+    }
+
 }

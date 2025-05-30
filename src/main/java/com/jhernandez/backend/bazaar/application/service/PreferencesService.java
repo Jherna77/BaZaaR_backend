@@ -8,6 +8,7 @@ import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
+import com.jhernandez.backend.bazaar.domain.model.Category;
 import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.domain.model.User;
 
@@ -58,6 +59,13 @@ public class PreferencesService implements PreferencesServicePort {
         return userRepository.saveUser(user)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_SAVE_ERROR))
                 .getFavProducts();
+    }
+
+    @Override
+    public List<Category> getUserFavouriteCategories(Long userId) throws UserException {
+        return userRepository.findUserById(userId)
+                .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND))
+                .getFavCategories();
     }
 
 }

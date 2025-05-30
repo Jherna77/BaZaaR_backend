@@ -44,6 +44,8 @@ public class OrderService implements OrderServicePort {
             User seller = userRepository.findUserById(item.getProduct().getShop().getId())
                     .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
             
+            customer.addCategoriesToFavourites(item.getProduct().getCategories());
+            
             Item clonedItem = itemRepository.saveItem(item.clone())
                     .orElseThrow(() -> new UserException(ErrorCode.OPERATION_NOT_ALLOWED));
             orderRepository.saveOrder(new Order(null, clonedItem, customer, seller, LocalDateTime.now()))

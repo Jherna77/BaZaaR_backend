@@ -56,4 +56,11 @@ public class PreferencesController {
             .body(mapper.toDtoList(preferencesService.removeProductFromFavourites(id, productId)));
     }
 
+    @GetMapping("/categories")
+    public ResponseEntity<?> getUserFavouriteCategories(@PathVariable Long id) {
+        log.info("Finding favourite categories for user ID {}", id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(preferencesService.getUserFavouriteCategories(id));
+    }
+
 }
