@@ -85,7 +85,10 @@ public class SpringSecurityConfig {
      *      - GET /api/products/user/{userId}
      *      - GET /api/products/category/{categoryId}
      *      - GET /api/products/search/{name}
+     *      - GET /api/products/discounted
      *      - GET /api/products/recent
+     *      - GET /api/products/top-selling
+     *      - GET /api/products/top-rated
      *      - GET /api/images/{filename:.+}
      *      - GET /api/reviews/product/{productId}
      *      - POST /api/users/register
@@ -107,6 +110,7 @@ public class SpringSecurityConfig {
                 PRODUCTS_USER_ID,
                 PRODUCTS_CATEGORY_ID,
                 PRODUCTS_SEARCH_NAME,
+                PRODUCTS_DISCOUNTED,
                 PRODUCTS_RECENT,
                 PRODUCTS_TOP_SELLING,
                 PRODUCTS_TOP_RATED,

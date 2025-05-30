@@ -24,6 +24,8 @@ public interface ProductRepositoryPort {
 
     List<Product> findEnabledProductsByName(String name);
 
+    List<Product> findDiscountedEnabledProducts();
+
     List<Product> findRecentEnabledProducts();
 
     List<Product> findTopSellingEnabledProducts();

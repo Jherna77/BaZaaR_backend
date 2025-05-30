@@ -116,6 +116,15 @@ public class ProductService implements ProductServicePort {
     }
 
     @Override
+    public List<Product> findDiscountedEnabledProducts() {
+        List<Product> discountedProducts = productRepositoryPort.findDiscountedEnabledProducts();
+        if (discountedProducts.size() < MAX_PRODUCTS) {
+            return discountedProducts;
+        }
+        return discountedProducts.subList(0, MAX_PRODUCTS);
+    }
+
+    @Override
     public List<Product> findRecentEnabledProducts() {
         return productRepositoryPort.findRecentEnabledProducts().subList(0, MAX_PRODUCTS);
     }

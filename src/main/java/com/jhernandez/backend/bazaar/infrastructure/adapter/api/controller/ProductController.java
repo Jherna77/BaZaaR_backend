@@ -99,6 +99,14 @@ public class ProductController {
                 .toList());
     }
 
+    @GetMapping("/discounted")
+    public ResponseEntity<?> findDiscountedProducts() {
+        log.info("Finding discounted products");
+        return ResponseEntity.ok(productService.findDiscountedEnabledProducts().stream()
+                .map(productDtoMapper::toDto)
+                .toList());
+    }
+
     @GetMapping("/recent")
     public ResponseEntity<?> findRecentProducts() {
         log.info("Finding recent products");

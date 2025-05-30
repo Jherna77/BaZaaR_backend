@@ -21,6 +21,8 @@ public interface RetrieveProductUseCase {
 
     List<Product> findEnabledProductsByName(String name) throws ProductException;
 
+    List<Product> findDiscountedEnabledProducts();
+
     List<Product> findRecentEnabledProducts();
 
     List<Product> findTopSellingEnabledProducts();

@@ -35,6 +35,7 @@ public class Values {
     public static final String PRODUCTS_RECENT = PRODUCTS + "/recent";
     public static final String PRODUCTS_TOP_SELLING = PRODUCTS + "/top-selling";
     public static final String PRODUCTS_TOP_RATED = PRODUCTS + "/top-rated";
+    public static final String PRODUCTS_DISCOUNTED = PRODUCTS + "/discounted";
 
     public static final String IMAGES = "/api/images";
     public static final String IMAGE_ID = IMAGES + "/{filename:.+}";
