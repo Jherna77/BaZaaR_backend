@@ -104,7 +104,7 @@ public class ProductService implements ProductServicePort {
             throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         return userRepositoryPort.findUserById(userId)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND))
-                .getProducts();
+                .getShopProducts();
     }
 
     @Override

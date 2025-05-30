@@ -19,9 +19,10 @@ public class User {
     private String city;
     private String province;
     private String zipCode;
-    private List<Product> products;
+    private List<Category> favCategories;
+    private List<Product> favProducts;
+    private List<Product> shopProducts;
     private List<Item> cart;
-    private List<Product> favourites;
 
     public User() {
     }
@@ -32,8 +33,8 @@ public class User {
     }
 
     public User(Long id, Boolean enabled, UserRole role, String email, String password, String name, String surnames,
-            String address, String city, String province, String zipCode, List<Product> products, List<Item> cart,
-            List<Product> favourites) {
+            String address, String city, String province, String zipCode, List<Category> favCategories, List<Product> favProducts,
+             List<Product> shopProducts, List<Item> cart) {
         this.id = id;
         this.enabled = enabled;
         this.role = role;
@@ -45,9 +46,10 @@ public class User {
         this.city = city;
         this.province = province;
         this.zipCode = zipCode;
-        this.products = (products != null) ? products : new ArrayList<>();
+        this.favCategories = (favCategories != null) ? favCategories : new ArrayList<>();
+        this.favProducts = (favProducts != null) ? favProducts : new ArrayList<>();
+        this.shopProducts = (shopProducts != null) ? shopProducts : new ArrayList<>();
         this.cart = (cart != null) ? cart : new ArrayList<>();
-        this.favourites = (favourites != null) ? favourites : new ArrayList<>();
     }
 
     public Long getId() {
@@ -94,16 +96,20 @@ public class User {
         return zipCode;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<Category> getFavCategories() {
+        return favCategories;
+    }
+
+    public List<Product> getFavProducts() {
+        return favProducts;
+    }
+
+    public List<Product> getShopProducts() {
+        return shopProducts;
     }
 
     public List<Item> getCart() {
         return cart;
-    }
-
-    public List<Product> getFavourites() {
-        return favourites;
     }
 
     public void setId(Long id) {
@@ -112,8 +118,8 @@ public class User {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
-        if (this.products != null)
-            this.products.forEach(product -> product.setEnabled(enabled));
+        if (this.shopProducts != null)
+            this.shopProducts.forEach(product -> product.setEnabled(enabled));
     }
 
     public void setRole(UserRole role) {
@@ -152,50 +158,54 @@ public class User {
         this.zipCode = zipCode;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setFavCategories(List<Category> favCategories) {
+        this.favCategories = favCategories;
+    }
+
+    public void setFavProducts(List<Product> favourites) {
+        this.favProducts = favourites;
+    }
+
+    public void setShopProducts(List<Product> products) {
+        this.shopProducts = products;
     }
 
     public void setCart(List<Item> cart) {
         this.cart = cart;
     }
 
-    public void setFavourites(List<Product> favourites) {
-        this.favourites = favourites;
-    }
-
     public void enable() {
         this.enabled = true;
-        if (this.products != null)
-            this.products.forEach(product -> product.enable());
+        if (this.shopProducts != null)
+            this.shopProducts.forEach(product -> product.enable());
     }
 
     public void disable() throws UserException {
         if (!this.enabled)
             throw new UserException(ErrorCode.USER_ALREADY_DISABLED);
         this.enabled = false;
-        if (this.products != null)
-            this.products.forEach(product -> product.disable());
+        if (this.shopProducts != null)
+            this.shopProducts.forEach(product -> product.disable());
     }
 
     public void addProductToShop(Product product) throws UserException {
-        for (Product shopProduct : this.products) {
+        for (Product shopProduct : this.shopProducts) {
             if (shopProduct.getId().equals(product.getId())) {
                 throw new UserException(ErrorCode.SHOP_PRODUCT_ALREADY_EXISTS);
             }
         }
-        this.products.add(product);
+        this.shopProducts.add(product);
     }
 
     public void removeProductFromShop(Long productId) throws UserException {
-        this.products.removeIf(product -> product.getId().equals(productId));
+        this.shopProducts.removeIf(product -> product.getId().equals(productId));
     }
 
     public void updateProductInShop(Product product) throws UserException {
-        for (Product shopProduct : this.products) {
+        for (Product shopProduct : this.shopProducts) {
             if (shopProduct.getId().equals(product.getId())) {
-                this.products.remove(shopProduct);
-                this.products.add(product);
+                this.shopProducts.remove(shopProduct);
+                this.shopProducts.add(product);
                 return;
             }
         }
@@ -220,16 +230,16 @@ public class User {
     }
 
     public void addProductToFavourites(Product product) throws UserException {
-        for (Product favourite : this.favourites) {
+        for (Product favourite : this.favProducts) {
             if (favourite.getId().equals(product.getId())) {
                 throw new UserException(ErrorCode.FAVOURITE_PRODUCT_ALREADY_EXISTS);
             }
         }
-        this.favourites.add(product);
+        this.favProducts.add(product);
     }
 
     public void removeProductFromFavourites(Long productId) {
-        this.favourites.removeIf(product -> product.getId().equals(productId));
+        this.favProducts.removeIf(product -> product.getId().equals(productId));
     }
 
 }

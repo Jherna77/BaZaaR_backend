@@ -36,7 +36,7 @@ class ProductEntityMapperTest {
         assertEquals(entity.getId(), domain.getId());
         assertEquals(entity.getName(), domain.getName());
         assertEquals(entity.getShop().getId(), domain.getShop().getId());
-        assertNull(domain.getShop().getProducts());
+        assertNull(domain.getShop().getShopProducts());
     }
 
     @Transactional(readOnly = true)
@@ -51,7 +51,7 @@ class ProductEntityMapperTest {
         assertEquals(domain.getId(), mappedEntity.getId());
         assertEquals(domain.getName(), mappedEntity.getName());
         assertEquals(domain.getShop().getId(), mappedEntity.getShop().getId());
-        assertNull(mappedEntity.getShop().getProducts());
+        assertNull(mappedEntity.getShop().getShopProducts());
 
     }
 }

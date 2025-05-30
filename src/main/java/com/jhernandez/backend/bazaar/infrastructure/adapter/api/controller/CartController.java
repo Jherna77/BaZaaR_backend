@@ -31,40 +31,40 @@ public class CartController {
     private final CartServicePort cartService;
     private final ItemDtoMapper mapper;
 
-    @GetMapping("/{id}")
+    @GetMapping
     public ResponseEntity<?> getUserCart(@PathVariable Long id) {
         log.info("Finding cart for user ID {}", id);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(mapper.toDtoList(cartService.getUserCart(id)));
     }
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<?> addItemToCart(@PathVariable Long userId, @RequestBody ItemDto item) {
-        log.info("Adding item {} to cart for the user with ID {}", item.getProduct().getName(), userId);
-        cartService.addItemToCart(userId, mapper.toDomain(item));
+    @PostMapping
+    public ResponseEntity<?> addItemToCart(@PathVariable Long id, @RequestBody ItemDto item) {
+        log.info("Adding item {} to cart for the user with ID {}", item.getProduct().getName(), id);
+        cartService.addItemToCart(id, mapper.toDomain(item));
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{userId}/{itemId}")
-    public ResponseEntity<?> removeItemFromCart(@PathVariable Long userId, @PathVariable Long itemId) {
-        log.info("Removing item {} to cart for the user with ID {}", itemId, userId);
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity<?> removeItemFromCart(@PathVariable Long id, @PathVariable Long itemId) {
+        log.info("Removing item {} to cart for the user with ID {}", itemId, id);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(mapper.toDtoList(cartService.removeItemFromCart(userId, itemId)));
+            .body(mapper.toDtoList(cartService.removeItemFromCart(id, itemId)));
     }
 
-    @PutMapping("/{userId}/{itemId}/{quantity}")
-    public ResponseEntity<?> updateItemQuantity(@PathVariable Long userId, @PathVariable Long itemId,
+    @PutMapping("/{itemId}/{quantity}")
+    public ResponseEntity<?> updateItemQuantity(@PathVariable Long id, @PathVariable Long itemId,
             @PathVariable int quantity) {
-        log.info("Updating item {} quantity for the user with ID {}", itemId, userId);
+        log.info("Updating item {} quantity for the user with ID {}", itemId, id);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(mapper.toDtoList(cartService.updateItemQuantity(userId, itemId, quantity)));
+            .body(mapper.toDtoList(cartService.updateItemQuantity(id, itemId, quantity)));
     }
 
-    @PutMapping("/{userId}/clear")
-    public ResponseEntity<?> clearCart(@PathVariable Long userId) {
-        log.info("Clearing cart for the user with ID {}", userId);
+    @PutMapping("/clear")
+    public ResponseEntity<?> clearCart(@PathVariable Long id) {
+        log.info("Clearing cart for the user with ID {}", id);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(mapper.toDtoList(cartService.clearCart(userId)));
+            .body(mapper.toDtoList(cartService.clearCart(id)));
     }
 
 }

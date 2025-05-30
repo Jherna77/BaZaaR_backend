@@ -38,8 +38,8 @@ class UserEntityMapperTest {
         assertNotNull(user);
         assertEquals(entity.getId(), user.getId());
         assertEquals(entity.getEmail(), user.getEmail());
-        assertNotNull(user.getProducts());
-        assertEquals(entity.getProducts().size(), user.getProducts().size());
+        assertNotNull(user.getShopProducts());
+        assertEquals(entity.getShopProducts().size(), user.getShopProducts().size());
     }
 }
 

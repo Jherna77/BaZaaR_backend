@@ -25,7 +25,7 @@ public class PreferencesService implements PreferencesServicePort {
     public List<Product> getUserFavouriteProducts(Long userId) throws UserException {
         return userRepository.findUserById(userId)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND))
-                .getFavourites();
+                .getFavProducts();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class PreferencesService implements PreferencesServicePort {
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
         Product product = productRepository.findProductById(productId)
                 .orElseThrow(() -> new ProductException(ErrorCode.PRODUCT_NOT_FOUND));
-        return user.getFavourites().stream()
+        return user.getFavProducts().stream()
                 .anyMatch(favourite -> favourite.getId().equals(product.getId()));
     }
 
@@ -47,7 +47,7 @@ public class PreferencesService implements PreferencesServicePort {
         user.addProductToFavourites(product);
         return userRepository.saveUser(user)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_SAVE_ERROR))
-                .getFavourites();
+                .getFavProducts();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class PreferencesService implements PreferencesServicePort {
         user.removeProductFromFavourites(productId);
         return userRepository.saveUser(user)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_SAVE_ERROR))
-                .getFavourites();
+                .getFavProducts();
     }
 
 }

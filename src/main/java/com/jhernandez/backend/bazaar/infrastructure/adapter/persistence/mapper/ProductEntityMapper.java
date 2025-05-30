@@ -11,13 +11,13 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.P
         uses = {CategoryEntityMapper.class})
 public interface ProductEntityMapper {
 
-    @Mapping(target = "shop.products", ignore = true)
+    @Mapping(target = "shop.shopProducts", ignore = true)
     @Mapping(target = "shop.cart", ignore = true)
-    @Mapping(target = "shop.favourites", ignore = true)
+    @Mapping(target = "shop.favProducts", ignore = true)
     Product toDomain(ProductEntity productEntity);
 
-    @Mapping(target = "shop.products", ignore = true)
+    @Mapping(target = "shop.shopProducts", ignore = true)
     @Mapping(target = "shop.cart", ignore = true)
-    @Mapping(target = "shop.favourites", ignore = true)
+    @Mapping(target = "shop.favProducts", ignore = true)
     ProductEntity toEntity(Product product);
 }

@@ -1,5 +1,7 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.api.dto;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,5 +19,6 @@ public class UserResponseDto {
     private String city;
     private String province;
     private String zipCode;
+    private List<CategoryDto> favCategories;
 
 }

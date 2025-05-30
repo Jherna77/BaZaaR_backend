@@ -46,17 +46,23 @@ public class UserEntity {
     @Column(name = "zip_code")
     private String zipCode;
 
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductEntity> products;
-    
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "cart_user_id")
-    private List<ItemEntity> cart;
+    @ManyToMany
+    @JoinTable(name = "user_favourite_categories",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<CategoryEntity> favCategories;
 
     @ManyToMany
     @JoinTable(name = "user_favourite_products",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<ProductEntity> favourites;
+    private List<ProductEntity> favProducts;
+
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductEntity> shopProducts;
+    
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "cart_user_id")
+    private List<ItemEntity> cart;
     
 }

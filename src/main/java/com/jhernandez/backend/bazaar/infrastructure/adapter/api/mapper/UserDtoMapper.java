@@ -17,9 +17,9 @@ public interface UserDtoMapper {
     @Mapping(target = "name", source = ".", qualifiedByName = "adjustUserName")    
     UserResponseDto toResponseDto(User user);
 
-    @Mapping(target = "products", ignore = true)
+    @Mapping(target = "shopProducts", ignore = true)
     @Mapping(target = "cart", ignore = true)
-    @Mapping(target = "favourites", ignore = true)
+    @Mapping(target = "favProducts", ignore = true)
     User toDomain(UserRequestDto userRequestDto);
 
 }

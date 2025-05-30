@@ -39,8 +39,7 @@ public class Values {
 
     public static final String ORDERS = "/api/orders";
 
-    public static final String CART = "/api/cart";
-    // public static final String CART =  USER_ID + "/cart";
+    public static final String CART =  USER_ID + "/cart";
 
     public static final String PREFERENCES = USER_ID + "/preferences";
 

@@ -99,6 +99,7 @@ public class UserService implements UserServicePort {
         existingUser.setCity(user.getCity());
         existingUser.setProvince(user.getProvince());
         existingUser.setZipCode(user.getZipCode());
+        existingUser.setFavCategories(user.getFavCategories());
         userRepositoryPort.saveUser(existingUser);
     }
 

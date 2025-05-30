@@ -13,20 +13,20 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.O
         uses = { ItemEntityMapper.class })
 public interface OrderEntityMapper {
 
-    @Mapping(target = "customer.products", ignore = true)
+    @Mapping(target = "customer.shopProducts", ignore = true)
     @Mapping(target = "customer.cart", ignore = true)
-    @Mapping(target = "customer.favourites", ignore = true)
-    @Mapping(target = "shop.products", ignore = true)
+    @Mapping(target = "customer.favProducts", ignore = true)
+    @Mapping(target = "shop.shopProducts", ignore = true)
     @Mapping(target = "shop.cart", ignore = true)
-    @Mapping(target = "shop.favourites", ignore = true)
+    @Mapping(target = "shop.favProducts", ignore = true)
     OrderEntity toEntity (Order order);
 
-    @Mapping(target = "customer.products", ignore = true)
+    @Mapping(target = "customer.shopProducts", ignore = true)
     @Mapping(target = "customer.cart", ignore = true)
-    @Mapping(target = "customer.favourites", ignore = true)
-    @Mapping(target = "shop.products", ignore = true)
+    @Mapping(target = "customer.favProducts", ignore = true)
+    @Mapping(target = "shop.shopProducts", ignore = true)
     @Mapping(target = "shop.cart", ignore = true)
-    @Mapping(target = "shop.favourites", ignore = true)
+    @Mapping(target = "shop.favProducts", ignore = true)
     Order toDomain(OrderEntity orderEntity);
 
     List<Order> toDomain(List<OrderEntity> orderEntities);
