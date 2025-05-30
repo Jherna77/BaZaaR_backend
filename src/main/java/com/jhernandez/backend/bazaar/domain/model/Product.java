@@ -18,6 +18,8 @@ public class Product {
     private Double rating;
     private Integer ratingCount;
     private LocalDateTime createdAt;
+    private Boolean hasDiscount;
+    private Double discountPrice;
 
     public Product() {
     }
@@ -28,7 +30,7 @@ public class Product {
 
     public Product(Long id, Boolean enabled, String name, String description, Double price, Double shipping,
             List<Category> categories, List<String> imagesUrl, User shop, Integer sold, Double rating,
-            Integer ratingCount, LocalDateTime createdAt) {
+            Integer ratingCount, LocalDateTime createdAt, Boolean hasDiscount, Double discountPrice) {
         this.id = id;
         this.enabled = enabled;
         this.name = name;
@@ -42,6 +44,8 @@ public class Product {
         this.rating = rating;
         this.ratingCount = ratingCount;
         this.createdAt = createdAt;
+        this.hasDiscount = hasDiscount;
+        this.discountPrice = discountPrice;
     }
 
     public Long getId() {
@@ -94,6 +98,14 @@ public class Product {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public Boolean getHasDiscount() {
+        return hasDiscount;
+    }
+
+    public Double getDiscountPrice() {
+        return discountPrice;
     }
 
     public void setId(Long id) {
@@ -152,6 +164,14 @@ public class Product {
         this.createdAt = LocalDateTime.now();;
     }
 
+    public void setHasDiscount(Boolean hasDiscount) {
+        this.hasDiscount = hasDiscount;
+    }
+
+    public void setDiscountPrice(Double discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
     public void enable() {
         this.enabled = true;
     }
@@ -196,7 +216,3 @@ public class Product {
     }
 
 }
-
-    // private BigDecimal discountPrice;
-    // private BigDecimal discountRate;
-    // private Long stock;

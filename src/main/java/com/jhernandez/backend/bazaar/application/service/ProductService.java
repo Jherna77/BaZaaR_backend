@@ -143,6 +143,8 @@ public class ProductService implements ProductServicePort {
         existingProduct.setPrice(product.getPrice());
         existingProduct.setShipping(product.getShipping());
         existingProduct.setCategories(product.getCategories());
+        existingProduct.setHasDiscount(product.getHasDiscount());
+        existingProduct.setDiscountPrice(product.getDiscountPrice());
         existingProduct.setImagesUrl(getFinalImages(
                                         productsImages,
                                         product.getImagesUrl(),
@@ -197,12 +199,18 @@ public class ProductService implements ProductServicePort {
             throw new ProductException(ErrorCode.PRODUCT_NAME_REQUIRED);
         if (product.getDescription() == null || product.getDescription().isEmpty()) 
             throw new ProductException(ErrorCode.PRODUCT_DESCRIPTION_REQUIRED);
-        if (product.getPrice() == null || product.getPrice() < 0) 
+        if (product.getPrice() == null || product.getPrice() <= 0) 
             throw new ProductException(ErrorCode.PRODUCT_INVALID_PRICE);
         if (product.getShipping() == null || product.getShipping() < 0)
             throw new ProductException(ErrorCode.PRODUCT_INVALID_SHIPPING);   
         if (product.getCategories() == null || product.getCategories().isEmpty()) 
-            throw new ProductException(ErrorCode.PRODUCT_NO_CATEGORY);        
+            throw new ProductException(ErrorCode.PRODUCT_NO_CATEGORY);
+        if (product.getHasDiscount()) {
+            if (product.getDiscountPrice() == null || product.getDiscountPrice() < 0) 
+                throw new ProductException(ErrorCode.PRODUCT_INVALID_DISCOUNT_PRICE);
+            if (product.getDiscountPrice() >= product.getPrice()) 
+                throw new ProductException(ErrorCode.PRODUCT_INVALID_DISCOUNT);
+        };      
     }
 
     private List<String> getFinalImages(List<ImageFile> productsImages, List<String> finalImages, List<String> existingImages) {

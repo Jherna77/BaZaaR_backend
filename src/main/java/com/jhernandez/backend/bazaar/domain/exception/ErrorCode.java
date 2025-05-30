@@ -42,6 +42,8 @@ public enum ErrorCode {
     PRODUCT_DESCRIPTION_REQUIRED("product.description.required"),
     PRODUCT_INVALID_PRICE("product.invalid.price"),
     PRODUCT_INVALID_SHIPPING("product.invalid.shipping"),
+    PRODUCT_INVALID_DISCOUNT_PRICE("product.invalid.discount.price"),
+    PRODUCT_INVALID_DISCOUNT("product.invalid.discount"),
     PRODUCT_IMAGE_REQUIRED("product.image.required"),
     PRODUCT_NO_CATEGORY("product.no.category"),
     PRODUCT_ID_NOT_NULL("product.id.not.null"),

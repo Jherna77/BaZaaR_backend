@@ -62,4 +62,10 @@ public class ProductEntity {
     @Column(name = "created_at")    
     private LocalDateTime createdAt;
 
+    @Column(name = "has_discount")
+    private Boolean hasDiscount;
+
+    @Column(name = "discount_price")
+    private Double discountPrice;
+
 }
