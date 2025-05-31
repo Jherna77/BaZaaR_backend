@@ -19,8 +19,9 @@ public class StripePaymentAdapter implements PaymentProviderPort {
     @Override
     public Payment createPayment(Payment payment) throws PaymentException {
         log.info("Creating payment: {} {}", payment.getAmount(), payment.getCurrency());
+        Double amount = payment.getAmount() * 100;
         PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                .setAmount(payment.getAmount().longValue() * 100)
+                .setAmount(amount.longValue())
                 .setCurrency(payment.getCurrency())
                 .build();
 

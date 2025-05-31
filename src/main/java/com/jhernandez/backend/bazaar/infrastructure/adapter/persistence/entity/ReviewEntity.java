@@ -27,6 +27,7 @@ public class ReviewEntity {
     @JoinColumn(name = "order_id", nullable = false, unique = true)
     private OrderEntity order;
 
+    private String author;
     private String comment;
     private Integer rating;
 

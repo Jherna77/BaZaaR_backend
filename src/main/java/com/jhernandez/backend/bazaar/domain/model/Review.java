@@ -6,13 +6,15 @@ public class Review {
 
     private Long id;
     private Order order;
+    private String author;
     private String comment;
     private Integer rating;
     private LocalDateTime reviewDate;
 
-    public Review(Long id, Order order, String comment, Integer rating, LocalDateTime reviewDate) {
+    public Review(Long id, Order order, String author, String comment, Integer rating, LocalDateTime reviewDate) {
         this.id = id;
         this.order = order;
+        this.author = author;
         this.comment = comment;
         this.rating = rating;
         this.reviewDate = reviewDate;
@@ -32,6 +34,14 @@ public class Review {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getComment() {
