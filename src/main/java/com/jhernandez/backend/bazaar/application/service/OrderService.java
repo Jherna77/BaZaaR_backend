@@ -2,8 +2,10 @@ package com.jhernandez.backend.bazaar.application.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import com.jhernandez.backend.bazaar.application.port.ItemRepositoryPort;
+import com.jhernandez.backend.bazaar.application.port.MessageLocalizationPort;
 import com.jhernandez.backend.bazaar.application.port.MessageRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.OrderRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.OrderServicePort;
@@ -15,6 +17,7 @@ import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.model.Item;
 import com.jhernandez.backend.bazaar.domain.model.Message;
+import com.jhernandez.backend.bazaar.domain.model.MessageCode;
 import com.jhernandez.backend.bazaar.domain.model.Order;
 import com.jhernandez.backend.bazaar.domain.model.OrderStatus;
 import com.jhernandez.backend.bazaar.domain.model.Product;
@@ -27,15 +30,17 @@ public class OrderService implements OrderServicePort {
     private final ItemRepositoryPort itemRepository;
     private final ProductRepositoryPort productRepository;
     private final MessageRepositoryPort messageRepository;
+    private final MessageLocalizationPort messageLocalization;
 
     public OrderService(UserRepositoryPort userRepository, OrderRepositoryPort orderRepository,
                         ItemRepositoryPort itemRepository, ProductRepositoryPort productRepository,
-                        MessageRepositoryPort messageRepository) {
+                        MessageRepositoryPort messageRepository, MessageLocalizationPort messageLocalization) {
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
         this.productRepository = productRepository;
         this.messageRepository = messageRepository;
+        this.messageLocalization = messageLocalization;
     }
 
     @Override
@@ -76,8 +81,12 @@ public class OrderService implements OrderServicePort {
 
             
             // Notify seller and customer about the order creation
-            messageRepository.saveMessage(new Message(seller, "New order created for " + item.getProduct().getName()));
-            messageRepository.saveMessage(new Message(customer, "Order created for " + item.getProduct().getName()));
+            messageRepository.saveMessage(new Message(seller, build(MessageCode.ORDER_CREATED_SELLER, 
+                    Map.of("productName", item.getProduct().getName()))));
+            messageRepository.saveMessage(new Message(customer, build(MessageCode.ORDER_CREATED_CUSTOMER,
+                    Map.of("productName", item.getProduct().getName()))));
+            // messageRepository.saveMessage(new Message(seller, "New order created for " + item.getProduct().getName()));
+            // messageRepository.saveMessage(new Message(customer, "Order created for " + item.getProduct().getName()));
         }
 
         customer.clearCart();
@@ -125,9 +134,6 @@ public class OrderService implements OrderServicePort {
             default -> throw new OrderException(ErrorCode.OPERATION_NOT_ALLOWED);
         }
 
-        messageRepository.saveMessage(new Message(order.getCustomer(), "Order status updated to " + status));
-        messageRepository.saveMessage(new Message(order.getShop(), "Order status updated to " + status));
-
         if (status == OrderStatus.CANCELLED || status == OrderStatus.RETURNED) {
             Item item = order.getItem();
             Product product = productRepository.findProductById(item.getProduct().getId())
@@ -136,8 +142,28 @@ public class OrderService implements OrderServicePort {
             productRepository.saveProduct(product);
         }
 
+        messageRepository.saveMessage(new Message(order.getCustomer(), build(MessageCode.ORDER_UPDATED,
+                Map.of(
+                        "orderId", order.getId(),
+                        "productName", order.getItem().getProduct().getName(),
+                        "orderStatus", messageLocalization
+                                                .getMessage("order.status." + status.name().toLowerCase(), Map.of())))));
+
+        if (status == OrderStatus.CANCELLED) {
+            messageRepository.saveMessage(new Message(order.getShop(), build(MessageCode.ORDER_UPDATED,
+                    Map.of(
+                            "orderId", order.getId(),
+                            "productName", order.getItem().getProduct().getName(),
+                            "orderStatus", messageLocalization
+                                                .getMessage("order.status." + status.name().toLowerCase(), Map.of())))));
+        }
+
         return orderRepository.saveOrder(order)
                 .orElseThrow(() -> new OrderException(ErrorCode.OPERATION_NOT_ALLOWED));
+    }
+
+    public String build(MessageCode code, Map<String, Object> variables) {
+        return messageLocalization.getMessage(code.getCode(), variables);
     }
 
 }

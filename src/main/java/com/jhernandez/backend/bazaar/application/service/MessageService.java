@@ -19,12 +19,6 @@ public class MessageService implements MessageServicePort {
 
     @Override
     public void createMessage(Message message) throws MessageException {
-        // if (message == null) {
-        //     throw new MessageException(ErrorCode.MESSAGE_NOT_NULL);
-        // }
-        // if (message.getSender() == null || message.getReceiver() == null) {
-        //     throw new MessageException(ErrorCode.SENDER_AND_RECEIVER_NOT_NULL);
-        // }
         messageRepository.saveMessage(message);
     }
 
