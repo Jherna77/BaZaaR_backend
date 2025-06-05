@@ -34,19 +34,11 @@ public class MessageService implements MessageServicePort {
     }
 
     @Override
-    public List<Message> findMessagesBySenderId(Long senderId) throws UserException {
-        if (senderId == null) {
+    public List<Message> findMessagesByRecipientId(Long recipientId) throws UserException {
+        if (recipientId == null) {
             throw new UserException(ErrorCode.USER_ID_NOT_NULL);
         }
-        return messageRepository.findMessagesBySenderId(senderId);
-    }
-
-    @Override
-    public List<Message> findMessagesByReceiverId(Long receiverId) throws UserException {
-        if (receiverId == null) {
-            throw new UserException(ErrorCode.USER_ID_NOT_NULL);
-        }
-        return messageRepository.findMessagesByReceiverId(receiverId);
+        return messageRepository.findMessagesByRecipientId(recipientId);
     }
 
     @Override
@@ -59,12 +51,12 @@ public class MessageService implements MessageServicePort {
     }
 
     @Override
-    public void setMessageAsRead(Long messageId) throws MessageException {
+    public void setMessageAsSeen(Long messageId) throws MessageException {
         if (messageId == null) {
             throw new MessageException(ErrorCode.MESSAGE_ID_NOT_NULL);
         }
         Message message = findMessageById(messageId);
-        message.setRead(true);
+        message.setSeen(true);
         messageRepository.saveMessage(message);
     }
 

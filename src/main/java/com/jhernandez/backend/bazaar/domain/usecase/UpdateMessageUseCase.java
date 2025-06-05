@@ -4,6 +4,6 @@ import com.jhernandez.backend.bazaar.domain.exception.MessageException;
 
 public interface UpdateMessageUseCase {
 
-    void setMessageAsRead(Long messageId) throws MessageException;
+    void setMessageAsSeen(Long messageId) throws MessageException;
 
 }

@@ -56,4 +56,8 @@ public class Values {
     public static final String REVIEW_PRODUCT_ID = REVIEWS + "/product/{productId}";
     public static final String REVIEW_USER_ID = REVIEWS + "/user/{userId}";
 
+    public static final String MESSAGES = "/api/messages";
+    public static final String MESSAGE_ID = MESSAGES + "/{id}";
+    public static final String MESSAGES_RECIPIENT_ID = MESSAGES + "/recipient/{recipientId}";
+
 }

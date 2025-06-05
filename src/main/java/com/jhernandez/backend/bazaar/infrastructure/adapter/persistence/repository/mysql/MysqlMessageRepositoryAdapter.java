@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.application.port.MessageRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.model.Message;
@@ -21,12 +22,14 @@ public class MysqlMessageRepositoryAdapter implements MessageRepositoryPort {
     private final JpaMessageRepository messageRepository;
     private final MessageEntityMapper messageEntityMapper;
 
+    @Transactional
     @Override
     public void saveMessage(Message message) {
-        log.info("Saving message from {} to {}", message.getSender().getName(), message.getReceiver().getName());
+        log.info("Saving message to {}", message.getRecipient());
         messageRepository.save(messageEntityMapper.toEntity(message));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Message> findAllMessages() {
         log.info("Finding all messages");
@@ -35,28 +38,23 @@ public class MysqlMessageRepositoryAdapter implements MessageRepositoryPort {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public List<Message> findMessagesBySenderId(Long senderId) {
-        log.info("Finding messages sent by user with ID {}", senderId);
-        return messageRepository.findBySenderId(senderId).stream()
+    public List<Message> findMessagesByRecipientId(Long recipientId) {
+        log.info("Finding messages received by user with ID {}", recipientId);
+        return messageRepository.findByRecipientId(recipientId).stream()
                 .map(messageEntityMapper::toDomain)
                 .toList();
     }
 
-    @Override
-    public List<Message> findMessagesByReceiverId(Long receiverId) {
-        log.info("Finding messages received by user with ID {}", receiverId);
-        return messageRepository.findByReceiverId(receiverId).stream()
-                .map(messageEntityMapper::toDomain)
-                .toList();
-    }
-
+    @Transactional(readOnly = true)
     @Override
     public Optional<Message> findMessageById(Long id) {
         log.info("Finding message with ID {}", id);
         return messageRepository.findById(id).map(messageEntityMapper::toDomain);
     }
 
+    @Transactional
     @Override
     public void deleteMessageById(Long id) {
         log.info("Deleting message with ID {}", id);

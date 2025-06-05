@@ -23,18 +23,14 @@ public class MessageEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "sender_id", nullable = false)
-    private UserEntity sender;
-
-    @ManyToOne
-    @JoinColumn(name = "receiver_id", nullable = false)
-    private UserEntity receiver;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "recipient_id", nullable = false)
+    private UserEntity recipient;
     
     @Column(name = "message_date")
-    private LocalDateTime maessageDate;
+    private LocalDateTime messageDate;
 
     private String content;
-    private Boolean read;
+    private Boolean seen;
 
 }

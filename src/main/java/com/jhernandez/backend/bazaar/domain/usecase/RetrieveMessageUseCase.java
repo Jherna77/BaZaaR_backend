@@ -10,9 +10,7 @@ public interface RetrieveMessageUseCase {
 
     List<Message> findAllMessages();
 
-    List<Message> findMessagesBySenderId(Long senderId) throws UserException;
-
-    List<Message> findMessagesByReceiverId(Long receiverId) throws UserException;
+    List<Message> findMessagesByRecipientId(Long receiverId) throws UserException;
 
     Message findMessageById(Long id) throws MessageException;
 

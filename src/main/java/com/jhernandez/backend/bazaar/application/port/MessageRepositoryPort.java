@@ -11,9 +11,7 @@ public interface MessageRepositoryPort {
 
     List<Message> findAllMessages();
 
-    List<Message> findMessagesBySenderId(Long senderId);
-
-    List<Message> findMessagesByReceiverId(Long receiverId);
+    List<Message> findMessagesByRecipientId(Long receiverId);
 
     Optional<Message> findMessageById(Long id);
 

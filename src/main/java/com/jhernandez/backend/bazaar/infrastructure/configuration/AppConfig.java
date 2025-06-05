@@ -50,9 +50,9 @@ public class AppConfig {
     @Bean
     OrderServicePort orderServicePort(UserRepositoryPort userRepositoryPort,
      OrderRepositoryPort orderRepositoryPort, ItemRepositoryPort itemRepositoryPort,
-     ProductRepositoryPort productRepositoryPort) {
+     ProductRepositoryPort productRepositoryPort, MessageRepositoryPort messageRepositoryPort) {
         return new OrderService(userRepositoryPort, orderRepositoryPort, itemRepositoryPort,
-            productRepositoryPort);
+            productRepositoryPort, messageRepositoryPort);
     }
 
     @Bean

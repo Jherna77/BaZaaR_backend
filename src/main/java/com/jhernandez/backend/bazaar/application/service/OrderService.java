@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.jhernandez.backend.bazaar.application.port.ItemRepositoryPort;
+import com.jhernandez.backend.bazaar.application.port.MessageRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.OrderRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.OrderServicePort;
 import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
@@ -13,6 +14,7 @@ import com.jhernandez.backend.bazaar.domain.exception.OrderException;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.Item;
+import com.jhernandez.backend.bazaar.domain.model.Message;
 import com.jhernandez.backend.bazaar.domain.model.Order;
 import com.jhernandez.backend.bazaar.domain.model.OrderStatus;
 import com.jhernandez.backend.bazaar.domain.model.Product;
@@ -24,13 +26,16 @@ public class OrderService implements OrderServicePort {
     private final OrderRepositoryPort orderRepository;
     private final ItemRepositoryPort itemRepository;
     private final ProductRepositoryPort productRepository;
+    private final MessageRepositoryPort messageRepository;
 
     public OrderService(UserRepositoryPort userRepository, OrderRepositoryPort orderRepository,
-                        ItemRepositoryPort itemRepository, ProductRepositoryPort productRepository) {
+                        ItemRepositoryPort itemRepository, ProductRepositoryPort productRepository,
+                        MessageRepositoryPort messageRepository) {
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
         this.productRepository = productRepository;
+        this.messageRepository = messageRepository;
     }
 
     @Override
@@ -68,6 +73,11 @@ public class OrderService implements OrderServicePort {
                     .orElseThrow(() -> new UserException(ErrorCode.OPERATION_NOT_ALLOWED));
             orderRepository.saveOrder(new Order(null, clonedItem, customer, seller, LocalDateTime.now()))
                     .orElseThrow(() -> new UserException(ErrorCode.OPERATION_NOT_ALLOWED));
+
+            
+            // Notify seller and customer about the order creation
+            messageRepository.saveMessage(new Message(seller, "New order created for " + item.getProduct().getName()));
+            messageRepository.saveMessage(new Message(customer, "Order created for " + item.getProduct().getName()));
         }
 
         customer.clearCart();
@@ -115,6 +125,9 @@ public class OrderService implements OrderServicePort {
             default -> throw new OrderException(ErrorCode.OPERATION_NOT_ALLOWED);
         }
 
+        messageRepository.saveMessage(new Message(order.getCustomer(), "Order status updated to " + status));
+        messageRepository.saveMessage(new Message(order.getShop(), "Order status updated to " + status));
+
         if (status == OrderStatus.CANCELLED || status == OrderStatus.RETURNED) {
             Item item = order.getItem();
             Product product = productRepository.findProductById(item.getProduct().getId())
@@ -123,7 +136,6 @@ public class OrderService implements OrderServicePort {
             productRepository.saveProduct(product);
         }
 
-        // order.setStatus(status);
         return orderRepository.saveOrder(order)
                 .orElseThrow(() -> new OrderException(ErrorCode.OPERATION_NOT_ALLOWED));
     }

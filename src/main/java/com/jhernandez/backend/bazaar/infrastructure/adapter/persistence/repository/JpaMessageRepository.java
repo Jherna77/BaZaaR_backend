@@ -8,9 +8,7 @@ import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.M
 
 public interface JpaMessageRepository extends JpaRepository<MessageEntity, Long> {
 
-    List<MessageEntity> findBySenderId(Long senderId);
-
-    List<MessageEntity> findByReceiverId(Long receiverId);
+    List<MessageEntity> findByRecipientId(Long recipientId);
 
     // @Modifying
     // @Query("UPDATE MessageEntity m SET m.read = true WHERE m.id = :messageId")
