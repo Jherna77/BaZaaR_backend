@@ -60,19 +60,30 @@ public class Item {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) throws ProductException {
-        if (quantity < 1 || quantity > product.getStock()) {
-            throw new ProductException(ErrorCode.PRODUCT_INSUFFICIENT_STOCK);
-        }
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-        setTotalPrice();
     }
 
     public Double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice() {
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void updateQuantity(Integer quantity) throws ProductException {
+        if (quantity < 1) {
+            throw new ProductException(ErrorCode.PRODUCT_INVALID_QUANTITY);
+        }
+        if (quantity > product.getStock()) {
+            throw new ProductException(ErrorCode.PRODUCT_INSUFFICIENT_STOCK);
+        }
+        this.quantity = quantity;
+        updateTotalPrice();
+    }
+
+    public void updateTotalPrice() {
         this.totalPrice = this.salePrice * this.quantity + this.saleShipping;
     }
 

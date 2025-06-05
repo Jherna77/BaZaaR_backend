@@ -62,7 +62,7 @@ public class CartService implements CartServicePort{
 
         for (Item item : user.getCart()) {
             if (item.getId().equals(itemId)) {
-                item.setQuantity(quantity);
+                item.updateQuantity(quantity);
                 return userRepository.saveUser(user)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_SAVE_ERROR))
                 .getCart();

@@ -154,6 +154,7 @@ public class ProductService implements ProductServicePort {
         existingProduct.setCategories(product.getCategories());
         existingProduct.setHasDiscount(product.getHasDiscount());
         existingProduct.setDiscountPrice(product.getDiscountPrice());
+        existingProduct.setStock(product.getStock());
         existingProduct.setImagesUrl(getFinalImages(
                                         productsImages,
                                         product.getImagesUrl(),
@@ -211,7 +212,9 @@ public class ProductService implements ProductServicePort {
         if (product.getPrice() == null || product.getPrice() <= 0) 
             throw new ProductException(ErrorCode.PRODUCT_INVALID_PRICE);
         if (product.getShipping() == null || product.getShipping() < 0)
-            throw new ProductException(ErrorCode.PRODUCT_INVALID_SHIPPING);   
+            throw new ProductException(ErrorCode.PRODUCT_INVALID_SHIPPING);
+        if (product.getStock() == null || product.getStock() < 0)
+            throw new ProductException(ErrorCode.PRODUCT_INVALID_STOCK);  
         if (product.getCategories() == null || product.getCategories().isEmpty()) 
             throw new ProductException(ErrorCode.PRODUCT_NO_CATEGORY);
         if (product.getHasDiscount()) {

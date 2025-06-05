@@ -3,6 +3,9 @@ package com.jhernandez.backend.bazaar.domain.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
+import com.jhernandez.backend.bazaar.domain.exception.ProductException;
+
 public class Product {
 
     private Long id;
@@ -209,11 +212,13 @@ public class Product {
         this.imagesUrl.remove(imageUrl);
     }
 
-    public void addSold(Integer quantity) {
-        if (quantity != null && quantity > 0) {
-            this.sold += quantity;
-            updateStock(quantity);
+    public void addSold(Integer quantity) throws ProductException {
+        if (this.stock < quantity) {
+            throw new ProductException(ErrorCode.PRODUCT_INSUFFICIENT_STOCK);
         }
+
+        this.sold += quantity;
+        updateStock(quantity);
     }
 
     public void updateStock(Integer quantity) {

@@ -102,7 +102,8 @@ public class Order {
     }
 
     public void cancel() throws OrderException {
-        if (this.status == OrderStatus.DELIVERED || this.status == OrderStatus.RETURNED) {
+        if (this.status == OrderStatus.SHIPPED ||  this.status == OrderStatus.DELIVERED ||
+            this.status == OrderStatus.RETURNED) {
             throw new OrderException(ErrorCode.ORDER_CANCEL_ERROR);
         }
         this.status = OrderStatus.CANCELLED;

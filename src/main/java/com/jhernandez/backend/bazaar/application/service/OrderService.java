@@ -10,6 +10,7 @@ import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.OrderException;
+import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.Item;
 import com.jhernandez.backend.bazaar.domain.model.Order;
@@ -51,8 +52,14 @@ public class OrderService implements OrderServicePort {
             
             Product product = productRepository.findProductById(item.getProduct().getId())
                     .orElseThrow(() -> new UserException(ErrorCode.PRODUCT_NOT_FOUND));
+
+            Integer quantity = item.getQuantity();
             
-            product.addSold(item.getQuantity());
+            if (quantity == null || quantity <= 0) {
+                throw new ProductException(ErrorCode.PRODUCT_INVALID_QUANTITY);
+            }
+            
+            product.addSold(quantity);
             productRepository.saveProduct(product);
                     
             customer.addCategoriesToFavourites(item.getProduct().getCategories());
@@ -106,6 +113,14 @@ public class OrderService implements OrderServicePort {
             case CANCELLED -> order.cancel();
             case RETURNED -> order.returnOrder();
             default -> throw new OrderException(ErrorCode.OPERATION_NOT_ALLOWED);
+        }
+
+        if (status == OrderStatus.CANCELLED || status == OrderStatus.RETURNED) {
+            Item item = order.getItem();
+            Product product = productRepository.findProductById(item.getProduct().getId())
+                    .orElseThrow(() -> new UserException(ErrorCode.PRODUCT_NOT_FOUND));
+            product.addSold(-item.getQuantity());
+            productRepository.saveProduct(product);
         }
 
         // order.setStatus(status);

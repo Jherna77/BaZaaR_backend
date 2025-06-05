@@ -55,7 +55,6 @@ public class MysqlOrderRepositoryAdapter implements OrderRepositoryPort {
         return orderRepository.findByCustomerId(id).stream()
                 .map(orderEntityMapper::toDomain)
                 .toList();
-                // .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -65,7 +64,6 @@ public class MysqlOrderRepositoryAdapter implements OrderRepositoryPort {
         return orderRepository.findByShopId(id).stream()
                 .map(orderEntityMapper::toDomain)
                 .toList();
-                // .collect(Collectors.toList());
     }
 
     // @Transactional(readOnly = true)
