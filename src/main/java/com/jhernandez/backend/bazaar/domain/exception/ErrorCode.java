@@ -86,6 +86,8 @@ public enum ErrorCode {
     BACKUP_NOT_FOUND("backup.not.found"),
     BACKUP_ID_NOT_NULL("backup.id.not.null"),
     BACKUP_RESTORE_ERROR("backup.restore.error"),
+    MESSAGE_ID_NOT_NULL("message.id.not.null"),
+    MESSAGE_NOT_FOUND("message.not.found"),
     OPERATION_NOT_ALLOWED("operation.not.allowed");
 
     private final String code;

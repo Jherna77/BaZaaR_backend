@@ -81,4 +81,9 @@ public class AppConfig {
         return new BackupService(backupStoragePort, backupRepositoryPort);
     }
 
+    @Bean
+    MessageServicePort messageServicePort(MessageRepositoryPort messageRepositoryPort) {
+        return new MessageService(messageRepositoryPort);
+    }
+
 }
