@@ -1,5 +1,8 @@
 package com.jhernandez.backend.bazaar.domain.model;
 
+import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
+import com.jhernandez.backend.bazaar.domain.exception.ProductException;
+
 public class Item {
 
     private Long id;
@@ -57,7 +60,10 @@ public class Item {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(Integer quantity) throws ProductException {
+        if (quantity < 1 || quantity > product.getStock()) {
+            throw new ProductException(ErrorCode.PRODUCT_INSUFFICIENT_STOCK);
+        }
         this.quantity = quantity;
         setTotalPrice();
     }

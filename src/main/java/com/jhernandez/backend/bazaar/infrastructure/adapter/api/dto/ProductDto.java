@@ -23,6 +23,7 @@ public class ProductDto {
     private Integer ratingCount;
     private Boolean hasDiscount;
     private Double discountPrice;
+    private Integer stock;
 
 }
 

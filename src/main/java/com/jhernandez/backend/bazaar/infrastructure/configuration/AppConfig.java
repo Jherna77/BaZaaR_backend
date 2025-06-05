@@ -56,8 +56,8 @@ public class AppConfig {
     }
 
     @Bean
-    CartServicePort cartServicePort(UserRepositoryPort userRepositoryPort) {
-        return new CartService(userRepositoryPort);
+    CartServicePort cartServicePort(UserRepositoryPort userRepositoryPort, ProductRepositoryPort productRepositoryPort) {
+        return new CartService(userRepositoryPort, productRepositoryPort);
     }
 
     @Bean

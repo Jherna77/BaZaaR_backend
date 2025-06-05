@@ -68,4 +68,6 @@ public class ProductEntity {
     @Column(name = "discount_price")
     private Double discountPrice;
 
+    private Integer stock;
+
 }

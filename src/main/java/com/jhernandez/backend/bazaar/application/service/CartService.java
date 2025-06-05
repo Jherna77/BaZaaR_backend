@@ -3,18 +3,23 @@ package com.jhernandez.backend.bazaar.application.service;
 import java.util.List;
 
 import com.jhernandez.backend.bazaar.application.port.CartServicePort;
+import com.jhernandez.backend.bazaar.application.port.ProductRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
+import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 import com.jhernandez.backend.bazaar.domain.model.Item;
+import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.domain.model.User;
 
 public class CartService implements CartServicePort{
 
     private final UserRepositoryPort userRepository;
+    private final ProductRepositoryPort productRepository;
 
-    public CartService(UserRepositoryPort userRepository) {
+    public CartService(UserRepositoryPort userRepository, ProductRepositoryPort productRepository) {
         this.userRepository = userRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -25,9 +30,17 @@ public class CartService implements CartServicePort{
     }
 
     @Override
-    public void addItemToCart(Long userId, Item item) throws UserException {
+    public void addItemToCart(Long userId, Item item) throws UserException, ProductException {
         User user = userRepository.findUserById(userId)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
+
+        Product product = productRepository.findProductById(item.getProduct().getId())
+                .orElseThrow(() -> new UserException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        if (product.getStock() < item.getQuantity()) {
+            throw new ProductException(ErrorCode.PRODUCT_INSUFFICIENT_STOCK);
+        }
+
         user.addItemToCart(item);
         userRepository.saveUser(user);
     }
@@ -43,9 +56,10 @@ public class CartService implements CartServicePort{
     }
 
     @Override
-    public List<Item> updateItemQuantity(Long userId, Long itemId, int quantity) throws UserException {
+    public List<Item> updateItemQuantity(Long userId, Long itemId, int quantity) throws UserException, ProductException {
         User user = userRepository.findUserById(userId)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
+
         for (Item item : user.getCart()) {
             if (item.getId().equals(itemId)) {
                 item.setQuantity(quantity);

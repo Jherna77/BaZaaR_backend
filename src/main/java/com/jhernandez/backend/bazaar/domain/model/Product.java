@@ -20,6 +20,7 @@ public class Product {
     private LocalDateTime createdAt;
     private Boolean hasDiscount;
     private Double discountPrice;
+    private Integer stock;
 
     public Product() {
     }
@@ -30,7 +31,7 @@ public class Product {
 
     public Product(Long id, Boolean enabled, String name, String description, Double price, Double shipping,
             List<Category> categories, List<String> imagesUrl, User shop, Integer sold, Double rating,
-            Integer ratingCount, LocalDateTime createdAt, Boolean hasDiscount, Double discountPrice) {
+            Integer ratingCount, LocalDateTime createdAt, Boolean hasDiscount, Double discountPrice, Integer stock) {
         this.id = id;
         this.enabled = enabled;
         this.name = name;
@@ -46,6 +47,7 @@ public class Product {
         this.createdAt = createdAt;
         this.hasDiscount = hasDiscount;
         this.discountPrice = discountPrice;
+        this.stock = stock;
     }
 
     public Long getId() {
@@ -106,6 +108,10 @@ public class Product {
 
     public Double getDiscountPrice() {
         return discountPrice;
+    }
+
+    public Integer getStock() {
+        return stock;
     }
 
     public void setId(Long id) {
@@ -172,6 +178,10 @@ public class Product {
         this.discountPrice = discountPrice;
     }
 
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
     public void enable() {
         this.enabled = true;
     }
@@ -202,6 +212,14 @@ public class Product {
     public void addSold(Integer quantity) {
         if (quantity != null && quantity > 0) {
             this.sold += quantity;
+            updateStock(quantity);
+        }
+    }
+
+    public void updateStock(Integer quantity) {
+        this.stock -= quantity;
+        if (this.stock < 0) {
+            this.stock = 0;
         }
     }
 

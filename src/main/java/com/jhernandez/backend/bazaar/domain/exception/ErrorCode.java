@@ -53,6 +53,7 @@ public enum ErrorCode {
     PRODUCT_ALREADY_ENABLED("product.already.enabled"),
     PRODUCT_ALREADY_DISABLED("product.already.disabled"),
     PRODUCT_DISABLED("product.disabled"),
+    PRODUCT_INSUFFICIENT_STOCK("product.insufficient.stock"),
     CATEGORY_NAME_REQUIRED("category.name.required"),
     CATEGORY_IMAGE_REQUIRED("category.image.required"),
     CATEGORY_NAME_EXISTS("category.name.duplicate"),
