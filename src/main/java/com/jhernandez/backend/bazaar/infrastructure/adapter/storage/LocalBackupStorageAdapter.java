@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.jhernandez.backend.bazaar.application.port.BackupStoragePort;
 import com.jhernandez.backend.bazaar.domain.exception.BackupException;
-import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
+import com.jhernandez.backend.bazaar.domain.model.ErrorCode;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -7,8 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.jhernandez.backend.bazaar.application.port.UserRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.UserRoleRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.UserServicePort;
-import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
+import com.jhernandez.backend.bazaar.domain.model.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.model.User;
 import com.jhernandez.backend.bazaar.domain.model.UserRole;
 

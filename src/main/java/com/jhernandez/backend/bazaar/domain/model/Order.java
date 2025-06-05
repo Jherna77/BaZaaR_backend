@@ -2,7 +2,6 @@ package com.jhernandez.backend.bazaar.domain.model;
 
 import java.time.LocalDateTime;
 
-import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.OrderException;
 
 public class Order {

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jhernandez.backend.bazaar.application.port.ImageStoragePort;
-import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
+import com.jhernandez.backend.bazaar.domain.model.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 import com.jhernandez.backend.bazaar.application.port.ImageServicePort;
 

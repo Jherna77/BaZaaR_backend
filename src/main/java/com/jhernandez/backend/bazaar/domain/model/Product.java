@@ -3,7 +3,6 @@ package com.jhernandez.backend.bazaar.domain.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.ProductException;
 
 public class Product {

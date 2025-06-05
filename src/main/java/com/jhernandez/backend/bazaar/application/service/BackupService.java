@@ -8,8 +8,8 @@ import com.jhernandez.backend.bazaar.application.port.BackupRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.BackupServicePort;
 import com.jhernandez.backend.bazaar.application.port.BackupStoragePort;
 import com.jhernandez.backend.bazaar.domain.exception.BackupException;
-import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.model.Backup;
+import com.jhernandez.backend.bazaar.domain.model.ErrorCode;
 
 public class BackupService implements BackupServicePort {
 

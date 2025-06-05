@@ -12,8 +12,8 @@ import java.nio.file.Paths;
 import org.springframework.stereotype.Service;
 
 import com.jhernandez.backend.bazaar.application.port.ImageStoragePort;
-import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.ImageFileException;
+import com.jhernandez.backend.bazaar.domain.model.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.model.ImageFile;
 
 import lombok.extern.slf4j.Slf4j;

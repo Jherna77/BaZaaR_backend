@@ -3,7 +3,6 @@ package com.jhernandez.backend.bazaar.domain.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
 
 public class User {

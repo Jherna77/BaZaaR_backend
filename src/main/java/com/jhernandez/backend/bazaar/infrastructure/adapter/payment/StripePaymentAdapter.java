@@ -3,8 +3,8 @@ package com.jhernandez.backend.bazaar.infrastructure.adapter.payment;
 import org.springframework.stereotype.Service;
 
 import com.jhernandez.backend.bazaar.application.port.PaymentProviderPort;
-import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.PaymentException;
+import com.jhernandez.backend.bazaar.domain.model.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.model.Payment;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;

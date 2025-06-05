@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.jhernandez.backend.bazaar.application.port.MessageRepositoryPort;
 import com.jhernandez.backend.bazaar.application.port.MessageServicePort;
-import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.MessageException;
 import com.jhernandez.backend.bazaar.domain.exception.UserException;
+import com.jhernandez.backend.bazaar.domain.model.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.model.Message;
 
 public class MessageService implements MessageServicePort {

@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.domain.exception;
+package com.jhernandez.backend.bazaar.domain.model;
 
 public enum ErrorCode {
     USER_EMAIL_REQUIRED("user.email.required"),

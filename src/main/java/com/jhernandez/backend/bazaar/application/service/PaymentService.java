@@ -2,8 +2,8 @@ package com.jhernandez.backend.bazaar.application.service;
 
 import com.jhernandez.backend.bazaar.application.port.PaymentProviderPort;
 import com.jhernandez.backend.bazaar.application.port.PaymentServicePort;
-import com.jhernandez.backend.bazaar.domain.exception.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.exception.PaymentException;
+import com.jhernandez.backend.bazaar.domain.model.ErrorCode;
 import com.jhernandez.backend.bazaar.domain.model.Payment;
 
 public class PaymentService implements PaymentServicePort {
