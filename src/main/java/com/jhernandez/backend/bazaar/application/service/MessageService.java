@@ -45,6 +45,14 @@ public class MessageService implements MessageServicePort {
     }
 
     @Override
+    public Boolean hasNewMessages(Long recipientId) throws UserException {
+        if (recipientId == null) {
+            throw new UserException(ErrorCode.USER_ID_NOT_NULL);
+        }
+        return messageRepository.hasNewMessages(recipientId);
+    }
+
+    @Override
     public void setMessageAsSeen(Long messageId) throws MessageException {
         if (messageId == null) {
             throw new MessageException(ErrorCode.MESSAGE_ID_NOT_NULL);
@@ -55,14 +63,13 @@ public class MessageService implements MessageServicePort {
     }
 
     @Override
-    public void deleteMessageById(Long id) throws MessageException {
+    public List<Message> deleteMessageById(Long id) throws MessageException {
         if (id == null) {
             throw new MessageException(ErrorCode.MESSAGE_ID_NOT_NULL);
         }
-        if (!messageRepository.findMessageById(id).isPresent()) {
-            throw new MessageException(ErrorCode.MESSAGE_NOT_FOUND);
-        }
+        Message message = findMessageById(id);
         messageRepository.deleteMessageById(id);
+        return messageRepository.findMessagesByRecipientId(message.getRecipient().getId());
     }
 
 }

@@ -14,4 +14,6 @@ public interface RetrieveMessageUseCase {
 
     Message findMessageById(Long id) throws MessageException;
 
+    Boolean hasNewMessages(Long recipientId) throws UserException;
+
 }

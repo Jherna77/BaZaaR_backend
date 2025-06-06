@@ -82,11 +82,11 @@ public class OrderService implements OrderServicePort {
             
             // Notify seller and customer about the order creation
             messageRepository.saveMessage(new Message(seller, build(MessageCode.ORDER_CREATED_SELLER, 
-                    Map.of("productName", item.getProduct().getName()))));
+                    Map.of(
+                        "productName", item.getProduct().getName(),
+                        "productId", item.getProduct().getId()))));
             messageRepository.saveMessage(new Message(customer, build(MessageCode.ORDER_CREATED_CUSTOMER,
                     Map.of("productName", item.getProduct().getName()))));
-            // messageRepository.saveMessage(new Message(seller, "New order created for " + item.getProduct().getName()));
-            // messageRepository.saveMessage(new Message(customer, "Order created for " + item.getProduct().getName()));
         }
 
         customer.clearCart();

@@ -54,6 +54,13 @@ public class MysqlMessageRepositoryAdapter implements MessageRepositoryPort {
         return messageRepository.findById(id).map(messageEntityMapper::toDomain);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Boolean hasNewMessages(Long recipientId) {
+        log.info("Checking for new messages for user with ID {}", recipientId);
+        return messageRepository.existsByRecipientIdAndSeenFalse(recipientId);
+    }
+
     @Transactional
     @Override
     public void deleteMessageById(Long id) {

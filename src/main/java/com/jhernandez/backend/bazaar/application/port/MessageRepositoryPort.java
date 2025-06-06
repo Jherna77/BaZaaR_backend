@@ -15,5 +15,7 @@ public interface MessageRepositoryPort {
 
     Optional<Message> findMessageById(Long id);
 
+    Boolean hasNewMessages(Long recipientId);
+
     void deleteMessageById(Long id);
 }
