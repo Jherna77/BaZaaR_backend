@@ -21,7 +21,7 @@ public class BackupEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "created_at")    
+    @Column(name = "created_at", nullable = false)    
     private LocalDateTime createdAt;
 
     @Column(name ="database_file_name")

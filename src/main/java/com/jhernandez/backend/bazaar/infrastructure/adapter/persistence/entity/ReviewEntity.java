@@ -23,15 +23,20 @@ public class ReviewEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(optional = false)
     @JoinColumn(name = "order_id", nullable = false, unique = true)
     private OrderEntity order;
 
+    @Column(nullable = false)
     private String author;
+
+    @Column(nullable = false)
     private String comment;
+
+    @Column(nullable = false)
     private Integer rating;
 
-    @Column(name = "review_date")    
+    @Column(name = "review_date", nullable = false)    
     private LocalDateTime reviewDate;
 
 }

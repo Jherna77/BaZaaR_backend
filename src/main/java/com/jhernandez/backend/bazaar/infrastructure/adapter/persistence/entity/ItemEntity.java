@@ -1,5 +1,6 @@
 package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,13 +21,20 @@ public class ItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "product_id", nullable = false)
     private ProductEntity product;
     
+    @Column(name = "sale_price", nullable = false)
     private Double salePrice;
+
+    @Column(name = "sale_shipping", nullable = false)
     private Double saleShipping;
+
+    @Column(nullable = false)
     private Integer quantity;
+
+    @Column(name = "total_price", nullable = false)
     private Double totalPrice;
     
 }

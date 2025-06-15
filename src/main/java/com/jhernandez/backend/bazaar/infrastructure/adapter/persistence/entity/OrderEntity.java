@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +32,7 @@ public class OrderEntity {
     @Column(nullable = false)
     private OrderStatus status;
 
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name = "item_id", nullable = false)
     private ItemEntity item;
 
@@ -43,6 +44,6 @@ public class OrderEntity {
     @JoinColumn(name = "shop_id", nullable = false)
     private UserEntity shop;
 
-    @Column(name = "order_date")    
+    @Column(name = "order_date", nullable = false)    
     private LocalDateTime orderDate;
 }

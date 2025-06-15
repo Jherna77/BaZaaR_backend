@@ -30,10 +30,19 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Boolean enabled;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false)
     private Double price;
+
+    @Column(nullable = false)
     private Double shipping;
 
     @ManyToMany
@@ -45,29 +54,32 @@ public class ProductEntity {
 
     @ElementCollection
     @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
-    @Column(name = "image_url")
+    @Column(name = "image_url", nullable = false)
     private List<String> imagesUrl;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "shop_id", nullable = false)
     private UserEntity shop;
 
+    @Column(nullable = false)
     private Integer sold;
 
+    @Column(nullable = false)
     private Double rating;
 
-    @Column(name = "rating_count")
+    @Column(name = "rating_count", nullable = false)
     private Integer ratingCount;
 
-    @Column(name = "created_at")    
+    @Column(name = "created_at", nullable = false)    
     private LocalDateTime createdAt;
 
-    @Column(name = "has_discount")
+    @Column(name = "has_discount", nullable = false)
     private Boolean hasDiscount;
 
     @Column(name = "discount_price")
     private Double discountPrice;
 
+    @Column(nullable = false)
     private Integer stock;
 
 }

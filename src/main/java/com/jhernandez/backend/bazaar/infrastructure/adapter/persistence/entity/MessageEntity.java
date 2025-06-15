@@ -27,10 +27,13 @@ public class MessageEntity {
     @JoinColumn(name = "recipient_id", nullable = false)
     private UserEntity recipient;
     
-    @Column(name = "message_date")
+    @Column(name = "message_date", nullable = false)
     private LocalDateTime messageDate;
 
+    @Column(nullable = false)
     private String content;
+
+    @Column(nullable = false)
     private Boolean seen;
 
 }
