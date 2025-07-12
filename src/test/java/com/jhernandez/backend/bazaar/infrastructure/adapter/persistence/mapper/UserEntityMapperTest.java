@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.mapper;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

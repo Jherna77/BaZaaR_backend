@@ -1,4 +1,4 @@
-package com.jhernandez.backend.bazaar.mapper;
+package com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jhernandez.backend.bazaar.domain.model.Product;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.entity.ProductEntity;
-import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.mapper.ProductEntityMapper;
 import com.jhernandez.backend.bazaar.infrastructure.adapter.persistence.repository.JpaProductRepository;
 
 @SpringBootTest
@@ -25,7 +24,7 @@ class ProductEntityMapperTest {
 
     @Transactional(readOnly = true)
     @Test
-    void shouldMapProductEntityToDomain() {
+    void testMapProductEntityToDomain() {
         Optional<ProductEntity> entityOpt = productRepository.findById(1L);
         assertTrue(entityOpt.isPresent());
 
@@ -41,7 +40,7 @@ class ProductEntityMapperTest {
 
     @Transactional(readOnly = true)
     @Test
-    void shouldMapProductEntityToEntity() {
+    void testMapProductEntityToEntity() {
         ProductEntity entity = productRepository.findById(1L).orElseThrow();
         Product domain = productMapper.toDomain(entity);
         domain.setId(77L);
